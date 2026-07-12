@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Kassensystem POS — One-shot Linux setup
+# Kassensystem POS — One-shot Linux setup (Ubuntu/Debian + Fedora)
 # Usage:
 #   git clone https://github.com/citrondon/kassensystem.git
 #   cd kassensystem
@@ -9,24 +9,98 @@ set -euo pipefail
 
 echo "=== Kassensystem POS Setup ==="
 
+# ── Detect distro ──────────────────────────────────────────────
+detect_distro() {
+  if command -v apt-get >/dev/null 2>&1; then
+    echo "debian"
+  elif command -v dnf >/dev/null 2>&1; then
+    echo "fedora"
+  else
+    echo "unknown"
+  fi
+}
+
+DISTRO=$(detect_distro)
+echo "Detected: $DISTRO"
+
 # ── Prerequisites ──────────────────────────────────────────────
 echo "[1/8] Checking prerequisites..."
+
+# Install base tools if missing
+case "$DISTRO" in
+  debian)
+    if ! command -v git >/dev/null 2>&1 || ! command -v curl >/dev/null 2>&1; then
+      sudo apt-get update -qq
+      sudo apt-get install -y -qq git curl
+    fi
+    # bcrypt needs build tools
+    if ! dpkg -s build-essential >/dev/null 2>&1 2>/dev/null; then
+      echo "       Installing build tools (needed for bcrypt)..."
+      sudo apt-get update -qq
+      sudo apt-get install -y -qq build-essential python3 make g++
+    fi
+    ;;
+  fedora)
+    if ! command -v git >/dev/null 2>&1 || ! command -v curl >/dev/null 2>&1; then
+      sudo dnf install -y git curl
+    fi
+    # bcrypt needs C++ compiler
+    if ! command -v g++ >/dev/null 2>&1; then
+      echo "       Installing build tools (needed for bcrypt)..."
+      sudo dnf install -y gcc-c++ make python3
+    fi
+    ;;
+  *)
+    echo "WARNING: Unknown distro. If bcrypt install fails, install build tools manually."
+    ;;
+esac
+
+# Check Node.js
+if ! command -v node >/dev/null 2>&1; then
+  echo "Node.js not found. Installing via nvm..."
+  curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash
+  export NVM_DIR="$HOME/.nvm"
+  [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+  nvm install 20
+  nvm use 20
+fi
+
+NODE_VERSION=$(node -v 2>/dev/null || echo "none")
+echo "Node.js: $NODE_VERSION"
+
+# Check Docker
+if ! command -v docker >/dev/null 2>&1; then
+  echo "Docker not found. Installing..."
+  case "$DISTRO" in
+    debian)
+      sudo apt-get update -qq
+      sudo apt-get install -y -qq docker.io
+      sudo usermod -aG docker "$USER"
+      sudo systemctl start docker
+      sudo systemctl enable docker
+      echo "Docker installed. If 'docker' permission denied, run: newgrp docker"
+      ;;
+    fedora)
+      sudo dnf install -y docker
+      sudo systemctl start docker
+      sudo systemctl enable docker
+      sudo usermod -aG docker "$USER"
+      echo "Docker installed. If 'docker' permission denied, run: newgrp docker"
+      ;;
+    *)
+      echo "ERROR: Please install Docker manually."
+      exit 1
+      ;;
+  esac
+fi
+
+# Verify all commands available now
 for cmd in git node npm docker; do
   command -v "$cmd" >/dev/null 2>&1 || {
-    echo "ERROR: $cmd not found. Please install it first."
+    echo "ERROR: $cmd still not found after install attempt."
     exit 1
   }
 done
-
-# bcrypt needs build tools on Linux
-if ! dpkg -s build-essential >/dev/null 2>&1 2>/dev/null; then
-  if command -v apt-get >/dev/null 2>&1; then
-    echo "       Installing build-essential (needed for bcrypt)..."
-    sudo apt-get update -qq && sudo apt-get install -y -qq build-essential python3 make g++
-  else
-    echo "WARNING: build-essential not found. If bcrypt install fails, install it manually."
-  fi
-fi
 
 # ── .env files ─────────────────────────────────────────────────
 echo "[2/8] Copying .env files..."
