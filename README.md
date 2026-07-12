@@ -51,6 +51,7 @@ cd kassensystem
 ```bash
 cd backend
 cp .env.example .env
+cp .env.test.example .env.test
 cd ..
 docker compose up -d
 ```
@@ -148,17 +149,18 @@ npm run preview  # Preview des Builds
 
 ## Für KI-Agents / Automatisches Setup
 
-Falls ein KI-Agent dieses Repo automatisch einrichten soll:
+Falls ein KI-Agent dieses Repo automatisch einrichten soll, ist der exakte Copy-Paste-Prompt in `AGENTS.md` hinterlegt. Kurzversion:
 
-1. `backend/.env` aus `backend/.env.example` kopieren (muss vor Docker Compose existieren).
+1. `backend/.env` aus `backend/.env.example` und `backend/.env.test` aus `backend/.env.test.example` kopieren (beide müssen vor Docker Compose existieren).
 2. `docker compose up -d` startet die DB.
 3. `npm install` in `backend/` und `frontend/` ausführen.
 4. `npm run migrate` im `backend/`-Ordner ausführen.
 5. `npm run seed` im `backend/`-Ordner ausführen.
-6. `npm run dev` in beiden Ordnern parallel starten.
-7. App ist unter `http://localhost:3000` erreichbar.
-8. Anmelden mit `admin` / `pos123` oder `kasse` / `pos123`.
-9. API-Healthcheck: `GET http://localhost:5000/health`
+6. Optional: `npm run test` im `backend/`-Ordner ausführen.
+7. `npm run dev` in beiden Ordnern parallel starten.
+8. App ist unter `http://localhost:3000` erreichbar.
+9. Anmelden mit `admin` / `pos123` oder `kasse` / `pos123`.
+10. API-Healthcheck: `GET http://localhost:5000/health`
 
 ## Lizenz
 
