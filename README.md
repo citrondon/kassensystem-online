@@ -16,7 +16,8 @@ Ein kleines Point-of-Sale-System mit React-Frontend, Express-Backend und Postgre
 │   ├── migrations/         # node-pg-migrate Migrationen
 │   ├── scripts/          # Migration- & Seed-Wrapper
 │   ├── .env                # Environment-Variablen (NICHT commiten)
-│   └── .env.example        # Template für .env
+│   ├── .env.example        # Template für .env
+│   └── .env.test.example   # Template für .env.test
 ├── frontend/        # React + Vite (Port 3000)
 │   ├── src/
 │   │   ├── components/     # UI-Komponenten (Kasse, Scanner, Dashboard, etc.)
