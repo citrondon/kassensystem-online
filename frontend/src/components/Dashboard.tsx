@@ -1,6 +1,8 @@
 import { useState, useEffect, useCallback } from "react";
 import { Product, OrderListItem } from "../types";
 import { getProducts, getOrders } from "../services/api";
+import { useAuth } from "../contexts/AuthContext";
+import { useI18n } from "../i18n/I18nContext";
 import {
   TrendingUp,
   ShoppingBag,
@@ -21,6 +23,9 @@ export default function Dashboard({ onNavigate }: Props) {
   const [products, setProducts] = useState<Product[]>([]);
   const [orders, setOrders] = useState<OrderListItem[]>([]);
   const [loading, setLoading] = useState(true);
+  const { t, lang } = useI18n();
+  const { user } = useAuth();
+  const isManager = user?.role === "manager";
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -54,49 +59,52 @@ export default function Dashboard({ onNavigate }: Props) {
     0
   );
 
+  const currency = t("currency");
+
   const cards = [
     {
-      label: "Umsatz heute",
-      value: `${todayRevenue.toFixed(2)} €`,
+      label: t("todayRevenue"),
+      value: `${todayRevenue.toFixed(2)} ${currency}`,
       icon: <TrendingUp className="h-6 w-6 text-emerald-600" />,
       bg: "bg-emerald-50",
       onClick: () => onNavigate("orders"),
     },
     {
-      label: "Bestellungen heute",
+      label: t("todayOrders"),
       value: String(todayOrders.length),
       icon: <ShoppingBag className="h-6 w-6 text-indigo-600" />,
       bg: "bg-indigo-50",
       onClick: () => onNavigate("orders"),
     },
     {
-      label: "Lagerwert",
-      value: `${totalValue.toFixed(2)} €`,
+      label: t("inventoryValue"),
+      value: `${totalValue.toFixed(2)} ${currency}`,
       icon: <Store className="h-6 w-6 text-blue-600" />,
       bg: "bg-blue-50",
       onClick: () => onNavigate("inventory"),
+      managerOnly: true,
     },
     {
-      label: "Niedriger Bestand",
+      label: t("lowStock"),
       value: String(lowStockCount),
       icon: <AlertTriangle className="h-6 w-6 text-amber-600" />,
       bg: "bg-amber-50",
       onClick: () => onNavigate("inventory"),
     },
     {
-      label: "Ausverkauft",
+      label: t("outOfStock"),
       value: String(outOfStockCount),
       icon: <PackageX className="h-6 w-6 text-red-600" />,
       bg: "bg-red-50",
       onClick: () => onNavigate("inventory"),
     },
-  ];
+  ].filter((card) => !card.managerOnly || isManager);
 
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-slate-800">Dashboard</h1>
-        <p className="text-slate-500">Übersicht über Ihr Geschäft</p>
+        <h1 className="text-2xl font-bold text-slate-800">{t("dashboard")}</h1>
+        <p className="text-slate-500">{t("overview")}</p>
       </div>
 
       {loading ? (
@@ -127,29 +135,29 @@ export default function Dashboard({ onNavigate }: Props) {
       {!loading && (
         <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
           <div className="panel p-5">
-            <h2 className="mb-4 text-lg font-bold text-slate-800">Schnellzugriff</h2>
+            <h2 className="mb-4 text-lg font-bold text-slate-800">{t("quickAccess")}</h2>
             <div className="flex flex-col gap-2">
               <button
                 onClick={() => onNavigate("cashier")}
                 className="btn-primary flex items-center justify-center gap-2"
               >
                 <ShoppingBag className="h-5 w-5" />
-                Kasse öffnen
+                {t("openCashier")}
               </button>
               <button
                 onClick={() => onNavigate("inventory")}
                 className="btn-secondary flex items-center justify-center gap-2"
               >
                 <PackageX className="h-5 w-5" />
-                Inventar verwalten
+                {t("manageInventory")}
               </button>
             </div>
           </div>
 
           <div className="panel p-5">
-            <h2 className="mb-4 text-lg font-bold text-slate-800">Letzte Bestellungen</h2>
+            <h2 className="mb-4 text-lg font-bold text-slate-800">{t("lastOrders")}</h2>
             {orders.length === 0 ? (
-              <p className="text-center text-sm text-slate-400 py-4">Noch keine Bestellungen.</p>
+              <p className="text-center text-sm text-slate-400 py-4">{t("noOrdersYet")}</p>
             ) : (
               <ul className="divide-y divide-slate-100">
                 {orders.slice(0, 5).map((order) => (
@@ -159,10 +167,10 @@ export default function Dashboard({ onNavigate }: Props) {
                   >
                     <div>
                       <p className="text-sm font-semibold text-slate-800">
-                        Bestellung #{order.id}
+                        {t("order")} #{order.id}
                       </p>
                       <p className="text-xs text-slate-500">
-                        {new Date(order.order_date).toLocaleString("de-DE", {
+                        {new Date(order.order_date).toLocaleString(lang === "fr" ? "fr-FR" : "de-DE", {
                           day: "2-digit",
                           month: "2-digit",
                           year: "numeric",
@@ -172,7 +180,7 @@ export default function Dashboard({ onNavigate }: Props) {
                       </p>
                     </div>
                     <span className="text-sm font-bold text-slate-800">
-                      {Number(order.total_amount).toFixed(2)} €
+                      {Number(order.total_amount).toFixed(2)} {currency}
                     </span>
                   </li>
                 ))}

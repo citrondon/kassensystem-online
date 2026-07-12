@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { OrderListItem } from "../types";
 import { getOrders } from "../services/api";
+import { useI18n } from "../i18n/I18nContext";
 import OrderDetailModal from "./OrderDetailModal";
 import { RefreshCw, Eye, ClipboardList, Loader2 } from "lucide-react";
 
@@ -9,6 +10,8 @@ export default function OrdersView() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [selectedId, setSelectedId] = useState<number | null>(null);
+  const { t, lang } = useI18n();
+  const currency = t("currency");
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -17,11 +20,11 @@ export default function OrdersView() {
       const data = await getOrders();
       setOrders(data);
     } catch {
-      setError("Bestellungen konnten nicht geladen werden.");
+      setError(t("errorLoading"));
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [t]);
 
   useEffect(() => {
     load();
@@ -29,7 +32,7 @@ export default function OrdersView() {
 
   const formatDate = (iso: string) => {
     const d = new Date(iso);
-    return d.toLocaleString("de-DE", {
+    return d.toLocaleString(lang === "fr" ? "fr-FR" : "de-DE", {
       day: "2-digit",
       month: "2-digit",
       year: "numeric",
@@ -42,7 +45,7 @@ export default function OrdersView() {
     return (
       <div className="flex flex-col items-center justify-center py-20">
         <Loader2 className="mb-3 h-10 w-10 animate-spin text-slate-300" />
-        <p className="text-sm font-medium text-slate-400">Lade Bestellungen...</p>
+        <p className="text-sm font-medium text-slate-400">{t("loadingOrders")}</p>
       </div>
     );
   }
@@ -55,7 +58,7 @@ export default function OrdersView() {
           onClick={load}
           className="mt-3 btn-primary"
         >
-          Erneut versuchen
+          {t("retry")}
         </button>
       </div>
     );
@@ -64,13 +67,13 @@ export default function OrdersView() {
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-slate-800">Bestellungen</h1>
+        <h1 className="text-2xl font-bold text-slate-800">{t("orders")}</h1>
         <button
           onClick={load}
           className="flex items-center gap-2 rounded-xl bg-white border border-slate-200 px-3 py-2 text-sm font-medium text-slate-600 transition hover:bg-slate-50"
         >
           <RefreshCw className="h-4 w-4" />
-          Aktualisieren
+          {t("refresh")}
         </button>
       </div>
 
@@ -78,17 +81,17 @@ export default function OrdersView() {
         {orders.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-16">
             <ClipboardList className="mb-3 h-10 w-10 text-slate-200" />
-            <p className="text-sm font-medium text-slate-400">Noch keine Bestellungen.</p>
+            <p className="text-sm font-medium text-slate-400">{t("noOrdersYet")}</p>
           </div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-left text-sm">
               <thead className="bg-slate-50 text-xs uppercase tracking-wider text-slate-500">
                 <tr>
-                  <th className="px-5 py-3">Bestellung</th>
-                  <th className="px-5 py-3">Datum</th>
-                  <th className="px-5 py-3 text-right">Artikel</th>
-                  <th className="px-5 py-3 text-right">Gesamt</th>
+                  <th className="px-5 py-3">{t("order")}</th>
+                  <th className="px-5 py-3">{t("date")}</th>
+                  <th className="px-5 py-3 text-right">{t("quantity")}</th>
+                  <th className="px-5 py-3 text-right">{t("total")}</th>
                   <th className="px-5 py-3"></th>
                 </tr>
               </thead>
@@ -103,7 +106,7 @@ export default function OrdersView() {
                       {order.item_count}
                     </td>
                     <td className="px-5 py-3 text-right font-bold text-slate-800">
-                      {Number(order.total_amount).toFixed(2)} €
+                      {Number(order.total_amount).toFixed(2)} {currency}
                     </td>
                     <td className="px-5 py-3 text-right">
                       <button
@@ -111,7 +114,7 @@ export default function OrdersView() {
                         className="flex items-center gap-1 rounded-lg bg-indigo-50 px-3 py-1.5 text-xs font-semibold text-indigo-700 transition hover:bg-indigo-100"
                       >
                         <Eye className="h-3.5 w-3.5" />
-                        Details
+                        {t("details")}
                       </button>
                     </td>
                   </tr>

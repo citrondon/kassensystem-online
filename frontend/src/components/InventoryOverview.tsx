@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from "react";
 import { Product, Category } from "../types";
 import { getProducts, getCategories, deleteProduct } from "../services/api";
 import { useAuth } from "../contexts/AuthContext";
+import { useI18n } from "../i18n/I18nContext";
 import ProductImage from "./ProductImage";
 import ProductFormModal from "./ProductFormModal";
 import {
@@ -12,7 +13,7 @@ import {
   Trash2,
   Package,
 } from "lucide-react";
-import { getCategoryMeta } from "../utils/categoryStyles";
+import { getCategoryMeta, getCategoryLabel } from "../utils/categoryStyles";
 
 export default function InventoryOverview() {
   const [products, setProducts] = useState<Product[]>([]);
@@ -26,6 +27,8 @@ export default function InventoryOverview() {
   const [deleteTarget, setDeleteTarget] = useState<Product | null>(null);
   const { user } = useAuth();
   const isManager = user?.role === "manager";
+  const { t, lang } = useI18n();
+  const currency = t("currency");
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -38,11 +41,11 @@ export default function InventoryOverview() {
       setProducts(productData);
       setCategories(catData);
     } catch {
-      setError("Inventar konnte nicht geladen werden.");
+      setError(t("errorLoading"));
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [t]);
 
   useEffect(() => {
     load();
@@ -61,7 +64,7 @@ export default function InventoryOverview() {
       setDeleteTarget(null);
       load();
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Loeschen fehlgeschlagen.");
+      setError(err instanceof Error ? err.message : t("saveError"));
       setDeleteTarget(null);
     }
   };
@@ -75,11 +78,16 @@ export default function InventoryOverview() {
     return true;
   });
 
+  const totalValue = products.reduce(
+    (sum, p) => sum + Number(p.price) * p.stock,
+    0
+  );
+
   if (loading) {
     return (
       <div className="flex flex-col items-center justify-center py-20">
         <Package className="mb-3 h-10 w-10 animate-bounce text-slate-300" />
-        <p className="text-sm font-medium text-slate-400">Lade Inventar...</p>
+        <p className="text-sm font-medium text-slate-400">{t("loadingInventory")}</p>
       </div>
     );
   }
@@ -92,7 +100,7 @@ export default function InventoryOverview() {
           onClick={load}
           className="mt-3 btn-primary"
         >
-          Erneut versuchen
+          {t("retry")}
         </button>
       </div>
     );
@@ -100,8 +108,15 @@ export default function InventoryOverview() {
 
   return (
     <div className="space-y-4">
-      <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-slate-800">Inventar</h1>
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <div>
+          <h1 className="text-2xl font-bold text-slate-800">{t("inventory")}</h1>
+          {isManager && (
+            <p className="text-sm text-slate-500">
+              {t("inventoryValue")}: {totalValue.toFixed(2)} {currency} · {products.length} {t("totalItems")}
+            </p>
+          )}
+        </div>
         {isManager && (
           <button
             onClick={() => {
@@ -111,7 +126,7 @@ export default function InventoryOverview() {
             className="btn-primary flex items-center gap-2"
           >
             <Plus className="h-5 w-5" />
-            Neues Produkt
+            {t("newProduct")}
           </button>
         )}
       </div>
@@ -133,7 +148,7 @@ export default function InventoryOverview() {
             }`}
           >
             <AlertTriangle className="h-4 w-4" />
-            Niedriger Bestand
+            {t("lowStockFilter")}
           </button>
 
           <div className="relative">
@@ -144,7 +159,7 @@ export default function InventoryOverview() {
               }
               className="rounded-xl border border-slate-300 bg-white px-4 py-2 text-sm text-slate-700 focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-200"
             >
-              <option value="">Alle Kategorien</option>
+              <option value="">{t("allCategories")}</option>
               {categories.map((cat) => (
                 <option key={cat.id} value={cat.id}>
                   {cat.name}
@@ -158,7 +173,7 @@ export default function InventoryOverview() {
             className="ml-auto flex items-center gap-2 rounded-xl bg-white border border-slate-200 px-3 py-2 text-sm font-medium text-slate-600 transition hover:bg-slate-50"
           >
             <RefreshCw className="h-4 w-4" />
-            Aktualisieren
+            {t("refresh")}
           </button>
         </div>
 
@@ -166,20 +181,20 @@ export default function InventoryOverview() {
           <table className="w-full text-left text-sm">
             <thead className="bg-slate-50 text-xs uppercase tracking-wider text-slate-500">
               <tr>
-                <th className="px-5 py-3">Bild</th>
-                <th className="px-5 py-3">Name</th>
-                <th className="px-5 py-3">Barcode</th>
-                <th className="px-5 py-3">Kategorie</th>
-                <th className="px-5 py-3 text-right">Preis</th>
-                <th className="px-5 py-3 text-right">Lagerbestand</th>
-                <th className="px-5 py-3 text-right">Aktionen</th>
+                <th className="px-5 py-3">{t("image")}</th>
+                <th className="px-5 py-3">{t("product")}</th>
+                <th className="px-5 py-3">{t("barcode")}</th>
+                <th className="px-5 py-3">{t("category")}</th>
+                <th className="px-5 py-3 text-right">{t("price")}</th>
+                <th className="px-5 py-3 text-right">{t("stock")}</th>
+                <th className="px-5 py-3 text-right">{t("actions")}</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-50">
               {filtered.length === 0 ? (
                 <tr>
                   <td colSpan={7} className="px-5 py-10 text-center text-slate-400">
-                    Keine Produkte gefunden.
+                    {t("noProductsFound")}
                   </td>
                 </tr>
               ) : (
@@ -206,10 +221,10 @@ export default function InventoryOverview() {
                                 color: meta.color,
                                 border: `1px solid ${meta.border}`,
                               }}
-                              title={`${meta.emoji} ${product.category_name}`}
+                              title={`${meta.emoji} ${getCategoryLabel(product.category_name, lang)}`}
                             >
                               <span className="mr-1">{meta.emoji}</span>
-                              {product.category_name}
+                              {getCategoryLabel(product.category_name, lang)}
                             </span>
                           );
                         })()
@@ -218,7 +233,7 @@ export default function InventoryOverview() {
                       )}
                     </td>
                     <td className="px-5 py-3 text-right font-medium text-slate-800">
-                      {Number(product.price).toFixed(2)} €
+                      {Number(product.price).toFixed(2)} {currency}
                     </td>
                     <td className="px-5 py-3 text-right">
                       <span
@@ -249,18 +264,18 @@ export default function InventoryOverview() {
                             className="flex items-center gap-1 rounded-lg bg-indigo-50 px-2.5 py-1.5 text-xs font-semibold text-indigo-700 transition hover:bg-indigo-100"
                           >
                             <Pencil className="h-3.5 w-3.5" />
-                            Bearbeiten
+                            {t("edit")}
                           </button>
                           <button
                             onClick={() => setDeleteTarget(product)}
                             className="flex items-center gap-1 rounded-lg bg-red-50 px-2.5 py-1.5 text-xs font-semibold text-red-700 transition hover:bg-red-100"
                           >
                             <Trash2 className="h-3.5 w-3.5" />
-                            Loeschen
+                            {t("delete")}
                           </button>
                         </div>
                       ) : (
-                        <span className="text-xs text-slate-400">Nur lesen</span>
+                        <span className="text-xs text-slate-400">{t("readOnly")}</span>
                       )}
                     </td>
                   </tr>
@@ -295,23 +310,22 @@ export default function InventoryOverview() {
             <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-red-100">
               <Trash2 className="h-6 w-6 text-red-600" />
             </div>
-            <h3 className="text-center text-lg font-bold text-slate-800">Produkt loeschen?</h3>
+            <h3 className="text-center text-lg font-bold text-slate-800">{t("deleteConfirm")}</h3>
             <p className="mt-2 text-center text-sm text-slate-600">
-              Möchten Sie "{deleteTarget.name}" wirklich loeschen? Diese Aktion kann
-              nicht rueckgaengig gemacht werden, solange keine Bestellungen vorliegen.
+              {t("deleteWarning", { name: deleteTarget.name })}
             </p>
             <div className="mt-5 flex gap-3">
               <button
                 onClick={handleDelete}
                 className="flex-1 rounded-xl bg-red-600 py-2.5 font-semibold text-white transition hover:bg-red-700"
               >
-                Loeschen
+                {t("delete")}
               </button>
               <button
                 onClick={() => setDeleteTarget(null)}
                 className="rounded-xl border border-slate-300 px-4 py-2.5 font-medium text-slate-700 transition hover:bg-slate-50"
               >
-                Abbrechen
+                {t("cancel")}
               </button>
             </div>
           </div>

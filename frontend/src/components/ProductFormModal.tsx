@@ -1,6 +1,8 @@
 import { useState, useEffect, useRef } from "react";
 import { Product, Category, ProductFormData } from "../types";
 import { createProduct, updateProduct, uploadProductImage } from "../services/api";
+import { useI18n } from "../i18n/I18nContext";
+import { getCategoryLabel } from "../utils/categoryStyles";
 import { X, ImagePlus, Save, Loader2 } from "lucide-react";
 
 interface Props {
@@ -11,6 +13,8 @@ interface Props {
 }
 
 export default function ProductFormModal({ product, categories, onClose, onSaved }: Props) {
+  const { t, lang } = useI18n();
+  const currency = t("currency");
   const isEdit = !!product;
   const [name, setName] = useState(product?.name ?? "");
   const [barcode, setBarcode] = useState(product?.barcode ?? "");
@@ -95,14 +99,14 @@ export default function ProductFormModal({ product, categories, onClose, onSaved
         try {
           await uploadProductImage(productId, imageFile);
         } catch {
-          setWarning("Produkt gespeichert, aber Bild-Upload fehlgeschlagen.");
+          setWarning(t("savedWithImageWarning"));
           onSaved();
           return;
         }
       }
       onSaved();
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Speichern fehlgeschlagen.");
+      setError(err instanceof Error ? err.message : t("saveError"));
     } finally {
       setSaving(false);
     }
@@ -119,11 +123,12 @@ export default function ProductFormModal({ product, categories, onClose, onSaved
       >
         <div className="mb-5 flex items-center justify-between">
           <h2 className="text-xl font-bold text-slate-800">
-            {isEdit ? "Produkt bearbeiten" : "Neues Produkt"}
+            {isEdit ? t("editProduct") : t("newProduct")}
           </h2>
           <button
             onClick={onClose}
             className="rounded-lg p-2 text-slate-400 transition hover:bg-slate-100 hover:text-slate-700"
+            aria-label={t("close")}
           >
             <X className="h-5 w-5" />
           </button>
@@ -143,7 +148,7 @@ export default function ProductFormModal({ product, categories, onClose, onSaved
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="mb-1 block text-sm font-semibold text-slate-700">Name *</label>
+            <label className="mb-1 block text-sm font-semibold text-slate-700">{t("product")} *</label>
             <input
               type="text"
               required
@@ -155,7 +160,7 @@ export default function ProductFormModal({ product, categories, onClose, onSaved
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="mb-1 block text-sm font-semibold text-slate-700">Barcode</label>
+              <label className="mb-1 block text-sm font-semibold text-slate-700">{t("barcode")}</label>
               <input
                 type="text"
                 value={barcode}
@@ -165,7 +170,7 @@ export default function ProductFormModal({ product, categories, onClose, onSaved
             </div>
             <div>
               <label className="mb-1 block text-sm font-semibold text-slate-700">
-                Preis (EUR) *
+                {t("price")} ({currency}) *
               </label>
               <input
                 type="number"
@@ -182,7 +187,7 @@ export default function ProductFormModal({ product, categories, onClose, onSaved
           <div className="grid grid-cols-2 gap-4">
             <div>
               <label className="mb-1 block text-sm font-semibold text-slate-700">
-                Lagerbestand
+                {t("stock")}
               </label>
               <input
                 type="number"
@@ -194,7 +199,7 @@ export default function ProductFormModal({ product, categories, onClose, onSaved
             </div>
             <div>
               <label className="mb-1 block text-sm font-semibold text-slate-700">
-                Low-Stock Schwelle
+                {t("lowStockThreshold")}
               </label>
               <input
                 type="number"
@@ -207,7 +212,7 @@ export default function ProductFormModal({ product, categories, onClose, onSaved
           </div>
 
           <div>
-            <label className="mb-1 block text-sm font-semibold text-slate-700">Kategorie</label>
+            <label className="mb-1 block text-sm font-semibold text-slate-700">{t("category")}</label>
             <select
               value={categoryId ?? ""}
               onChange={(e) =>
@@ -215,10 +220,10 @@ export default function ProductFormModal({ product, categories, onClose, onSaved
               }
               className="input"
             >
-              <option value="">Keine Kategorie</option>
+              <option value="">{t("categoryNone")}</option>
               {categories.map((cat) => (
                 <option key={cat.id} value={cat.id}>
-                  {cat.name}
+                  {getCategoryLabel(cat.name, lang)}
                 </option>
               ))}
             </select>
@@ -226,13 +231,13 @@ export default function ProductFormModal({ product, categories, onClose, onSaved
 
           <div>
             <label className="mb-1 block text-sm font-semibold text-slate-700">
-              Produktbild
+              {t("image")}
             </label>
             <div className="flex items-center gap-4">
               {imagePreview && (
                 <img
                   src={imagePreview}
-                  alt="Vorschau"
+                  alt={t("image")}
                   className="h-20 w-20 rounded-xl object-cover border border-slate-200"
                 />
               )}
@@ -242,7 +247,7 @@ export default function ProductFormModal({ product, categories, onClose, onSaved
                 className="flex items-center gap-2 rounded-xl border border-slate-300 px-4 py-2.5 text-sm font-medium text-slate-700 transition hover:bg-slate-50"
               >
                 <ImagePlus className="h-4 w-4" />
-                Bild auswaehlen
+                {t("chooseImage")}
               </button>
               <input
                 ref={fileInputRef}
@@ -265,14 +270,14 @@ export default function ProductFormModal({ product, categories, onClose, onSaved
               ) : (
                 <Save className="h-5 w-5" />
               )}
-              {saving ? "Speichert..." : isEdit ? "Speichern" : "Erstellen"}
+              {saving ? t("processing") : isEdit ? t("save") : t("create")}
             </button>
             <button
               type="button"
               onClick={onClose}
               className="btn-secondary"
             >
-              Abbrechen
+              {t("cancel")}
             </button>
           </div>
         </form>

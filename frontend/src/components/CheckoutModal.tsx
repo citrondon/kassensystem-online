@@ -1,5 +1,6 @@
 import { useState, useMemo } from "react";
 import { CartItem, PaymentMethod } from "../types";
+import { useI18n } from "../i18n/I18nContext";
 import { X, Receipt, Banknote, CreditCard, Wallet, Percent, Tag } from "lucide-react";
 
 interface Props {
@@ -10,13 +11,15 @@ interface Props {
   isCheckingOut: boolean;
 }
 
-const paymentOptions: { key: PaymentMethod; label: string; icon: typeof Banknote }[] = [
-  { key: "cash", label: "Bar", icon: Banknote },
-  { key: "card", label: "Karte", icon: CreditCard },
-  { key: "other", label: "Sonstiges", icon: Wallet },
-];
-
 export default function CheckoutModal({ cart, isOpen, onClose, onCheckout, isCheckingOut }: Props) {
+  const { t } = useI18n();
+  const currency = t("currency");
+
+  const paymentOptions: { key: PaymentMethod; label: string; icon: typeof Banknote }[] = [
+    { key: "cash", label: t("cash"), icon: Banknote },
+    { key: "card", label: t("card"), icon: CreditCard },
+    { key: "other", label: t("other"), icon: Wallet },
+  ];
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("cash");
   const [discountPercent, setDiscountPercent] = useState<string>("0");
   const [amountTendered, setAmountTendered] = useState<string>("");
@@ -67,9 +70,9 @@ export default function CheckoutModal({ cart, isOpen, onClose, onCheckout, isChe
             <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-indigo-100 text-indigo-600">
               <Receipt size={18} />
             </div>
-            <h2 className="text-lg font-bold text-slate-900">Zahlung</h2>
+            <h2 className="text-lg font-bold text-slate-900">{t("payment")}</h2>
           </div>
-          <button onClick={onClose} className="btn-icon" aria-label="Schliessen">
+          <button onClick={onClose} className="btn-icon" aria-label={t("close")}>
             <X size={20} />
           </button>
         </div>
@@ -77,17 +80,17 @@ export default function CheckoutModal({ cart, isOpen, onClose, onCheckout, isChe
         <div className="mb-4 space-y-1 rounded-xl bg-slate-50 p-3 text-sm">
           {cart.map((item) => (
             <div key={item.id} className="flex justify-between text-slate-600">
-              <span>
+                    <span>
                 {item.quantity}x {item.name}
               </span>
-              <span className="font-medium">{(Number(item.price) * item.quantity).toFixed(2)} €</span>
+              <span className="font-medium">{(Number(item.price) * item.quantity).toFixed(2)} {currency}</span>
             </div>
           ))}
         </div>
 
         <div className="mb-4">
           <label className="mb-2 block text-sm font-semibold text-slate-700">
-            Zahlungsart
+            {t("payment")}
           </label>
           <div className="grid grid-cols-3 gap-2">
             {paymentOptions.map(({ key, label, icon: Icon }) => (
@@ -110,7 +113,7 @@ export default function CheckoutModal({ cart, isOpen, onClose, onCheckout, isChe
         {paymentMethod === "cash" && (
           <div className="mb-4">
             <label className="mb-2 block text-sm font-semibold text-slate-700">
-              Erhalten
+              {t("received")}
             </label>
             <div className="relative">
               <input
@@ -123,16 +126,16 @@ export default function CheckoutModal({ cart, isOpen, onClose, onCheckout, isChe
                 onChange={(e) => setAmountTendered(e.target.value)}
                 className="input pr-10 text-right"
               />
-              <span className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400">€</span>
+              <span className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400">{currency}</span>
             </div>
             {change > 0 && (
               <p className="mt-2 text-sm font-semibold text-emerald-600">
-                Rückgeld: {change.toFixed(2)} €
+                {t("change")}: {change.toFixed(2)} {currency}
               </p>
             )}
             {!isValid && amountTendered !== "" && (
               <p className="mt-2 text-sm text-red-600">
-                Erhaltener Betrag muss mindestens {total.toFixed(2)} € betragen.
+                {t("receivedTooLow", { amount: total.toFixed(2), currency })}
               </p>
             )}
           </div>
@@ -140,7 +143,7 @@ export default function CheckoutModal({ cart, isOpen, onClose, onCheckout, isChe
 
         <div className="mb-4">
           <label className="mb-2 block text-sm font-semibold text-slate-700">
-            Rabatt
+            {t("discount")}
           </label>
           <div className="relative">
             <Percent
@@ -161,25 +164,25 @@ export default function CheckoutModal({ cart, isOpen, onClose, onCheckout, isChe
           {discountAmount > 0 && (
             <p className="mt-2 flex items-center gap-1 text-sm text-emerald-600">
               <Tag size={14} />
-              Ersparnis: {discountAmount.toFixed(2)} €
+              {t("savings")}: {discountAmount.toFixed(2)} {currency}
             </p>
           )}
         </div>
 
         <div className="mb-6 space-y-2 rounded-xl bg-slate-50 p-4 text-sm">
           <div className="flex justify-between text-slate-600">
-            <span>Zwischensumme</span>
-            <span>{subtotal.toFixed(2)} €</span>
+            <span>{t("subtotal")}</span>
+            <span>{subtotal.toFixed(2)} {currency}</span>
           </div>
           {discountAmount > 0 && (
             <div className="flex justify-between text-emerald-600">
-              <span>Rabatt</span>
-              <span>-{discountAmount.toFixed(2)} €</span>
+              <span>{t("discount")}</span>
+              <span>-{discountAmount.toFixed(2)} {currency}</span>
             </div>
           )}
           <div className="flex justify-between text-lg font-bold text-slate-900">
-            <span>Zu zahlen</span>
-            <span>{total.toFixed(2)} €</span>
+            <span>{t("toPay")}</span>
+            <span>{total.toFixed(2)} {currency}</span>
           </div>
         </div>
 
@@ -188,7 +191,7 @@ export default function CheckoutModal({ cart, isOpen, onClose, onCheckout, isChe
           disabled={!isValid || isCheckingOut}
           className="btn-primary w-full"
         >
-          {isCheckingOut ? "Verarbeite..." : `Kauf abschliessen (${total.toFixed(2)} €)`}
+          {isCheckingOut ? t("processing") : `${t("checkout")} (${total.toFixed(2)} ${currency})`}
         </button>
       </div>
     </div>

@@ -1,4 +1,5 @@
 import { LayoutDashboard, ShoppingCart, Package, ClipboardList, Store } from "lucide-react";
+import { useI18n } from "../i18n/I18nContext";
 
 type View = "dashboard" | "cashier" | "inventory" | "orders";
 
@@ -7,37 +8,39 @@ interface Props {
   onChange: (view: View) => void;
 }
 
-const items: { key: View; label: string; icon: React.ReactNode }[] = [
-  {
-    key: "dashboard",
-    label: "Dashboard",
-    icon: <LayoutDashboard className="h-5 w-5" />,
-  },
-  {
-    key: "cashier",
-    label: "Kasse",
-    icon: <ShoppingCart className="h-5 w-5" />,
-  },
-  {
-    key: "inventory",
-    label: "Inventar",
-    icon: <Package className="h-5 w-5" />,
-  },
-  {
-    key: "orders",
-    label: "Bestellungen",
-    icon: <ClipboardList className="h-5 w-5" />,
-  },
-];
-
 export default function Sidebar({ active, onChange }: Props) {
+  const { t } = useI18n();
+
+  const items: { key: View; label: string; icon: React.ReactNode }[] = [
+    {
+      key: "dashboard",
+      label: t("dashboard"),
+      icon: <LayoutDashboard className="h-5 w-5" />,
+    },
+    {
+      key: "cashier",
+      label: t("cashier"),
+      icon: <ShoppingCart className="h-5 w-5" />,
+    },
+    {
+      key: "inventory",
+      label: t("inventory"),
+      icon: <Package className="h-5 w-5" />,
+    },
+    {
+      key: "orders",
+      label: t("orders"),
+      icon: <ClipboardList className="h-5 w-5" />,
+    },
+  ];
+
   return (
     <aside className="fixed left-0 top-0 z-40 flex h-screen w-16 flex-col items-center border-r border-slate-200 bg-white py-4 shadow-sm lg:w-64 lg:items-stretch lg:px-4">
       <div className="mb-8 flex items-center justify-center lg:justify-start lg:gap-3 lg:px-2">
         <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-indigo-600 text-white">
           <Store className="h-6 w-6" />
         </div>
-        <span className="hidden text-lg font-bold text-slate-800 lg:block">POS System</span>
+        <span className="hidden text-lg font-bold text-slate-800 lg:block">{t("posSystem")}</span>
       </div>
 
       <nav className="flex flex-1 flex-col gap-2">

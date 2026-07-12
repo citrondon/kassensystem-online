@@ -1,4 +1,5 @@
 import { CartItem } from "../types";
+import { useI18n } from "../i18n/I18nContext";
 import ProductImage from "./ProductImage";
 import { Minus, Plus, Trash2, ShoppingCart, Loader2 } from "lucide-react";
 
@@ -19,6 +20,8 @@ export default function Cart({
   onCheckout,
   isCheckingOut,
 }: Props) {
+  const { t } = useI18n();
+  const currency = t("currency");
   const total = cart.reduce((sum, item) => sum + Number(item.price) * item.quantity, 0);
   const itemCount = cart.reduce((sum, item) => sum + item.quantity, 0);
 
@@ -26,7 +29,7 @@ export default function Cart({
     <div className="flex h-full max-h-[calc(100vh-6rem)] flex-col rounded-xl border border-slate-200 bg-white shadow-sm">
       <div className="flex items-center gap-2 border-b border-slate-100 px-4 py-3">
         <ShoppingCart className="h-5 w-5 text-slate-400" />
-        <h2 className="text-base font-bold text-slate-800">Warenkorb</h2>
+        <h2 className="text-base font-bold text-slate-800">{t("cart")}</h2>
         {itemCount > 0 && (
           <span className="ml-auto rounded-full bg-indigo-100 px-2 py-0.5 text-xs font-bold text-indigo-700">
             {itemCount}
@@ -37,8 +40,8 @@ export default function Cart({
       {cart.length === 0 ? (
         <div className="flex flex-1 flex-col items-center justify-center py-10">
           <ShoppingCart className="mb-3 h-10 w-10 text-slate-200" />
-          <p className="text-sm font-medium text-slate-400">Warenkorb ist leer</p>
-          <p className="mt-1 text-xs text-slate-300">Tippen Sie auf ein Produkt, um es hinzuzufügen.</p>
+          <p className="text-sm font-medium text-slate-400">{t("emptyCart")}</p>
+          <p className="mt-1 text-xs text-slate-300">{t("addProductsHint")}</p>
         </div>
       ) : (
         <ul className="flex-1 divide-y divide-slate-50 overflow-y-auto px-2">
@@ -48,10 +51,10 @@ export default function Cart({
               <div className="flex-1 min-w-0">
                 <p className="text-sm font-semibold text-slate-800 truncate">{item.name}</p>
                 <p className="text-xs text-slate-500">
-                  {Number(item.price).toFixed(2)} € / Stk.
+                  {Number(item.price).toFixed(2)} {currency} / {t("piece")}
                 </p>
                 <p className="text-sm font-bold text-slate-800">
-                  {(Number(item.price) * item.quantity).toFixed(2)} €
+                  {(Number(item.price) * item.quantity).toFixed(2)} {currency}
                 </p>
               </div>
               <div className="flex flex-col items-center gap-1">
@@ -76,7 +79,7 @@ export default function Cart({
                   className="flex items-center gap-1 text-xs font-medium text-red-500 transition hover:text-red-700"
                 >
                   <Trash2 className="h-3.5 w-3.5" />
-                  Entfernen
+                  {t("remove")}
                 </button>
               </div>
             </li>
@@ -86,8 +89,8 @@ export default function Cart({
 
       <div className="border-t border-slate-100 px-4 py-4">
         <div className="mb-3 flex items-end justify-between">
-          <span className="text-sm font-medium text-slate-500">Gesamtsumme</span>
-          <span className="text-2xl font-extrabold text-slate-900">{total.toFixed(2)} €</span>
+          <span className="text-sm font-medium text-slate-500">{t("totalAmount")}</span>
+          <span className="text-2xl font-extrabold text-slate-900">{total.toFixed(2)} {currency}</span>
         </div>
         <button
           onClick={onCheckout}
@@ -97,12 +100,12 @@ export default function Cart({
           {isCheckingOut ? (
             <>
               <Loader2 className="h-5 w-5 animate-spin" />
-              Verarbeite...
+              {t("processing")}
             </>
           ) : (
             <>
               <ShoppingCart className="h-5 w-5" />
-              Kauf abschliessen
+              {t("checkout")}
             </>
           )}
         </button>

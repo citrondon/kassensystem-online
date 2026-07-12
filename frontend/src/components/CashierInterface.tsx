@@ -6,7 +6,8 @@ import {
   checkout,
   getOrderById,
 } from "../services/api";
-import { getCategoryMeta } from "../utils/categoryStyles";
+import { useI18n } from "../i18n/I18nContext";
+import { getCategoryMeta, getCategoryLabel } from "../utils/categoryStyles";
 import ProductList from "./ProductList";
 import Cart from "./Cart";
 import Scanner from "./Scanner";
@@ -15,6 +16,7 @@ import ReceiptModal from "./ReceiptModal";
 import { Search, X, ScanBarcode, ChevronDown, ChevronUp } from "lucide-react";
 
 export default function CashierInterface() {
+  const { t, lang } = useI18n();
   const [searchTerm, setSearchTerm] = useState("");
   const [products, setProducts] = useState<Product[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
@@ -40,7 +42,7 @@ export default function CashierInterface() {
       const data = await getProducts(searchTerm || undefined, activeCategory);
       setProducts(data);
     } catch {
-      setNotification({ type: "error", message: "Produkte konnten nicht geladen werden." });
+      setNotification({ type: "error", message: t("searchFailed") });
     }
   }, [searchTerm, activeCategory]);
 
@@ -97,29 +99,29 @@ export default function CashierInterface() {
     const product = products.find((p) => p.barcode === barcode);
     if (product) {
       if (product.stock <= 0) {
-        setNotification({ type: "error", message: `'${product.name}' ist nicht auf Lager.` });
+        setNotification({ type: "error", message: t("productOutOfStock", { name: product.name }) });
         return;
       }
       addToCart(product);
-      setNotification({ type: "success", message: `'${product.name}' hinzugefuegt.` });
+      setNotification({ type: "success", message: t("productAdded", { name: product.name }) });
     } else {
       void getProducts(barcode).then((all) => {
         const found = all.find((p) => p.barcode === barcode);
         if (found) {
           if (found.stock <= 0) {
-            setNotification({ type: "error", message: `'${found.name}' ist nicht auf Lager.` });
+            setNotification({ type: "error", message: t("productOutOfStock", { name: found.name }) });
             return;
           }
           addToCart(found);
-          setNotification({ type: "success", message: `'${found.name}' hinzugefuegt.` });
+          setNotification({ type: "success", message: t("productAdded", { name: found.name }) });
         } else {
           setNotification({
             type: "error",
-            message: `Kein Produkt mit Barcode '${barcode}' gefunden.`,
+            message: t("productNotFound", { barcode }),
           });
         }
       }).catch(() => {
-        setNotification({ type: "error", message: "Produktsuche fehlgeschlagen." });
+        setNotification({ type: "error", message: t("searchFailed") });
       });
     }
   };
@@ -161,12 +163,12 @@ export default function CashierInterface() {
       } else {
         setNotification({
           type: "error",
-          message: result.error || "Checkout fehlgeschlagen.",
+          message: result.error || t("checkoutFailed"),
         });
         loadProducts();
       }
     } catch {
-      setNotification({ type: "error", message: "Netzwerkfehler beim Checkout." });
+      setNotification({ type: "error", message: t("networkError") });
     } finally {
       setIsCheckingOut(false);
     }
@@ -175,7 +177,7 @@ export default function CashierInterface() {
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-slate-800">Kasse</h1>
+        <h1 className="text-2xl font-bold text-slate-800">{t("cashier")}</h1>
         {notification && (
           <div
             className={`flex items-center gap-2 rounded-xl px-4 py-2 text-sm font-semibold shadow-sm ${
@@ -188,7 +190,7 @@ export default function CashierInterface() {
             <button
               onClick={() => setNotification(null)}
               className="ml-1 rounded-md p-0.5 hover:bg-black/5"
-              aria-label="Schliessen"
+              aria-label={t("close")}
             >
               <X className="h-4 w-4" />
             </button>
@@ -204,7 +206,7 @@ export default function CashierInterface() {
               <Search className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-400" />
               <input
                 type="text"
-                placeholder="Produkt suchen..."
+                placeholder={t("searchProduct")}
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="input pl-10"
@@ -213,7 +215,7 @@ export default function CashierInterface() {
 
             <div>
               <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-slate-400">
-                Kategorien
+                {t("categories")}
               </p>
               <div className="flex flex-col gap-1">
                 <button
@@ -226,7 +228,7 @@ export default function CashierInterface() {
                   }
                 >
                   <span className="flex items-center gap-2">
-                    <span>🏪</span> Alle
+                    <span>🏪</span> {t("all")}
                   </span>
                   {activeCategory === null && (
                     <span className="h-2 w-2 rounded-full bg-indigo-600" />
@@ -234,6 +236,7 @@ export default function CashierInterface() {
                 </button>
                 {categories.map((cat) => {
                   const meta = getCategoryMeta(cat.name);
+                  const label = getCategoryLabel(cat.name, lang);
                   const isActive = activeCategory === cat.id;
                   return (
                     <button
@@ -249,12 +252,12 @@ export default function CashierInterface() {
                             }
                           : undefined
                       }
-                      title={`${meta.emoji} ${cat.name}`}
+                      title={`${meta.emoji} ${label}`}
                     >
                       <span className="flex items-center gap-2">
                         <span>{meta.emoji}</span>
                         <span style={!isActive ? { color: meta.color } : undefined}>
-                          {cat.name}
+                          {label}
                         </span>
                       </span>
                       {isActive && (
@@ -269,14 +272,14 @@ export default function CashierInterface() {
               </div>
             </div>
 
-            <div className="border-t border-slate-100 pt-3">
+              <div className="border-t border-slate-100 pt-3">
               <button
                 onClick={() => setScannerOpen((v) => !v)}
                 className="flex w-full items-center justify-between rounded-lg px-3 py-2 text-sm font-medium text-slate-600 transition hover:bg-slate-50"
               >
                 <span className="flex items-center gap-2">
                   <ScanBarcode className="h-5 w-5" />
-                  Barcode scannen
+                  {t("scanBarcode")}
                 </span>
                 {scannerOpen ? (
                   <ChevronUp className="h-4 w-4" />

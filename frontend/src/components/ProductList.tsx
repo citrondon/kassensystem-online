@@ -1,4 +1,6 @@
 import { Product } from "../types";
+import { useI18n } from "../i18n/I18nContext";
+import { getCategoryLabel } from "../utils/categoryStyles";
 import ProductImage from "./ProductImage";
 import { Plus, AlertCircle } from "lucide-react";
 
@@ -8,11 +10,14 @@ interface Props {
 }
 
 export default function ProductList({ products, onAdd }: Props) {
+  const { t, lang } = useI18n();
+  const currency = t("currency");
+
   if (products.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-slate-300 bg-white py-16">
         <AlertCircle className="mb-2 h-10 w-10 text-slate-300" />
-        <p className="text-sm font-medium text-slate-400">Keine Produkte gefunden.</p>
+        <p className="text-sm font-medium text-slate-400">{t("noProductsFound")}</p>
       </div>
     );
   }
@@ -48,24 +53,24 @@ export default function ProductList({ products, onAdd }: Props) {
                 {product.name}
               </p>
               <p className="mt-1 text-lg font-bold text-slate-900">
-                {Number(product.price).toFixed(2)} €
+                {Number(product.price).toFixed(2)} {currency}
               </p>
 
               <div className="mt-2 flex flex-wrap items-center gap-2">
                 {isOutOfStock ? (
-                  <span className="badge bg-red-100 text-red-700">Ausverkauft</span>
+                  <span className="badge bg-red-100 text-red-700">{t("outOfStock")}</span>
                 ) : isLowStock ? (
                   <span className="badge bg-amber-100 text-amber-700">
-                    Nur {product.stock} übrig
+                    {t("onlyLeft")} {product.stock}
                   </span>
                 ) : (
                   <span className="badge bg-emerald-100 text-emerald-700">
-                    Lager: {product.stock}
+                    {t("stock")}: {product.stock}
                   </span>
                 )}
                 {product.category_name && (
                   <span className="badge bg-slate-100 text-slate-600">
-                    {product.category_name}
+                    {getCategoryLabel(product.category_name, lang)}
                   </span>
                 )}
               </div>

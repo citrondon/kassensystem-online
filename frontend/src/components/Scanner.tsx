@@ -1,5 +1,6 @@
 import { useState } from "react";
 import BarcodeScanner from "react-qr-barcode-scanner";
+import { useI18n } from "../i18n/I18nContext";
 import { ScanBarcode, ScanLine } from "lucide-react";
 
 interface Props {
@@ -9,6 +10,7 @@ interface Props {
 export default function Scanner({ onScan }: Props) {
   const [active, setActive] = useState(false);
   const [lastScan, setLastScan] = useState<string | null>(null);
+  const { t } = useI18n();
 
   const handleUpdate = (_err: unknown, result?: { getText: () => string }) => {
     if (result) {
@@ -29,7 +31,7 @@ export default function Scanner({ onScan }: Props) {
         }`}
       >
         {active ? <ScanLine className="h-4 w-4" /> : <ScanBarcode className="h-4 w-4" />}
-        {active ? "Scanner stoppen" : "Kamera starten"}
+        {active ? t("stopScanner") : t("startScanner")}
       </button>
 
       {active && (
@@ -44,7 +46,7 @@ export default function Scanner({ onScan }: Props) {
 
       {lastScan && (
         <p className="text-xs text-slate-500">
-          Zuletzt gescannt: <span className="font-mono font-semibold text-slate-700">{lastScan}</span>
+          {t("lastScan")}: <span className="font-mono font-semibold text-slate-700">{lastScan}</span>
         </p>
       )}
     </div>

@@ -1,4 +1,5 @@
 import { LayoutDashboard, ShoppingCart, Package, ClipboardList } from "lucide-react";
+import { useI18n } from "../i18n/I18nContext";
 
 type View = "dashboard" | "cashier" | "inventory" | "orders";
 
@@ -7,35 +8,36 @@ interface Props {
   onChange: (view: View) => void;
 }
 
-const items: { key: View; label: string; icon: React.ReactNode }[] = [
-  {
-    key: "dashboard",
-    label: "Dashboard",
-    icon: <LayoutDashboard className="h-5 w-5" />,
-  },
-  {
-    key: "cashier",
-    label: "Kasse",
-    icon: <ShoppingCart className="h-5 w-5" />,
-  },
-  {
-    key: "inventory",
-    label: "Inventar",
-    icon: <Package className="h-5 w-5" />,
-  },
-  {
-    key: "orders",
-    label: "Verkäufe",
-    icon: <ClipboardList className="h-5 w-5" />,
-  },
-];
-
 /**
  * Mobile Bottom-Navigation – inspiriert vom "BazarStock"-Projekt eines Freundes.
  * Ergänzt die Desktop-Sidebar auf kleinen Screens mit einer klassischen
  * Touch-optimierten Bottom-Bar (max-width 480px-Style, aber mit unserem Design-System).
  */
 export default function MobileNav({ active, onChange }: Props) {
+  const { t } = useI18n();
+
+  const items: { key: View; label: string; icon: React.ReactNode }[] = [
+    {
+      key: "dashboard",
+      label: t("dashboard"),
+      icon: <LayoutDashboard className="h-5 w-5" />,
+    },
+    {
+      key: "cashier",
+      label: t("cashier"),
+      icon: <ShoppingCart className="h-5 w-5" />,
+    },
+    {
+      key: "inventory",
+      label: t("inventory"),
+      icon: <Package className="h-5 w-5" />,
+    },
+    {
+      key: "orders",
+      label: t("sales"),
+      icon: <ClipboardList className="h-5 w-5" />,
+    },
+  ];
   return (
     <nav className="fixed bottom-0 left-0 right-0 z-50 border-t border-slate-200 bg-white lg:hidden">
       <div className="mx-auto flex max-w-md">

@@ -1,4 +1,5 @@
 import { OrderDetail } from "../types";
+import { useI18n } from "../i18n/I18nContext";
 import { X, Receipt, Printer } from "lucide-react";
 
 interface Props {
@@ -7,9 +8,11 @@ interface Props {
 }
 
 export default function ReceiptModal({ order, onClose }: Props) {
+  const { t, lang } = useI18n();
+  const currency = t("currency");
   const formatDate = (iso: string) => {
     const d = new Date(iso);
-    return d.toLocaleString("de-DE", {
+    return d.toLocaleString(lang === "fr" ? "fr-FR" : "de-DE", {
       day: "2-digit",
       month: "2-digit",
       year: "numeric",
@@ -31,8 +34,8 @@ export default function ReceiptModal({ order, onClose }: Props) {
           <div className="flex items-center gap-2">
             <Receipt className="h-6 w-6 text-indigo-600" />
             <div>
-              <h2 className="text-lg font-bold text-slate-800">POS System</h2>
-              <p className="text-xs text-slate-400">Kassenbeleg</p>
+              <h2 className="text-lg font-bold text-slate-800">{t("posSystem")}</h2>
+              <p className="text-xs text-slate-400">{t("receipt")}</p>
             </div>
           </div>
           <button
@@ -44,7 +47,7 @@ export default function ReceiptModal({ order, onClose }: Props) {
         </div>
 
         <div className="mb-3 flex justify-between text-xs font-medium text-slate-500">
-          <span>Bestellung #{order.id}</span>
+          <span>{t("order")} #{order.id}</span>
           <span>{formatDate(order.order_date)}</span>
         </div>
 
@@ -57,7 +60,7 @@ export default function ReceiptModal({ order, onClose }: Props) {
                     {item.quantity}x {item.product_name}
                   </td>
                   <td className="py-1 text-right font-semibold text-slate-800">
-                    {Number(item.line_total).toFixed(2)} €
+                    {Number(item.line_total).toFixed(2)} {currency}
                   </td>
                 </tr>
               ))}
@@ -67,13 +70,13 @@ export default function ReceiptModal({ order, onClose }: Props) {
 
         <div className="border-t border-dashed border-slate-300 pt-3">
           <div className="flex justify-between text-lg font-extrabold text-slate-900">
-            <span>Gesamt</span>
-            <span>{Number(order.total_amount).toFixed(2)} €</span>
+            <span>{t("total")}</span>
+            <span>{Number(order.total_amount).toFixed(2)} {currency}</span>
           </div>
         </div>
 
         <p className="mt-4 text-center text-xs font-medium text-slate-400">
-          Vielen Dank fuer Ihren Einkauf!
+          {t("thankYou")}
         </p>
 
         <button
@@ -81,14 +84,14 @@ export default function ReceiptModal({ order, onClose }: Props) {
           className="mt-3 flex w-full items-center justify-center gap-2 rounded-xl border border-slate-200 py-2.5 text-sm font-semibold text-slate-600 transition hover:bg-slate-50"
         >
           <Printer className="h-4 w-4" />
-          Drucken
+          {t("print")}
         </button>
 
         <button
           onClick={onClose}
           className="mt-2 w-full rounded-xl bg-indigo-600 py-2.5 font-semibold text-white transition hover:bg-indigo-700"
         >
-          Schliessen
+          {t("close")}
         </button>
       </div>
     </div>
