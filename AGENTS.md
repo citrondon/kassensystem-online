@@ -9,7 +9,7 @@ Dieses Dokument ist für KI-Assistenz-Agenten (z. B. GitHub Copilot, Claude, GPT
 ### Schritt 1: Repository klonen
 
 ```bash
-git clone https://github.com/citrondon/kassensystem.git
+git clone https://github.com/NotDonCitron/Kassensystem.git
 cd kassensystem
 ```
 
