@@ -12,7 +12,7 @@ export const up = (pgm) => {
   pgm.createTable("categories", {
     id: { type: "serial", primaryKey: true },
     name: { type: "varchar(100)", notNull: true, unique: true },
-  });
+  }, { ifNotExists: true });
 
   pgm.createTable("products", {
     id: { type: "serial", primaryKey: true },
@@ -27,7 +27,7 @@ export const up = (pgm) => {
     },
     image_url: { type: "varchar(500)" },
     low_stock_threshold: { type: "integer", notNull: true, default: 10 },
-  });
+  }, { ifNotExists: true });
 
   pgm.createTable("orders", {
     id: { type: "serial", primaryKey: true },
@@ -38,7 +38,7 @@ export const up = (pgm) => {
     amount_tendered: { type: "decimal(10, 2)", notNull: true, default: 0 },
     change_amount: { type: "decimal(10, 2)", notNull: true, default: 0 },
     status: { type: "varchar(50)", notNull: true, default: "completed" },
-  });
+  }, { ifNotExists: true });
 
   pgm.createTable("order_items", {
     id: { type: "serial", primaryKey: true },
@@ -46,11 +46,11 @@ export const up = (pgm) => {
     product_id: { type: "integer", notNull: true, references: "products(id)", onDelete: "RESTRICT" },
     quantity: { type: "integer", notNull: true },
     unit_price: { type: "decimal(10, 2)", notNull: true },
-  });
+  }, { ifNotExists: true });
 
-  pgm.createIndex("products", "category_id", { name: "idx_products_category_id" });
-  pgm.createIndex("order_items", "order_id", { name: "idx_order_items_order_id" });
-  pgm.createIndex("orders", "order_date", { name: "idx_orders_order_date", desc: true });
+  pgm.createIndex("products", "category_id", { name: "idx_products_category_id", ifNotExists: true });
+  pgm.createIndex("order_items", "order_id", { name: "idx_order_items_order_id", ifNotExists: true });
+  pgm.createIndex("orders", "order_date", { name: "idx_orders_order_date", ifNotExists: true, desc: true });
 
   pgm.sql(`
     INSERT INTO categories (name) VALUES

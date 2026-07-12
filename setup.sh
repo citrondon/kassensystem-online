@@ -108,7 +108,9 @@ cp backend/.env.example backend/.env
 cp backend/.env.test.example backend/.env.test
 
 # ── Docker DB ──────────────────────────────────────────────────
-echo "[3/8] Starting PostgreSQL container..."
+echo "[3/8] Starting PostgreSQL container (fresh volume)..."
+# Destroy stale volume from previous projects, then recreate clean
+docker compose down -v 2>/dev/null || true
 docker compose up -d
 
 echo "[4/8] Waiting for DB to be healthy..."

@@ -15,7 +15,7 @@ export const up = (pgm) => {
     password_hash: { type: "varchar(255)", notNull: true },
     role: { type: "varchar(50)", notNull: true, default: "cashier" },
     created_at: { type: "timestamp with time zone", default: pgm.func("CURRENT_TIMESTAMP") },
-  });
+  }, { ifNotExists: true });
 
   // Demo users are created via npm run seed after deployment.
 };
