@@ -1,35 +1,32 @@
-import { useState } from "react";
-import Sidebar, { View } from "./components/Sidebar";
+import { useState, useEffect } from "react";
+import Sidebar from "./components/Sidebar";
+import MobileNav from "./components/MobileNav";
 import Dashboard from "./components/Dashboard";
 import CashierInterface from "./components/CashierInterface";
 import InventoryOverview from "./components/InventoryOverview";
 import OrdersView from "./components/OrdersView";
 
+type View = "dashboard" | "cashier" | "inventory" | "orders";
+
 export default function App() {
-  const [view, setView] = useState<View>("cashier");
-  const [kioskMode, setKioskMode] = useState(false);
+  const [view, setView] = useState<View>("dashboard");
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [view]);
 
   return (
-    <div className="min-h-screen bg-slate-50">
-      {!kioskMode && <Sidebar active={view} onNavigate={setView} />}
-
-      <main
-        className={`min-h-screen p-4 lg:p-6 ${
-          kioskMode ? "" : "ml-16 lg:ml-64"
-        }`}
-      >
-        <div className="mx-auto max-w-7xl">
+    <div className="min-h-screen bg-gray-50">
+      <Sidebar active={view} onChange={setView} />
+      <div className="ml-16 p-4 pb-24 lg:ml-64 lg:p-6 lg:pb-6">
+        <main className="mx-auto max-w-7xl">
           {view === "dashboard" && <Dashboard onNavigate={setView} />}
-          {view === "cashier" && (
-            <CashierInterface
-              kioskMode={kioskMode}
-              onToggleKiosk={() => setKioskMode((v) => !v)}
-            />
-          )}
+          {view === "cashier" && <CashierInterface />}
           {view === "inventory" && <InventoryOverview />}
           {view === "orders" && <OrdersView />}
-        </div>
-      </main>
+        </main>
+      </div>
+      <MobileNav active={view} onChange={setView} />
     </div>
   );
 }

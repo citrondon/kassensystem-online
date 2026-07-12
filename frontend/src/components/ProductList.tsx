@@ -1,101 +1,82 @@
 import { Product } from "../types";
 import ProductImage from "./ProductImage";
-import { PackageX, AlertTriangle, Star } from "lucide-react";
+import { Plus, AlertCircle } from "lucide-react";
 
 interface Props {
   products: Product[];
   onAdd: (product: Product) => void;
-  favorites: number[];
-  onToggleFavorite: (id: number) => void;
 }
 
-export default function ProductList({ products, onAdd, favorites, onToggleFavorite }: Props) {
+export default function ProductList({ products, onAdd }: Props) {
   if (products.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center py-12 text-center text-slate-500">
-        <div className="mb-3 flex h-16 w-16 items-center justify-center rounded-2xl bg-slate-100">
-          <PackageX size={28} className="text-slate-400" />
-        </div>
-        <p className="font-medium">Keine Produkte gefunden.</p>
-        <p className="text-sm">Passe die Suche oder Kategorie an.</p>
+      <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-slate-300 bg-white py-16">
+        <AlertCircle className="mb-2 h-10 w-10 text-slate-300" />
+        <p className="text-sm font-medium text-slate-400">Keine Produkte gefunden.</p>
       </div>
     );
   }
 
   return (
-    <div className="grid grid-cols-2 gap-4 md:grid-cols-3 xl:grid-cols-4">
+    <div className="grid grid-cols-2 gap-4 xl:grid-cols-3">
       {products.map((product) => {
         const isLowStock = product.stock > 0 && product.stock <= product.low_stock_threshold;
         const isOutOfStock = product.stock === 0;
 
-        const isFavorite = favorites.includes(product.id);
-
         return (
-          <div
+          <button
             key={product.id}
-            role="button"
-            tabIndex={isOutOfStock ? -1 : 0}
-            onClick={() => !isOutOfStock && onAdd(product)}
-            onKeyDown={(e) => {
-              if (isOutOfStock) return;
-              if (e.key === "Enter" || e.key === " ") {
-                e.preventDefault();
-                onAdd(product);
-              }
-            }}
-            aria-disabled={isOutOfStock}
-            aria-label={`${product.name} zum Warenkorb hinzufügen`}
-            className={`group relative flex flex-col rounded-2xl border bg-white p-4 text-left shadow-sm transition focus:outline-none focus:ring-2 focus:ring-indigo-200 ${
+            disabled={isOutOfStock}
+            onClick={() => onAdd(product)}
+            className={`group relative flex flex-col rounded-xl border bg-white p-4 text-left shadow-sm transition ${
               isOutOfStock
                 ? "cursor-not-allowed border-slate-200 opacity-50"
-                : "cursor-pointer border-slate-200 hover:border-indigo-200 hover:shadow-md active:scale-[0.98]"
+                : "border-slate-200 hover:border-indigo-300 hover:shadow-md hover:-translate-y-0.5"
             }`}
           >
             <div className="mb-3 flex items-start justify-between">
-              <ProductImage product={product} size="xl" />
-              <div className="flex flex-col items-end gap-1">
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    onToggleFavorite(product.id);
-                  }}
-                  className="flex h-8 w-8 items-center justify-center rounded-lg text-slate-400 transition hover:bg-slate-100 hover:text-amber-500 focus:outline-none focus:ring-2 focus:ring-slate-200"
-                  aria-label={isFavorite ? "Aus Favoriten entfernen" : "Zu Favoriten hinzufügen"}
-                >
-                  <Star
-                    size={18}
-                    className={isFavorite ? "fill-amber-400 text-amber-400" : "text-slate-300"}
-                  />
-                </button>
-                {isOutOfStock ? (
-                  <span className="badge-danger">Ausverkauft</span>
-                ) : isLowStock ? (
-                  <span className="badge-warning flex items-center gap-1">
-                    <AlertTriangle size={10} /> Wenig
-                  </span>
-                ) : (
-                  <span className="badge-success">Verfügbar</span>
-                )}
-              </div>
+              <ProductImage product={product} size="lg" />
+              {!isOutOfStock && (
+                <span className="flex h-8 w-8 items-center justify-center rounded-full bg-indigo-50 text-indigo-600 opacity-0 transition group-hover:opacity-100">
+                  <Plus className="h-5 w-5" />
+                </span>
+              )}
             </div>
 
             <div className="mt-auto">
-              <p className="truncate text-sm font-semibold text-slate-900">{product.name}</p>
-              <p className="mt-1 text-lg font-bold text-indigo-600">
+              <p className="text-sm font-semibold text-slate-800 line-clamp-2">
+                {product.name}
+              </p>
+              <p className="mt-1 text-lg font-bold text-slate-900">
                 {Number(product.price).toFixed(2)} €
               </p>
-              <div className="mt-2 flex items-center justify-between">
-                <span className="text-xs text-slate-500">
-                  Lager: <span className="font-semibold">{product.stock}</span>
-                </span>
+
+              <div className="mt-2 flex items-center gap-2">
+                {isOutOfStock ? (
+                  <span className="badge bg-red-100 text-red-700">Ausverkauft</span>
+                ) : isLowStock ? (
+                  <span className="badge bg-amber-100 text-amber-700">
+                    Nur {product.stock} übrig
+                  </span>
+                ) : (
+                  <span className="badge bg-emerald-100 text-emerald-700">
+                    Lager: {product.stock}
+                  </span>
+                )}
                 {product.category_name && (
-                  <span className="badge-info truncate max-w-[7rem]">
+                  <span className="badge bg-slate-100 text-slate-600">
                     {product.category_name}
                   </span>
                 )}
               </div>
+
+              {product.barcode && (
+                <p className="mt-2 font-mono text-[10px] text-slate-400">
+                  {product.barcode}
+                </p>
+              )}
             </div>
-          </div>
+          </button>
         );
       })}
     </div>

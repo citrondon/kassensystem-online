@@ -1,179 +1,186 @@
-import { useEffect, useState, useCallback } from "react";
-import { Euro, ShoppingBag, AlertTriangle, PackageX, ArrowRight } from "lucide-react";
+import { useState, useEffect, useCallback } from "react";
 import { Product, OrderListItem } from "../types";
 import { getProducts, getOrders } from "../services/api";
-import { View } from "./Sidebar";
+import {
+  TrendingUp,
+  ShoppingBag,
+  AlertTriangle,
+  PackageX,
+  ArrowRight,
+  Loader2,
+  Store,
+} from "lucide-react";
+
+type View = "dashboard" | "cashier" | "inventory" | "orders";
 
 interface Props {
   onNavigate: (view: View) => void;
-}
-
-interface KpiCardProps {
-  label: string;
-  value: string;
-  subtext?: string;
-  icon: typeof Euro;
-  iconColor: string;
-  accent: string;
-  onClick?: () => void;
-}
-
-function KpiCard({ label, value, subtext, icon: Icon, iconColor, accent, onClick }: KpiCardProps) {
-  return (
-    <button
-      onClick={onClick}
-      className={`card-elevated flex w-full items-start gap-4 text-left ${onClick ? "cursor-pointer" : "cursor-default"}`}
-    >
-      <div className={`flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl ${iconColor}`}>
-        <Icon size={24} />
-      </div>
-      <div className="min-w-0 flex-1">
-        <p className="text-sm font-medium text-slate-500">{label}</p>
-        <p className={`mt-1 text-2xl font-bold ${accent}`}>{value}</p>
-        {subtext && <p className="mt-0.5 text-xs text-slate-500">{subtext}</p>}
-      </div>
-      {onClick && <ArrowRight size={18} className="mt-1 text-slate-400" />}
-    </button>
-  );
-}
-
-function isSameDay(a: Date, b: Date) {
-  return (
-    a.getFullYear() === b.getFullYear() &&
-    a.getMonth() === b.getMonth() &&
-    a.getDate() === b.getDate()
-  );
 }
 
 export default function Dashboard({ onNavigate }: Props) {
   const [products, setProducts] = useState<Product[]>([]);
   const [orders, setOrders] = useState<OrderListItem[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
 
   const load = useCallback(async () => {
     setLoading(true);
-    setError(null);
-    const errors: string[] = [];
     try {
-      const productData = await getProducts();
-      setProducts(productData);
+      const [p, o] = await Promise.all([getProducts(), getOrders()]);
+      setProducts(p);
+      setOrders(o);
     } catch {
-      errors.push("Produkte konnten nicht geladen werden.");
+      // ignore
+    } finally {
+      setLoading(false);
     }
-    try {
-      const orderData = await getOrders();
-      setOrders(orderData);
-    } catch {
-      errors.push("Bestellungen konnten nicht geladen werden.");
-    }
-    if (errors.length > 0) {
-      setError(errors.join(" | "));
-    }
-    setLoading(false);
   }, []);
 
   useEffect(() => {
     load();
   }, [load]);
 
-  const today = new Date();
-  const todaysOrders = orders.filter((o) => isSameDay(new Date(o.order_date), today));
-  const revenueToday = todaysOrders.reduce((sum, o) => sum + Number(o.total_amount), 0);
+  const todayStr = new Date().toISOString().split("T")[0];
+  const todayOrders = orders.filter((o) => o.order_date.startsWith(todayStr));
+  const todayRevenue = todayOrders.reduce(
+    (sum, o) => sum + Number(o.total_amount),
+    0
+  );
+  const lowStockCount = products.filter(
+    (p) => p.stock > 0 && p.stock <= p.low_stock_threshold
+  ).length;
+  const outOfStockCount = products.filter((p) => p.stock === 0).length;
+  const totalValue = products.reduce(
+    (sum, p) => sum + Number(p.price) * p.stock,
+    0
+  );
 
-  const lowStock = products.filter((p) => p.stock > 0 && p.stock <= p.low_stock_threshold);
-  const outOfStock = products.filter((p) => p.stock === 0);
-
-  if (loading) {
-    return (
-      <div className="py-16 text-center">
-        <p className="text-slate-500">Lade Dashboard...</p>
-      </div>
-    );
-  }
-
-  if (error && products.length === 0 && orders.length === 0) {
-    return (
-      <div className="py-16 text-center">
-        <p className="text-red-600">{error}</p>
-        <button onClick={load} className="btn-primary mt-4">
-          Erneut versuchen
-        </button>
-      </div>
-    );
-  }
+  const cards = [
+    {
+      label: "Umsatz heute",
+      value: `${todayRevenue.toFixed(2)} €`,
+      icon: <TrendingUp className="h-6 w-6 text-emerald-600" />,
+      bg: "bg-emerald-50",
+      onClick: () => onNavigate("orders"),
+    },
+    {
+      label: "Bestellungen heute",
+      value: String(todayOrders.length),
+      icon: <ShoppingBag className="h-6 w-6 text-indigo-600" />,
+      bg: "bg-indigo-50",
+      onClick: () => onNavigate("orders"),
+    },
+    {
+      label: "Lagerwert",
+      value: `${totalValue.toFixed(2)} €`,
+      icon: <Store className="h-6 w-6 text-blue-600" />,
+      bg: "bg-blue-50",
+      onClick: () => onNavigate("inventory"),
+    },
+    {
+      label: "Niedriger Bestand",
+      value: String(lowStockCount),
+      icon: <AlertTriangle className="h-6 w-6 text-amber-600" />,
+      bg: "bg-amber-50",
+      onClick: () => onNavigate("inventory"),
+    },
+    {
+      label: "Ausverkauft",
+      value: String(outOfStockCount),
+      icon: <PackageX className="h-6 w-6 text-red-600" />,
+      bg: "bg-red-50",
+      onClick: () => onNavigate("inventory"),
+    },
+  ];
 
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-slate-900">Dashboard</h1>
-        <p className="text-slate-500">Überblick über Kasse, Inventar und Bestellungen.</p>
+        <h1 className="text-2xl font-bold text-slate-800">Dashboard</h1>
+        <p className="text-slate-500">Übersicht über Ihr Geschäft</p>
       </div>
 
-      {error && (
-        <div className="rounded-xl bg-red-50 px-4 py-3 text-sm font-medium text-red-700">
-          {error}
+      {loading ? (
+        <div className="flex items-center justify-center py-20">
+          <Loader2 className="h-8 w-8 animate-spin text-slate-400" />
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-5">
+          {cards.map((card) => (
+            <button
+              key={card.label}
+              onClick={card.onClick}
+              className="flex items-center gap-4 rounded-xl border border-slate-200 bg-white p-5 text-left shadow-sm transition hover:shadow-md hover:-translate-y-0.5"
+            >
+              <div className={`flex h-12 w-12 items-center justify-center rounded-xl ${card.bg}`}>
+                {card.icon}
+              </div>
+              <div className="flex-1">
+                <p className="text-sm font-medium text-slate-500">{card.label}</p>
+                <p className="text-xl font-bold text-slate-800">{card.value}</p>
+              </div>
+              <ArrowRight className="h-5 w-5 text-slate-300" />
+            </button>
+          ))}
         </div>
       )}
 
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
-        <KpiCard
-          label="Umsatz heute"
-          value={`${revenueToday.toFixed(2)} €`}
-          subtext={`${todaysOrders.length} Bestellung${todaysOrders.length === 1 ? "" : "en"}`}
-          icon={Euro}
-          iconColor="bg-emerald-100 text-emerald-600"
-          accent="text-slate-900"
-          onClick={() => onNavigate("orders")}
-        />
-        <KpiCard
-          label="Bestellungen heute"
-          value={String(todaysOrders.length)}
-          subtext={new Date().toLocaleDateString("de-DE")}
-          icon={ShoppingBag}
-          iconColor="bg-indigo-100 text-indigo-600"
-          accent="text-slate-900"
-          onClick={() => onNavigate("orders")}
-        />
-        <KpiCard
-          label="Niedriger Bestand"
-          value={String(lowStock.length)}
-          subtext={lowStock.length > 0 ? "Auffüllung prüfen" : "Alle Produkte ausreichend"}
-          icon={AlertTriangle}
-          iconColor="bg-amber-100 text-amber-600"
-          accent={lowStock.length > 0 ? "text-amber-600" : "text-slate-900"}
-          onClick={() => onNavigate("inventory")}
-        />
-        <KpiCard
-          label="Ausverkauft"
-          value={String(outOfStock.length)}
-          subtext={outOfStock.length > 0 ? "Nicht verkäuflich" : "Alles verfügbar"}
-          icon={PackageX}
-          iconColor="bg-red-100 text-red-600"
-          accent={outOfStock.length > 0 ? "text-red-600" : "text-slate-900"}
-          onClick={() => onNavigate("inventory")}
-        />
-      </div>
+      {!loading && (
+        <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+          <div className="panel p-5">
+            <h2 className="mb-4 text-lg font-bold text-slate-800">Schnellzugriff</h2>
+            <div className="flex flex-col gap-2">
+              <button
+                onClick={() => onNavigate("cashier")}
+                className="btn-primary flex items-center justify-center gap-2"
+              >
+                <ShoppingBag className="h-5 w-5" />
+                Kasse öffnen
+              </button>
+              <button
+                onClick={() => onNavigate("inventory")}
+                className="btn-secondary flex items-center justify-center gap-2"
+              >
+                <PackageX className="h-5 w-5" />
+                Inventar verwalten
+              </button>
+            </div>
+          </div>
 
-      <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
-        <div className="card-elevated">
-          <h2 className="text-lg font-semibold text-slate-900">Schnellzugriff</h2>
-          <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
-            <button onClick={() => onNavigate("cashier")} className="btn-primary">
-              <ShoppingBag size={18} /> Kasse öffnen
-            </button>
-            <button onClick={() => onNavigate("inventory")} className="btn-secondary">
-              <AlertTriangle size={18} /> Inventar prüfen
-            </button>
+          <div className="panel p-5">
+            <h2 className="mb-4 text-lg font-bold text-slate-800">Letzte Bestellungen</h2>
+            {orders.length === 0 ? (
+              <p className="text-center text-sm text-slate-400 py-4">Noch keine Bestellungen.</p>
+            ) : (
+              <ul className="divide-y divide-slate-100">
+                {orders.slice(0, 5).map((order) => (
+                  <li
+                    key={order.id}
+                    className="flex items-center justify-between py-3"
+                  >
+                    <div>
+                      <p className="text-sm font-semibold text-slate-800">
+                        Bestellung #{order.id}
+                      </p>
+                      <p className="text-xs text-slate-500">
+                        {new Date(order.order_date).toLocaleString("de-DE", {
+                          day: "2-digit",
+                          month: "2-digit",
+                          year: "numeric",
+                          hour: "2-digit",
+                          minute: "2-digit",
+                        })}
+                      </p>
+                    </div>
+                    <span className="text-sm font-bold text-slate-800">
+                      {Number(order.total_amount).toFixed(2)} €
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
         </div>
-
-        <div className="card-elevated">
-          <h2 className="text-lg font-semibold text-slate-900">Gesamtbestellungen</h2>
-          <p className="mt-1 text-3xl font-bold text-slate-900">{orders.length}</p>
-          <p className="text-sm text-slate-500">Alle Bestellungen im System</p>
-        </div>
-      </div>
+      )}
     </div>
   );
 }

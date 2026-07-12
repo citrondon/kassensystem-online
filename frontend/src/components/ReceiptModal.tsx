@@ -1,22 +1,10 @@
 import { OrderDetail } from "../types";
-import { X, Printer, Receipt, Banknote, CreditCard, Wallet } from "lucide-react";
+import { X, Receipt, Printer } from "lucide-react";
 
 interface Props {
   order: OrderDetail;
   onClose: () => void;
 }
-
-const paymentLabels: Record<string, string> = {
-  cash: "Barzahlung",
-  card: "Kartenzahlung",
-  other: "Sonstige Zahlung",
-};
-
-const paymentIcons: Record<string, typeof Banknote> = {
-  cash: Banknote,
-  card: CreditCard,
-  other: Wallet,
-};
 
 export default function ReceiptModal({ order, onClose }: Props) {
   const formatDate = (iso: string) => {
@@ -30,43 +18,32 @@ export default function ReceiptModal({ order, onClose }: Props) {
     });
   };
 
-  const subtotal = order.items.reduce((sum, item) => sum + Number(item.line_total), 0);
-  const discount = Number(order.discount_amount) || 0;
-  const total = Number(order.total_amount);
-  const tendered = Number(order.amount_tendered) || 0;
-  const change = Number(order.change_amount) || 0;
-  const PaymentIcon = paymentIcons[order.payment_method] || Banknote;
-
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 print-overlay"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4"
       onClick={onClose}
     >
       <div
-        className="receipt-sheet w-full max-w-sm rounded-2xl bg-white p-6 shadow-2xl"
+        className="w-full max-w-sm rounded-2xl bg-white p-6 shadow-2xl"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="mb-4 flex items-center justify-between print-hide">
+        <div className="mb-4 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-indigo-100 text-indigo-600">
-              <Receipt size={18} />
-            </div>
+            <Receipt className="h-6 w-6 text-indigo-600" />
             <div>
-              <h2 className="text-lg font-bold leading-tight text-slate-900">POS System</h2>
-              <p className="text-xs text-slate-500">Kassenbeleg</p>
+              <h2 className="text-lg font-bold text-slate-800">POS System</h2>
+              <p className="text-xs text-slate-400">Kassenbeleg</p>
             </div>
           </div>
-          <button onClick={onClose} className="btn-icon" aria-label="Schliessen">
-            <X size={20} />
+          <button
+            onClick={onClose}
+            className="rounded-lg p-2 text-slate-400 transition hover:bg-slate-100 hover:text-slate-700"
+          >
+            <X className="h-5 w-5" />
           </button>
         </div>
 
-        <div className="mb-4 text-center">
-          <h3 className="text-xl font-bold text-slate-900">Kassenbeleg</h3>
-          <p className="text-xs text-slate-500">POS System</p>
-        </div>
-
-        <div className="mb-3 flex justify-between text-xs text-slate-500">
+        <div className="mb-3 flex justify-between text-xs font-medium text-slate-500">
           <span>Bestellung #{order.id}</span>
           <span>{formatDate(order.order_date)}</span>
         </div>
@@ -79,7 +56,7 @@ export default function ReceiptModal({ order, onClose }: Props) {
                   <td className="py-1 text-slate-600">
                     {item.quantity}x {item.product_name}
                   </td>
-                  <td className="py-1 text-right font-semibold text-slate-900">
+                  <td className="py-1 text-right font-semibold text-slate-800">
                     {Number(item.line_total).toFixed(2)} €
                   </td>
                 </tr>
@@ -88,54 +65,31 @@ export default function ReceiptModal({ order, onClose }: Props) {
           </table>
         </div>
 
-        <div className="border-t border-dashed border-slate-300 py-3 text-sm">
-          <div className="flex justify-between text-slate-600">
-            <span>Zwischensumme</span>
-            <span>{subtotal.toFixed(2)} €</span>
-          </div>
-          {discount > 0 && (
-            <div className="flex justify-between text-emerald-600">
-              <span>Rabatt</span>
-              <span>-{discount.toFixed(2)} €</span>
-            </div>
-          )}
-          <div className="flex justify-between text-lg font-bold">
+        <div className="border-t border-dashed border-slate-300 pt-3">
+          <div className="flex justify-between text-lg font-extrabold text-slate-900">
             <span>Gesamt</span>
-            <span>{total.toFixed(2)} €</span>
+            <span>{Number(order.total_amount).toFixed(2)} €</span>
           </div>
         </div>
 
-        <div className="border-t border-dashed border-slate-300 py-3 text-sm">
-          <div className="flex items-center gap-2 text-slate-600">
-            <PaymentIcon size={18} />
-            <span>{paymentLabels[order.payment_method] || order.payment_method}</span>
-          </div>
-          {order.payment_method === "cash" && (
-            <>
-              <div className="flex justify-between text-slate-600">
-                <span>Erhalten</span>
-                <span>{tendered.toFixed(2)} €</span>
-              </div>
-              <div className="flex justify-between font-semibold text-emerald-600">
-                <span>Rückgeld</span>
-                <span>{change.toFixed(2)} €</span>
-              </div>
-            </>
-          )}
-        </div>
-
-        <p className="mt-4 text-center text-xs text-slate-400">
+        <p className="mt-4 text-center text-xs font-medium text-slate-400">
           Vielen Dank fuer Ihren Einkauf!
         </p>
 
-        <div className="mt-5 flex gap-3 print-hide">
-          <button onClick={() => window.print()} className="btn-secondary flex-1">
-            <Printer size={18} /> Drucken
-          </button>
-          <button onClick={onClose} className="btn-primary flex-1">
-            Schliessen
-          </button>
-        </div>
+        <button
+          onClick={() => window.print()}
+          className="mt-3 flex w-full items-center justify-center gap-2 rounded-xl border border-slate-200 py-2.5 text-sm font-semibold text-slate-600 transition hover:bg-slate-50"
+        >
+          <Printer className="h-4 w-4" />
+          Drucken
+        </button>
+
+        <button
+          onClick={onClose}
+          className="mt-2 w-full rounded-xl bg-indigo-600 py-2.5 font-semibold text-white transition hover:bg-indigo-700"
+        >
+          Schliessen
+        </button>
       </div>
     </div>
   );

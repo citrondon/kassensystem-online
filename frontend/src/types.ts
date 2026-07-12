@@ -1,6 +1,8 @@
 export interface Category {
   id: number;
   name: string;
+  color?: string;
+  emoji?: string;
 }
 
 export interface Product {

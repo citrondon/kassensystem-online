@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { Product, Category, ProductFormData } from "../types";
 import { createProduct, updateProduct, uploadProductImage } from "../services/api";
-import { X, ImageIcon, Save } from "lucide-react";
+import { X, ImagePlus, Save, Loader2 } from "lucide-react";
 
 interface Props {
   product: Product | null;
@@ -118,33 +118,32 @@ export default function ProductFormModal({ product, categories, onClose, onSaved
         onClick={(e) => e.stopPropagation()}
       >
         <div className="mb-5 flex items-center justify-between">
-          <h2 className="text-xl font-bold text-slate-900">
+          <h2 className="text-xl font-bold text-slate-800">
             {isEdit ? "Produkt bearbeiten" : "Neues Produkt"}
           </h2>
           <button
             onClick={onClose}
-            className="btn-icon"
-            aria-label="Schliessen"
+            className="rounded-lg p-2 text-slate-400 transition hover:bg-slate-100 hover:text-slate-700"
           >
-            <X size={20} />
+            <X className="h-5 w-5" />
           </button>
         </div>
 
         {error && (
-          <div className="mb-4 rounded-xl bg-red-50 px-4 py-3 text-sm font-medium text-red-700">
+          <div className="mb-4 rounded-xl bg-red-50 px-4 py-2.5 text-sm font-semibold text-red-700 border border-red-200">
             {error}
           </div>
         )}
 
         {warning && (
-          <div className="mb-4 rounded-xl bg-amber-50 px-4 py-3 text-sm font-medium text-amber-700">
+          <div className="mb-4 rounded-xl bg-amber-50 px-4 py-2.5 text-sm font-semibold text-amber-700 border border-amber-200">
             {warning}
           </div>
         )}
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="mb-1 block text-sm font-medium text-slate-700">Name *</label>
+            <label className="mb-1 block text-sm font-semibold text-slate-700">Name *</label>
             <input
               type="text"
               required
@@ -156,7 +155,7 @@ export default function ProductFormModal({ product, categories, onClose, onSaved
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="mb-1 block text-sm font-medium text-slate-700">Barcode</label>
+              <label className="mb-1 block text-sm font-semibold text-slate-700">Barcode</label>
               <input
                 type="text"
                 value={barcode}
@@ -165,7 +164,7 @@ export default function ProductFormModal({ product, categories, onClose, onSaved
               />
             </div>
             <div>
-              <label className="mb-1 block text-sm font-medium text-slate-700">
+              <label className="mb-1 block text-sm font-semibold text-slate-700">
                 Preis (EUR) *
               </label>
               <input
@@ -182,7 +181,7 @@ export default function ProductFormModal({ product, categories, onClose, onSaved
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="mb-1 block text-sm font-medium text-slate-700">
+              <label className="mb-1 block text-sm font-semibold text-slate-700">
                 Lagerbestand
               </label>
               <input
@@ -194,7 +193,7 @@ export default function ProductFormModal({ product, categories, onClose, onSaved
               />
             </div>
             <div>
-              <label className="mb-1 block text-sm font-medium text-slate-700">
+              <label className="mb-1 block text-sm font-semibold text-slate-700">
                 Low-Stock Schwelle
               </label>
               <input
@@ -208,13 +207,13 @@ export default function ProductFormModal({ product, categories, onClose, onSaved
           </div>
 
           <div>
-            <label className="mb-1 block text-sm font-medium text-slate-700">Kategorie</label>
+            <label className="mb-1 block text-sm font-semibold text-slate-700">Kategorie</label>
             <select
               value={categoryId ?? ""}
               onChange={(e) =>
                 setCategoryId(e.target.value ? Number(e.target.value) : null)
               }
-              className="select"
+              className="input"
             >
               <option value="">Keine Kategorie</option>
               {categories.map((cat) => (
@@ -226,26 +225,23 @@ export default function ProductFormModal({ product, categories, onClose, onSaved
           </div>
 
           <div>
-            <label className="mb-1 block text-sm font-medium text-slate-700">
+            <label className="mb-1 block text-sm font-semibold text-slate-700">
               Produktbild
             </label>
-            <div className="flex items-center gap-3">
-              {imagePreview ? (
+            <div className="flex items-center gap-4">
+              {imagePreview && (
                 <img
                   src={imagePreview}
                   alt="Vorschau"
-                  className="h-16 w-16 rounded-xl object-cover"
+                  className="h-20 w-20 rounded-xl object-cover border border-slate-200"
                 />
-              ) : (
-                <div className="flex h-16 w-16 items-center justify-center rounded-xl border border-slate-200 bg-slate-100 text-slate-400">
-                  <ImageIcon size={24} />
-                </div>
               )}
               <button
                 type="button"
                 onClick={() => fileInputRef.current?.click()}
-                className="btn-secondary"
+                className="flex items-center gap-2 rounded-xl border border-slate-300 px-4 py-2.5 text-sm font-medium text-slate-700 transition hover:bg-slate-50"
               >
+                <ImagePlus className="h-4 w-4" />
                 Bild auswaehlen
               </button>
               <input
@@ -259,11 +255,23 @@ export default function ProductFormModal({ product, categories, onClose, onSaved
           </div>
 
           <div className="flex gap-3 pt-2">
-            <button type="submit" disabled={saving} className="btn-primary flex-1">
-              <Save size={18} />
+            <button
+              type="submit"
+              disabled={saving}
+              className="btn-primary flex flex-1 items-center justify-center gap-2"
+            >
+              {saving ? (
+                <Loader2 className="h-5 w-5 animate-spin" />
+              ) : (
+                <Save className="h-5 w-5" />
+              )}
               {saving ? "Speichert..." : isEdit ? "Speichern" : "Erstellen"}
             </button>
-            <button type="button" onClick={onClose} className="btn-secondary">
+            <button
+              type="button"
+              onClick={onClose}
+              className="btn-secondary"
+            >
               Abbrechen
             </button>
           </div>
