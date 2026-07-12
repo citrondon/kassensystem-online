@@ -13,9 +13,12 @@ git clone https://github.com/NotDonCitron/Kassensystem.git
 cd kassensystem
 ```
 
-### Schritt 2: Datenbank starten (Docker)
+### Schritt 2: Umgebungsvariablen & Datenbank starten (Docker)
 
 ```bash
+cd backend
+cp .env.example .env  # muss vor Docker Compose existieren
+cd ..
 docker compose up -d
 ```
 
@@ -23,14 +26,13 @@ docker compose up -d
 
 Falls Docker nicht verfügbar ist:
 - PostgreSQL 16+ lokal installieren
-- `db/init.sql` manuell ausführen
 - `backend/.env` an lokale DB-Zugangsdaten anpassen
+- `db/init.sql` manuell ausführen
 
 ### Schritt 3: Backend einrichten
 
 ```bash
 cd backend
-cp .env.example .env  # falls .env nicht existiert
 npm install
 npm run migrate      # Migrationen anwenden
 npm run seed         # Demo-Benutzer anlegen

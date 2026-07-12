@@ -43,24 +43,26 @@ Ein kleines Point-of-Sale-System mit React-Frontend, Express-Backend und Postgre
 
 ```bash
 git clone https://github.com/NotDonCitron/Kassensystem.git
-cd pos-system
+cd kassensystem
 ```
 
-### 2. PostgreSQL starten
+### 2. Umgebungsvariablen & Datenbank
 
 ```bash
+cd backend
+cp .env.example .env
+cd ..
 docker compose up -d
 ```
 
 Die Datenbank läuft dann auf `localhost:5432` und wird beim ersten Start automatisch mit Schema + Demo-Daten (`db/init.sql`) initialisiert.
 
-> Falls Docker nicht verfügbar ist: Installiere PostgreSQL lokal und führe `db/init.sql` manuell aus.
+> Falls Docker nicht verfügbar ist: Installiere PostgreSQL lokal, passe `backend/.env` an und führe `db/init.sql` manuell aus.
 
 ### 3. Backend einrichten
 
 ```bash
 cd backend
-cp .env.example .env
 npm install
 npm run migrate      # Datenbank-Schema + Migrationen anwenden
 npm run seed         # Demo-Benutzer anlegen (admin, kasse)
@@ -148,8 +150,8 @@ npm run preview  # Preview des Builds
 
 Falls ein KI-Agent dieses Repo automatisch einrichten soll:
 
-1. `docker compose up -d` startet die DB.
-2. `backend/.env` aus `backend/.env.example` kopieren (falls nicht vorhanden).
+1. `backend/.env` aus `backend/.env.example` kopieren (muss vor Docker Compose existieren).
+2. `docker compose up -d` startet die DB.
 3. `npm install` in `backend/` und `frontend/` ausführen.
 4. `npm run migrate` im `backend/`-Ordner ausführen.
 5. `npm run seed` im `backend/`-Ordner ausführen.
