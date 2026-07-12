@@ -35,10 +35,28 @@ Ein kleines Point-of-Sale-System mit React-Frontend, Express-Backend und Postgre
 
 - **Node.js** (via nvm empfohlen)
 - **npm**
-- **Docker Desktop** (für PostgreSQL)
+- **Docker** (für PostgreSQL — `docker compose`)
 - **Git**
 
 ## Setup
+
+### Schnellstart (Linux)
+
+```bash
+git clone https://github.com/citrondon/kassensystem.git
+cd kassensystem
+bash setup.sh
+```
+
+`setup.sh` übernimmt: Prereqs-Check, .env kopieren, Docker DB starten, npm install, migrate, seed, Healthcheck.
+
+Danach beide Dev-Server starten:
+```bash
+cd backend && npm run dev   # Terminal 1
+cd frontend && npm run dev  # Terminal 2
+```
+
+### Manuelle Installation
 
 ### 1. Repo klonen
 

@@ -1,6 +1,16 @@
 # AI Setup Prompt – Kassensystem POS
 
-## Prompt zum Kopieren (für Swanna)
+## Schnellstart (Linux)
+
+```bash
+git clone https://github.com/citrondon/kassensystem.git
+cd kassensystem
+bash setup.sh
+```
+
+`setup.sh` übernimmt alles: Prereqs-Check, .env kopieren, Docker DB, npm install, migrate, seed, Healthcheck.
+
+## Prompt zum Kopieren (für KI-Assistenten)
 
 > Kopiere den folgenden Block in deinen KI-Assistenten. Der Agent soll das Projekt automatisch klonen, aufsetzen und starten.
 
@@ -8,22 +18,20 @@
 Setze das Repository https://github.com/citrondon/kassensystem.git auf meinem Rechner auf.
 
 Ablauf:
-1. Klone das Repo in ein neues Verzeichnis und wechsle hinein.
-2. Kopiere backend/.env.example nach backend/.env (für Docker Compose notwendig).
-3. Kopiere backend/.env.test.example nach backend/.env.test (für Tests notwendig).
-4. Starte Docker Desktop, falls es nicht läuft. Starte dann die Datenbank mit: docker compose up -d
-5. Warte, bis der Container "kassenprojekt2-db" gesund ist.
-6. Wechsle in backend/, führe npm install aus, dann npm run migrate, dann npm run seed.
-7. Starte das Backend im Hintergrund: npm run dev
-8. In einem neuen Terminal: Wechsle in frontend/, führe npm install aus, dann npm run dev.
-9. Prüfe, ob http://localhost:5000/health ein {status:"ok"} zurückgibt.
-10. Prüfe, ob http://localhost:3000 erreichbar ist und sich mit admin/pos123 oder kasse/pos123 anmelden lässt.
+1. Klone das Repo: git clone https://github.com/citrondon/kassensystem.git
+2. Wechsle ins Verzeichnis: cd kassensystem
+3. Führe aus: bash setup.sh
+4. Starte Backend: cd backend && npm run dev
+5. Starte Frontend (neues Terminal): cd frontend && npm run dev
+6. Prüfe: http://localhost:5000/health → {"status":"ok"}
+7. Prüfe: http://localhost:3000 → Login mit admin/pos123 oder kasse/pos123
 
 Hinweise:
-- Auf Windows PowerShell ausführen. Auf Linux/Mac bash.
-- Ports 3000, 5000 und 5432 müssen frei sein.
+- Linux: Docker via apt install docker.io. Node 20+ via nvm: nvm install 20.
+- bcrypt braucht build-essential: sudo apt install build-essential python3 make g++
+- Ports 3000, 5000, 5432 müssen frei sein.
 - backend/.env und backend/.env.test dürfen niemals committed werden.
-- Falls npm run dev nicht beendet wird, ist das korrekt: es läuft als Dev-Server.
+- npm run dev beendet sich nicht — das ist korrekt (Dev-Server).
 ```
 
 ---
@@ -54,7 +62,7 @@ cd ..
 docker compose up -d
 ```
 
-> Docker Desktop muss installiert und gestartet sein. Die Datenbank läuft auf `localhost:5432` und wird beim ersten Start mit `db/init.sql` initialisiert.
+> Docker muss installiert und laufen. Die Datenbank läuft auf `localhost:5432` und wird beim ersten Start mit `db/init.sql` initialisiert.
 
 Falls Docker nicht verfügbar ist:
 - PostgreSQL 16+ lokal installieren.
