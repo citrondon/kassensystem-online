@@ -42,7 +42,7 @@ Ein kleines Point-of-Sale-System mit React-Frontend, Express-Backend und Postgre
 ### 1. Repo klonen
 
 ```bash
-git clone https://github.com/NotDonCitron/Kassensystem.git
+git clone https://github.com/citrondon/kassensystem.git
 cd kassensystem
 ```
 

@@ -5,7 +5,7 @@
 > Kopiere den folgenden Block in deinen KI-Assistenten. Der Agent soll das Projekt automatisch klonen, aufsetzen und starten.
 
 ```
-Setze das Repository https://github.com/NotDonCitron/Kassensystem.git auf meinem Rechner auf.
+Setze das Repository https://github.com/citrondon/kassensystem.git auf meinem Rechner auf.
 
 Ablauf:
 1. Klone das Repo in ein neues Verzeichnis und wechsle hinein.
@@ -33,7 +33,7 @@ Hinweise:
 ### Schritt 1: Repository klonen
 
 ```bash
-git clone https://github.com/NotDonCitron/Kassensystem.git
+git clone https://github.com/citrondon/kassensystem.git
 cd kassensystem
 ```
 
