@@ -179,7 +179,7 @@ export default function CashierInterface() {
         )}
       </div>
 
-      <div className="grid grid-cols-1 gap-4 lg:grid-cols-[280px_1fr_380px]">
+      <div className="grid grid-cols-1 gap-4 xl:grid-cols-[260px_1fr_340px]">
         {/* Linke Spalte: Suche, Kategorien, Scanner */}
         <div className="space-y-4">
           <div className="panel p-4 space-y-4">
@@ -201,11 +201,12 @@ export default function CashierInterface() {
               <div className="flex flex-col gap-1">
                 <button
                   onClick={() => setActiveCategory(null)}
-                  className={`flex items-center justify-between rounded-lg px-3 py-2 text-sm font-medium transition ${
+                  className="flex items-center justify-between rounded-lg px-3 py-2 text-sm font-medium transition"
+                  style={
                     activeCategory === null
-                      ? "bg-indigo-50 text-indigo-700"
-                      : "text-slate-600 hover:bg-slate-50"
-                  }`}
+                      ? { background: "#EEF2FF", color: "#4F46E5" }
+                      : undefined
+                  }
                 >
                   <span className="flex items-center gap-2">
                     <span>🏪</span> Alle
@@ -281,7 +282,7 @@ export default function CashierInterface() {
         </div>
 
         {/* Rechte Spalte: Warenkorb */}
-        <div className="lg:sticky lg:top-4 lg:self-start">
+        <div className="xl:sticky xl:top-4 xl:self-start">
           <Cart
             cart={cart}
             onIncrement={increment}

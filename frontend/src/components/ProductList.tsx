@@ -18,7 +18,7 @@ export default function ProductList({ products, onAdd }: Props) {
   }
 
   return (
-    <div className="grid grid-cols-2 gap-4 xl:grid-cols-3">
+    <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
       {products.map((product) => {
         const isLowStock = product.stock > 0 && product.stock <= product.low_stock_threshold;
         const isOutOfStock = product.stock === 0;
@@ -51,7 +51,7 @@ export default function ProductList({ products, onAdd }: Props) {
                 {Number(product.price).toFixed(2)} €
               </p>
 
-              <div className="mt-2 flex items-center gap-2">
+              <div className="mt-2 flex flex-wrap items-center gap-2">
                 {isOutOfStock ? (
                   <span className="badge bg-red-100 text-red-700">Ausverkauft</span>
                 ) : isLowStock ? (

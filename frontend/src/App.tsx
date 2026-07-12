@@ -19,7 +19,7 @@ export default function App() {
     <div className="min-h-screen bg-gray-50">
       <Sidebar active={view} onChange={setView} />
       <div className="ml-16 p-4 pb-24 lg:ml-64 lg:p-6 lg:pb-6">
-        <main className="mx-auto max-w-7xl">
+        <main className="mx-auto w-full max-w-[1440px]">
           {view === "dashboard" && <Dashboard onNavigate={setView} />}
           {view === "cashier" && <CashierInterface />}
           {view === "inventory" && <InventoryOverview />}
