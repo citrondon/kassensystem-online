@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-import { Product, CartItem, CheckoutResponse, Category, OrderDetail } from "../types";
+import { Product, CartItem, CheckoutResponse, Category, OrderDetail, PaymentMethod } from "../types";
 import {
   getProducts,
   getCategories,
@@ -10,6 +10,7 @@ import { getCategoryMeta } from "../utils/categoryStyles";
 import ProductList from "./ProductList";
 import Cart from "./Cart";
 import Scanner from "./Scanner";
+import CheckoutModal from "./CheckoutModal";
 import ReceiptModal from "./ReceiptModal";
 import { Search, X, ScanBarcode, ChevronDown, ChevronUp } from "lucide-react";
 
@@ -26,6 +27,7 @@ export default function CashierInterface() {
   } | null>(null);
   const [receipt, setReceipt] = useState<OrderDetail | null>(null);
   const [scannerOpen, setScannerOpen] = useState(false);
+  const [checkoutModalOpen, setCheckoutModalOpen] = useState(false);
 
   useEffect(() => {
     getCategories()
@@ -122,7 +124,17 @@ export default function CashierInterface() {
     }
   };
 
-  const handleCheckout = async () => {
+  const handleStartCheckout = () => {
+    if (cart.length === 0) return;
+    setCheckoutModalOpen(true);
+  };
+
+  const handleCheckout = async (
+    paymentMethod: PaymentMethod,
+    amountTendered: number,
+    discountAmount: number
+  ) => {
+    setCheckoutModalOpen(false);
     setIsCheckingOut(true);
     setNotification(null);
     try {
@@ -130,7 +142,12 @@ export default function CashierInterface() {
         productId: item.id,
         quantity: item.quantity,
       }));
-      const result: CheckoutResponse = await checkout(items);
+      const result: CheckoutResponse = await checkout(
+        items,
+        paymentMethod,
+        amountTendered,
+        discountAmount
+      );
       if (result.success && result.orderId) {
         setNotification({ type: "success", message: result.message });
         setCart([]);
@@ -288,11 +305,19 @@ export default function CashierInterface() {
             onIncrement={increment}
             onDecrement={decrement}
             onRemove={removeItem}
-            onCheckout={handleCheckout}
+            onCheckout={handleStartCheckout}
             isCheckingOut={isCheckingOut}
           />
         </div>
       </div>
+
+      <CheckoutModal
+        cart={cart}
+        isOpen={checkoutModalOpen}
+        onClose={() => setCheckoutModalOpen(false)}
+        onCheckout={handleCheckout}
+        isCheckingOut={isCheckingOut}
+      />
 
       {receipt && <ReceiptModal order={receipt} onClose={() => setReceipt(null)} />}
     </div>

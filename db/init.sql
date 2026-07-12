@@ -55,3 +55,13 @@ ON CONFLICT (name) DO NOTHING;
 CREATE INDEX IF NOT EXISTS idx_products_category_id ON products(category_id);
 CREATE INDEX IF NOT EXISTS idx_order_items_order_id ON order_items(order_id);
 CREATE INDEX IF NOT EXISTS idx_orders_order_date ON orders(order_date DESC);
+
+CREATE TABLE IF NOT EXISTS pgmigrations (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(255) NOT NULL UNIQUE,
+    run_on TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+INSERT INTO pgmigrations (name, run_on) VALUES
+    ('1783847619918_initial-schema', NOW())
+ON CONFLICT (name) DO NOTHING;

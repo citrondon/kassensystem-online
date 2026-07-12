@@ -5,9 +5,9 @@ services:
     restart: unless-stopped
     env_file: backend/.env
     environment:
-      POSTGRES_USER: ${DB_USER:?DB_USER is required}
-      POSTGRES_PASSWORD: ${DB_PASSWORD:?DB_PASSWORD is required}
-      POSTGRES_DB: ${DB_NAME:?DB_NAME is required}
+      POSTGRES_USER: ${DB_USER:-posuser}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-pospass}
+      POSTGRES_DB: ${DB_NAME:-posdb}
     ports:
       - "127.0.0.1:5432:5432"
     volumes:

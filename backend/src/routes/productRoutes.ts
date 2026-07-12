@@ -9,6 +9,9 @@ import {
   deleteProduct,
   uploadProductImage,
 } from "../controllers/productController.js";
+import { productCreateSchema, productUpdateSchema } from "../validation/productSchema.js";
+import { validateBody } from "../validation/validate.js";
+import { authenticate, requireManager } from "../middleware/authMiddleware.js";
 
 const router = Router();
 
@@ -49,9 +52,9 @@ const upload = multer({
 });
 
 router.get("/", getProducts);
-router.post("/", createProduct);
-router.put("/:id", updateProduct);
-router.delete("/:id", deleteProduct);
-router.post("/:id/image", upload.single("image"), uploadProductImage);
+router.post("/", authenticate, requireManager, validateBody(productCreateSchema), createProduct);
+router.put("/:id", authenticate, requireManager, validateBody(productUpdateSchema), updateProduct);
+router.delete("/:id", authenticate, requireManager, deleteProduct);
+router.post("/:id/image", authenticate, requireManager, upload.single("image"), uploadProductImage);
 
 export default router;

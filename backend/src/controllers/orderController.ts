@@ -68,8 +68,21 @@ export const processCheckout = async (payload: CheckoutPayload): Promise<Checkou
       orderItems.push({ productId, quantity, unitPrice: product.price });
     }
 
-    const totalAmount = Math.max(0, grossAmount - discountAmount);
-    const changeAmount = paymentMethod === "cash" ? Math.max(0, amountTendered - totalAmount) : 0;
+    if (discountAmount > grossAmount) {
+      throw new Error("Rabattbetrag darf den Bruttobetrag nicht uebersteigen.");
+    }
+
+    const totalAmount = grossAmount - discountAmount;
+
+    const finalAmountTendered = paymentMethod === "cash" ? amountTendered : totalAmount;
+
+    if (paymentMethod === "cash" && finalAmountTendered < totalAmount) {
+      throw new Error(
+        `Barzahlung unzureichend. Benoetigt: ${totalAmount.toFixed(2)} €, erhalten: ${finalAmountTendered.toFixed(2)} €.`
+      );
+    }
+
+    const changeAmount = paymentMethod === "cash" ? Math.max(0, finalAmountTendered - totalAmount) : 0;
 
     const orderResult = await client.query(
       `INSERT INTO orders (total_amount, discount_amount, payment_method, amount_tendered, change_amount)
@@ -78,7 +91,7 @@ export const processCheckout = async (payload: CheckoutPayload): Promise<Checkou
         totalAmount.toFixed(2),
         discountAmount.toFixed(2),
         paymentMethod,
-        amountTendered.toFixed(2),
+        finalAmountTendered.toFixed(2),
         changeAmount.toFixed(2),
       ]
     );

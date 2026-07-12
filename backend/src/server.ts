@@ -6,11 +6,12 @@ import fs from "fs";
 import productRoutes from "./routes/productRoutes.js";
 import orderRoutes from "./routes/orderRoutes.js";
 import categoryRoutes from "./routes/categoryRoutes.js";
+import authRoutes from "./routes/authRoutes.js";
 import pool from "./utils/pool.js";
 
 dotenv.config();
 
-const app = express();
+export const app = express();
 const PORT = Number(process.env.PORT) || 5000;
 
 const UPLOAD_DIR = process.env.UPLOAD_DIR
@@ -44,6 +45,7 @@ app.use("/api/products", productRoutes);
 app.use("/api/orders", orderRoutes);
 app.use("/api/checkout", orderRoutes);
 app.use("/api/categories", categoryRoutes);
+app.use("/api/auth", authRoutes);
 
 app.use(
   (err: Error, _req: express.Request, res: express.Response, _next: express.NextFunction) => {
@@ -55,7 +57,7 @@ app.use(
   }
 );
 
-async function start(): Promise<void> {
+export async function start(): Promise<void> {
   try {
     await pool.query("SELECT NOW()");
     console.log("Datenbankverbindung erfolgreich");
@@ -69,4 +71,11 @@ async function start(): Promise<void> {
   });
 }
 
-start();
+const isMainModule =
+  import.meta.url === `file://${process.argv[1]}` ||
+  process.argv[1]?.endsWith("src/server.ts") ||
+  process.argv[1]?.endsWith("server.ts");
+
+if (isMainModule) {
+  start();
+}

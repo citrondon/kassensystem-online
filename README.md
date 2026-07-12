@@ -7,22 +7,26 @@ Ein kleines Point-of-Sale-System mit React-Frontend, Express-Backend und Postgre
 ```
 ├── backend/           # Express + TypeScript API (Port 5000)
 │   ├── src/
-│   │   ├── controllers/    # Business-Logik (Produkte, Bestellungen, Kategorien)
+│   │   ├── controllers/    # Business-Logik (Produkte, Bestellungen, Kategorien, Auth)
+│   │   ├── middleware/     # Auth-Middleware
 │   │   ├── routes/         # API-Routen
 │   │   ├── utils/          # DB-Pool (PostgreSQL)
+│   │   ├── validation/     # Zod-Validierungsschemata
 │   │   └── server.ts       # Entrypoint
+│   ├── migrations/         # node-pg-migrate Migrationen
+│   ├── scripts/          # Migration- & Seed-Wrapper
 │   ├── .env                # Environment-Variablen (NICHT commiten)
 │   └── .env.example        # Template für .env
 ├── frontend/        # React + Vite (Port 3000)
 │   ├── src/
 │   │   ├── components/     # UI-Komponenten (Kasse, Scanner, Dashboard, etc.)
+│   │   ├── contexts/       # AuthContext
 │   │   ├── services/       # API-Client
 │   │   ├── App.tsx         # Haupt-Layout
 │   │   └── types.ts        # TypeScript-Typen
 │   └── vite.config.ts      # Vite-Config mit Proxy auf Backend
 ├── db/
-│   ├── init.sql            # DB-Schema + Demo-Daten
-│   └── migrate.sql         # Migrationen (falls vorhanden)
+│   └── init.sql            # DB-Schema + Demo-Daten (nur erster Docker-Start)
 └── docker-compose.yml      # PostgreSQL-Container
 ```
 
@@ -58,12 +62,14 @@ Die Datenbank läuft dann auf `localhost:5432` und wird beim ersten Start automa
 cd backend
 cp .env.example .env
 npm install
+npm run migrate      # Datenbank-Schema + Migrationen anwenden
+npm run seed         # Demo-Benutzer anlegen (admin, kasse)
 npm run dev
 ```
 
 Das Backend läuft dann auf **http://localhost:5000**.
 
-> **Hinweis:** Die `.env` enthält DB-Zugangsdaten und CORS-Einstellungen. `.env` wird durch `.gitignore` nicht committed.
+> **Hinweis:** Die `.env` enthält DB-Zugangsdaten, CORS-Einstellungen und `JWT_SECRET`. `.env` wird durch `.gitignore` nicht committed.
 
 ### 4. Frontend einrichten
 
@@ -76,6 +82,17 @@ npm run dev
 ```
 
 Das Frontend läuft dann auf **http://localhost:3000** und leitet API-Calls automatisch an `localhost:5000` weiter (siehe `vite.config.ts` → `proxy: "/api"`).
+
+### 5. Anmelden
+
+Öffne `http://localhost:3000` und melde dich mit einem der Demo-Benutzer an:
+
+| Benutzer | Passwort | Rolle     |
+|----------|----------|-----------|
+| admin    | pos123   | Manager   |
+| kasse    | pos123   | Kassierer |
+
+Manager dürfen Produkte anlegen, bearbeiten und löschen. Kassierer können nur die Kasse und die Ansichten nutzen.
 
 ## Demo-Daten
 
@@ -113,9 +130,13 @@ Die Datenbank wird mit folgenden Beispiel-Produkten initialisiert:
 
 ```bash
 # Backend (im backend/-Ordner)
-npm run dev      # Dev-Server mit Hot-Reload (tsx watch)
-npm run build    # TypeScript kompilieren
-npm run start    # Produktiv-Build starten
+npm run dev         # Dev-Server mit Hot-Reload (tsx watch)
+npm run build       # TypeScript kompilieren
+npm run start       # Produktiv-Build starten
+npm run migrate     # Migrationen anwenden
+npm run migrate:down # Letzte Migration zurückrollen
+npm run seed        # Demo-Benutzer anlegen
+npm run test        # Backend-API-Tests ausführen
 
 # Frontend (im frontend/-Ordner)
 npm run dev      # Vite Dev-Server
@@ -130,9 +151,12 @@ Falls ein KI-Agent dieses Repo automatisch einrichten soll:
 1. `docker compose up -d` startet die DB.
 2. `backend/.env` aus `backend/.env.example` kopieren (falls nicht vorhanden).
 3. `npm install` in `backend/` und `frontend/` ausführen.
-4. `npm run dev` in beiden Ordnern parallel starten.
-5. App ist unter `http://localhost:3000` erreichbar.
-6. API-Healthcheck: `GET http://localhost:5000/health`
+4. `npm run migrate` im `backend/`-Ordner ausführen.
+5. `npm run seed` im `backend/`-Ordner ausführen.
+6. `npm run dev` in beiden Ordnern parallel starten.
+7. App ist unter `http://localhost:3000` erreichbar.
+8. Anmelden mit `admin` / `pos123` oder `kasse` / `pos123`.
+9. API-Healthcheck: `GET http://localhost:5000/health`
 
 ## Lizenz
 

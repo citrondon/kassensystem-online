@@ -69,9 +69,16 @@ export interface OrderDetail {
 
 export interface ProductFormData {
   name: string;
-  barcode: string;
+  barcode?: string;
   price: number;
   stock: number;
-  categoryId: number | null;
+  categoryId?: number | null;
   lowStockThreshold: number;
 }
+
+export interface User {
+  id: number;
+  username: string;
+  role: "manager" | "cashier";
+}
+

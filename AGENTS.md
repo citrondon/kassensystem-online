@@ -32,6 +32,8 @@ Falls Docker nicht verfügbar ist:
 cd backend
 cp .env.example .env  # falls .env nicht existiert
 npm install
+npm run migrate      # Migrationen anwenden
+npm run seed         # Demo-Benutzer anlegen
 npm run dev
 ```
 
@@ -81,6 +83,9 @@ Das Frontend läuft auf **http://localhost:3000** und leitet API-Calls automatis
 - `npm run dev` – Dev-Server mit Hot-Reload (tsx watch)
 - `npm run build` – TypeScript kompilieren
 - `npm run start` – Produktiv-Build starten
+- `npm run migrate` – Migrationen anwenden
+- `npm run seed` – Demo-Benutzer anlegen
+- `npm run test` – API-Tests ausführen
 
 **Frontend** (`cd frontend/`):
 - `npm run dev` – Vite Dev-Server
@@ -93,21 +98,26 @@ Das Frontend läuft auf **http://localhost:3000** und leitet API-Calls automatis
 ├── backend/           # Express + TypeScript API (Port 5000)
 │   ├── src/
 │   │   ├── controllers/    # Business-Logik
+│   │   ├── middleware/     # Auth-Middleware
 │   │   ├── routes/         # API-Routen
 │   │   ├── utils/          # DB-Pool
+│   │   ├── validation/     # Zod-Validierung
 │   │   └── server.ts       # Entrypoint
+│   ├── migrations/         # node-pg-migrate
+│   ├── scripts/          # Migration/Seed-Wrapper
 │   ├── .env                # Environment-Variablen
 │   └── .env.example        # Template
 ├── frontend/        # React + Vite (Port 3000)
 │   ├── src/
 │   │   ├── components/     # UI-Komponenten
+│   │   ├── contexts/       # AuthContext
 │   │   ├── services/       # API-Client
 │   │   ├── utils/          # categoryStyles, Helpers
 │   │   ├── App.tsx         # Haupt-Layout
 │   │   └── types.ts        # TypeScript-Typen
 │   └── vite.config.ts      # Vite-Config mit Proxy
 ├── db/
-│   └── init.sql            # DB-Schema + Demo-Daten
+│   └── init.sql            # DB-Schema + Demo-Daten (erster Docker-Start)
 └── docker-compose.yml      # PostgreSQL-Container
 ```
 
@@ -117,4 +127,6 @@ Das Frontend läuft auf **http://localhost:3000** und leitet API-Calls automatis
 2. **Docker ist Pflicht** für die Datenbank, es sei denn PostgreSQL ist lokal installiert.
 3. **Beide Server (Backend + Frontend) müssen parallel laufen**.
 4. **Das Frontend leitet `/api`-Calls via Proxy an das Backend weiter** – kein CORS-Problem.
-5. **Demo-Daten** werden automatisch beim ersten DB-Start mit `db/init.sql` erzeugt.
+5. **Migrationen**: Nach dem ersten DB-Start `npm run migrate` im `backend/`-Ordner ausführen.
+6. **Demo-Benutzer**: `npm run seed` im `backend/`-Ordner ausführen. Login: `admin`/`pos123` (Manager) oder `kasse`/`pos123` (Kassierer).
+7. **Tests**: `npm run test` im `backend/`-Ordner ausführen.

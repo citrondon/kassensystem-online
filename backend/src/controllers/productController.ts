@@ -71,11 +71,6 @@ export const getProducts = async (req: Request, res: Response): Promise<void> =>
 export const createProduct = async (req: Request, res: Response): Promise<void> => {
   const { name, barcode, price, stock, categoryId, lowStockThreshold } = req.body;
 
-  if (!name || typeof price !== "number" || price < 0) {
-    res.status(400).json({ success: false, error: "Name und Preis (>= 0) sind erforderlich." });
-    return;
-  }
-
   try {
     const result = await pool.query<ProductRow>(
       `INSERT INTO products (name, barcode, price, stock, category_id, low_stock_threshold)
@@ -106,11 +101,6 @@ export const createProduct = async (req: Request, res: Response): Promise<void> 
 export const updateProduct = async (req: Request, res: Response): Promise<void> => {
   const id = Number(req.params.id);
   const { name, barcode, price, stock, categoryId, lowStockThreshold, imageUrl } = req.body;
-
-  if (!name || typeof price !== "number" || price < 0) {
-    res.status(400).json({ success: false, error: "Name und Preis (>= 0) sind erforderlich." });
-    return;
-  }
 
   try {
     const result = await pool.query(

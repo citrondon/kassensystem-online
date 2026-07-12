@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { Product, Category } from "../types";
 import { getProducts, getCategories, deleteProduct } from "../services/api";
+import { useAuth } from "../contexts/AuthContext";
 import ProductImage from "./ProductImage";
 import ProductFormModal from "./ProductFormModal";
 import {
@@ -23,6 +24,8 @@ export default function InventoryOverview() {
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
   const [showForm, setShowForm] = useState(false);
   const [deleteTarget, setDeleteTarget] = useState<Product | null>(null);
+  const { user } = useAuth();
+  const isManager = user?.role === "manager";
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -99,16 +102,18 @@ export default function InventoryOverview() {
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold text-slate-800">Inventar</h1>
-        <button
-          onClick={() => {
-            setEditingProduct(null);
-            setShowForm(true);
-          }}
-          className="btn-primary flex items-center gap-2"
-        >
-          <Plus className="h-5 w-5" />
-          Neues Produkt
-        </button>
+        {isManager && (
+          <button
+            onClick={() => {
+              setEditingProduct(null);
+              setShowForm(true);
+            }}
+            className="btn-primary flex items-center gap-2"
+          >
+            <Plus className="h-5 w-5" />
+            Neues Produkt
+          </button>
+        )}
       </div>
 
       {error && (
@@ -234,25 +239,29 @@ export default function InventoryOverview() {
                       )}
                     </td>
                     <td className="px-5 py-3">
-                      <div className="flex justify-end gap-2">
-                        <button
-                          onClick={() => {
-                            setEditingProduct(product);
-                            setShowForm(true);
-                          }}
-                          className="flex items-center gap-1 rounded-lg bg-indigo-50 px-2.5 py-1.5 text-xs font-semibold text-indigo-700 transition hover:bg-indigo-100"
-                        >
-                          <Pencil className="h-3.5 w-3.5" />
-                          Bearbeiten
-                        </button>
-                        <button
-                          onClick={() => setDeleteTarget(product)}
-                          className="flex items-center gap-1 rounded-lg bg-red-50 px-2.5 py-1.5 text-xs font-semibold text-red-700 transition hover:bg-red-100"
-                        >
-                          <Trash2 className="h-3.5 w-3.5" />
-                          Loeschen
-                        </button>
-                      </div>
+                      {isManager ? (
+                        <div className="flex justify-end gap-2">
+                          <button
+                            onClick={() => {
+                              setEditingProduct(product);
+                              setShowForm(true);
+                            }}
+                            className="flex items-center gap-1 rounded-lg bg-indigo-50 px-2.5 py-1.5 text-xs font-semibold text-indigo-700 transition hover:bg-indigo-100"
+                          >
+                            <Pencil className="h-3.5 w-3.5" />
+                            Bearbeiten
+                          </button>
+                          <button
+                            onClick={() => setDeleteTarget(product)}
+                            className="flex items-center gap-1 rounded-lg bg-red-50 px-2.5 py-1.5 text-xs font-semibold text-red-700 transition hover:bg-red-100"
+                          >
+                            <Trash2 className="h-3.5 w-3.5" />
+                            Loeschen
+                          </button>
+                        </div>
+                      ) : (
+                        <span className="text-xs text-slate-400">Nur lesen</span>
+                      )}
                     </td>
                   </tr>
                 ))

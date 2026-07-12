@@ -8,8 +8,14 @@ import {
   ProductFormData,
   PaymentMethod,
 } from "../types";
+import { getStoredToken } from "../contexts/AuthContext";
 
 const API_BASE = "/api";
+
+function authHeaders(): Record<string, string> {
+  const token = getStoredToken();
+  return token ? { Authorization: `Bearer ${token}` } : {};
+}
 
 export async function getProducts(
   searchTerm?: string,
@@ -35,7 +41,7 @@ export async function getCategories(): Promise<Category[]> {
 export async function createProduct(data: ProductFormData): Promise<Product> {
   const res = await fetch(`${API_BASE}/products`, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: { "Content-Type": "application/json", ...authHeaders() },
     body: JSON.stringify({
       name: data.name,
       barcode: data.barcode || null,
@@ -59,7 +65,7 @@ export async function updateProduct(
 ): Promise<Product> {
   const res = await fetch(`${API_BASE}/products/${id}`, {
     method: "PUT",
-    headers: { "Content-Type": "application/json" },
+    headers: { "Content-Type": "application/json", ...authHeaders() },
     body: JSON.stringify({
       name: data.name,
       barcode: data.barcode || null,
@@ -78,7 +84,10 @@ export async function updateProduct(
 }
 
 export async function deleteProduct(id: number): Promise<void> {
-  const res = await fetch(`${API_BASE}/products/${id}`, { method: "DELETE" });
+  const res = await fetch(`${API_BASE}/products/${id}`, {
+    method: "DELETE",
+    headers: authHeaders(),
+  });
   if (!res.ok) {
     const err = await res.json().catch(() => ({}));
     throw new Error(err.error || "Fehler beim Loeschen des Produkts");
@@ -90,6 +99,7 @@ export async function uploadProductImage(id: number, file: File): Promise<Produc
   formData.append("image", file);
   const res = await fetch(`${API_BASE}/products/${id}/image`, {
     method: "POST",
+    headers: authHeaders(),
     body: formData,
   });
   if (!res.ok) {
@@ -107,7 +117,7 @@ export async function checkout(
 ): Promise<CheckoutResponse> {
   const res = await fetch(`${API_BASE}/checkout`, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: { "Content-Type": "application/json", ...authHeaders() },
     body: JSON.stringify({
       items,
       paymentMethod,
