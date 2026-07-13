@@ -7,6 +7,8 @@ import {
   OrderDetail,
   ProductFormData,
   PaymentMethod,
+  Customer,
+  Debt,
 } from "../types";
 import { getStoredToken } from "../contexts/AuthContext";
 
@@ -113,7 +115,8 @@ export async function checkout(
   items: CheckoutItem[],
   paymentMethod?: PaymentMethod,
   amountTendered?: number,
-  discountAmount?: number
+  discountAmount?: number,
+  customerId?: number
 ): Promise<CheckoutResponse> {
   const res = await fetch(`${API_BASE}/checkout`, {
     method: "POST",
@@ -123,6 +126,7 @@ export async function checkout(
       paymentMethod,
       amountTendered,
       discountAmount,
+      customerId,
     }),
   });
   if (!res.ok) {
@@ -217,4 +221,36 @@ export async function getPeakHours(date?: string): Promise<PeakHoursRow[]> {
   const res = await fetch(url, { headers: authHeaders() });
   if (!res.ok) throw new Error("Fehler beim Abrufen der Stoßzeiten.");
   return res.json();
+}
+
+// ─── Customers & Debts ───
+
+export async function getCustomers(): Promise<Customer[]> {
+  const res = await fetch(`${API_BASE}/customers`, { headers: authHeaders() });
+  if (!res.ok) throw new Error("Fehler beim Abrufen der Kunden.");
+  return res.json();
+}
+
+export async function createCustomer(name: string, phone?: string): Promise<Customer> {
+  const res = await fetch(`${API_BASE}/customers`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", ...authHeaders() },
+    body: JSON.stringify({ name, phone }),
+  });
+  if (!res.ok) throw new Error("Fehler beim Anlegen des Kunden.");
+  return res.json();
+}
+
+export async function getDebts(): Promise<Debt[]> {
+  const res = await fetch(`${API_BASE}/debts`, { headers: authHeaders() });
+  if (!res.ok) throw new Error("Fehler beim Abrufen der Schulden.");
+  return res.json();
+}
+
+export async function markDebtPaid(id: number): Promise<void> {
+  const res = await fetch(`${API_BASE}/debts/${id}/paid`, {
+    method: "PATCH",
+    headers: authHeaders(),
+  });
+  if (!res.ok) throw new Error("Fehler beim Markieren der Schuld.");
 }

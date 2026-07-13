@@ -26,7 +26,25 @@ export interface CheckoutItem {
   quantity: number;
 }
 
-export type PaymentMethod = "cash" | "card" | "other";
+export type PaymentMethod = "cash" | "card" | "other" | "credit";
+
+export interface Customer {
+  id: number;
+  name: string;
+  phone: string | null;
+}
+
+export interface Debt {
+  id: number;
+  customer_id: number;
+  customer_name: string;
+  customer_phone: string | null;
+  order_id: number | null;
+  amount: string;
+  paid: boolean;
+  paid_date: string | null;
+  created_at: string;
+}
 
 export interface CheckoutResponse {
   success: boolean;

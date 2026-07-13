@@ -201,7 +201,8 @@ export default function CashierInterface() {
   const handleCheckout = async (
     paymentMethod: PaymentMethod,
     amountTendered: number,
-    discountAmount: number
+    discountAmount: number,
+    customerId?: number
   ) => {
     setCheckoutModalOpen(false);
     setIsCheckingOut(true);
@@ -216,7 +217,8 @@ export default function CashierInterface() {
           items,
           paymentMethod,
           amountTendered,
-          discountAmount
+          discountAmount,
+          customerId
         );
         if (result.success && result.orderId) {
           setNotification({ type: "success", message: result.message });

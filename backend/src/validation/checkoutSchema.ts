@@ -7,9 +7,10 @@ export const checkoutItemSchema = z.object({
 
 export const checkoutPayloadSchema = z.object({
   items: z.array(checkoutItemSchema).min(1, "Warenkorb ist leer."),
-  paymentMethod: z.enum(["cash", "card", "other"]).optional().default("cash"),
+  paymentMethod: z.enum(["cash", "card", "other", "credit"]).optional().default("cash"),
   amountTendered: z.number().min(0, "Betrag darf nicht negativ sein.").optional().default(0),
   discountAmount: z.number().min(0, "Rabatt darf nicht negativ sein.").optional().default(0),
+  customerId: z.number().int().positive().optional(),
 });
 
 export type CheckoutItemInput = z.infer<typeof checkoutItemSchema>;

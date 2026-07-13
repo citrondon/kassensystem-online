@@ -1,13 +1,14 @@
-import { useState, useMemo } from "react";
-import { CartItem, PaymentMethod } from "../types";
+import { useState, useMemo, useEffect } from "react";
+import { CartItem, PaymentMethod, Customer } from "../types";
 import { useI18n } from "../i18n/I18nContext";
-import { X, Receipt, Banknote, CreditCard, Wallet, Percent, Tag } from "lucide-react";
+import { getCustomers, createCustomer } from "../services/api";
+import { X, Receipt, Banknote, CreditCard, Wallet, Percent, Tag, BookOpen } from "lucide-react";
 
 interface Props {
   cart: CartItem[];
   isOpen: boolean;
   onClose: () => void;
-  onCheckout: (paymentMethod: PaymentMethod, amountTendered: number, discountAmount: number) => void;
+  onCheckout: (paymentMethod: PaymentMethod, amountTendered: number, discountAmount: number, customerId?: number) => void;
   isCheckingOut: boolean;
 }
 
@@ -19,10 +20,21 @@ export default function CheckoutModal({ cart, isOpen, onClose, onCheckout, isChe
     { key: "cash", label: t("cash"), icon: Banknote },
     { key: "card", label: t("card"), icon: CreditCard },
     { key: "other", label: t("other"), icon: Wallet },
+    { key: "credit", label: "Kredit", icon: BookOpen },
   ];
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("cash");
   const [discountPercent, setDiscountPercent] = useState<string>("0");
   const [amountTendered, setAmountTendered] = useState<string>("");
+  const [customers, setCustomers] = useState<Customer[]>([]);
+  const [selectedCustomerId, setSelectedCustomerId] = useState<number | null>(null);
+  const [newCustomerName, setNewCustomerName] = useState<string>("");
+  const [showNewCustomer, setShowNewCustomer] = useState(false);
+
+  useEffect(() => {
+    if (paymentMethod === "credit" && customers.length === 0) {
+      getCustomers().then(setCustomers).catch(() => {});
+    }
+  }, [paymentMethod, customers.length]);
 
   const subtotal = useMemo(
     () => cart.reduce((sum, item) => sum + Number(item.price) * item.quantity, 0),
@@ -43,15 +55,18 @@ export default function CheckoutModal({ cart, isOpen, onClose, onCheckout, isChe
   }, [paymentMethod, amountTendered, total]);
 
   const isValid = useMemo(() => {
+    if (paymentMethod === "credit") {
+      return selectedCustomerId !== null;
+    }
     if (paymentMethod === "cash") {
       return (Number(amountTendered) || 0) >= total;
     }
     return true;
-  }, [paymentMethod, amountTendered, total]);
+  }, [paymentMethod, amountTendered, total, selectedCustomerId]);
 
   const handleSubmit = () => {
     if (!isValid) return;
-    onCheckout(paymentMethod, Number(amountTendered) || 0, discountAmount);
+    onCheckout(paymentMethod, Number(amountTendered) || 0, discountAmount, selectedCustomerId ?? undefined);
   };
 
   if (!isOpen) return null;
@@ -166,6 +181,60 @@ export default function CheckoutModal({ cart, isOpen, onClose, onCheckout, isChe
                 {t("receivedTooLow", { amount: total.toFixed(2), currency })}
               </p>
             )}
+          </div>
+        )}
+
+        {paymentMethod === "credit" && (
+          <div className="mb-4">
+            <label className="mb-2 block text-sm font-semibold text-slate-700">
+              Kunde auswählen
+            </label>
+            <select
+              value={selectedCustomerId ?? ""}
+              onChange={(e) => setSelectedCustomerId(e.target.value ? Number(e.target.value) : null)}
+              className="input"
+            >
+              <option value="">— Kunde wählen —</option>
+              {customers.map((c) => (
+                <option key={c.id} value={c.id}>
+                  {c.name}{c.phone ? ` (${c.phone})` : ""}
+                </option>
+              ))}
+            </select>
+            {!showNewCustomer ? (
+              <button
+                onClick={() => setShowNewCustomer(true)}
+                className="mt-2 text-sm font-medium text-indigo-600 hover:underline"
+              >
+                + Neuen Kunden anlegen
+              </button>
+            ) : (
+              <div className="mt-2 flex gap-2">
+                <input
+                  type="text"
+                  placeholder="Kundenname"
+                  value={newCustomerName}
+                  onChange={(e) => setNewCustomerName(e.target.value)}
+                  className="input flex-1"
+                />
+                <button
+                  onClick={async () => {
+                    if (!newCustomerName.trim()) return;
+                    const c = await createCustomer(newCustomerName.trim());
+                    setCustomers([...customers, c]);
+                    setSelectedCustomerId(c.id);
+                    setShowNewCustomer(false);
+                    setNewCustomerName("");
+                  }}
+                  className="btn-primary px-4"
+                >
+                  Anlegen
+                </button>
+              </div>
+            )}
+            <p className="mt-2 text-sm text-amber-600">
+              ⚠️ Verkauf wird als Schuld erfasst — Kunde zahlt später.
+            </p>
           </div>
         )}
 
