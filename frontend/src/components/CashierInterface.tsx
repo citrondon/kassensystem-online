@@ -224,6 +224,19 @@ export default function CashierInterface() {
           setNotification({ type: "success", message: result.message });
           setCart([]);
           loadProducts();
+          // TTS: speak change amount (browser SpeechSynthesis API)
+          if (paymentMethod === "cash" && result.changeAmount && result.changeAmount > 0) {
+            try {
+              const utterance = new SpeechSynthesisUtterance(
+                `Rückgeld: ${result.changeAmount.toFixed(2)} Euro`
+              );
+              utterance.lang = "de-DE";
+              utterance.rate = 0.9;
+              window.speechSynthesis?.speak(utterance);
+            } catch {
+              // TTS not available — silent fallback
+            }
+          }
           try {
             const detail = await getOrderById(result.orderId);
             setReceipt(detail);
