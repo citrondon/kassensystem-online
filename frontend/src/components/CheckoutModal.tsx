@@ -203,6 +203,7 @@ export default function CheckoutModal({ cart, isOpen, onClose, onCheckout, isChe
             </select>
             {!showNewCustomer ? (
               <button
+                type="button"
                 onClick={() => setShowNewCustomer(true)}
                 className="mt-2 text-sm font-medium text-indigo-600 hover:underline"
               >
@@ -218,13 +219,18 @@ export default function CheckoutModal({ cart, isOpen, onClose, onCheckout, isChe
                   className="input flex-1"
                 />
                 <button
+                  type="button"
                   onClick={async () => {
                     if (!newCustomerName.trim()) return;
-                    const c = await createCustomer(newCustomerName.trim());
-                    setCustomers([...customers, c]);
-                    setSelectedCustomerId(c.id);
-                    setShowNewCustomer(false);
-                    setNewCustomerName("");
+                    try {
+                      const c = await createCustomer(newCustomerName.trim());
+                      setCustomers([...customers, c]);
+                      setSelectedCustomerId(c.id);
+                      setShowNewCustomer(false);
+                      setNewCustomerName("");
+                    } catch (e) {
+                      console.error("Kundenanlage fehlgeschlagen:", e);
+                    }
                   }}
                   className="btn-primary px-4"
                 >
