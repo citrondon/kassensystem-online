@@ -201,7 +201,8 @@ export default function CashierInterface() {
   const handleCheckout = async (
     paymentMethod: PaymentMethod,
     amountTendered: number,
-    discountAmount: number
+    discountAmount: number,
+    customerId?: number
   ) => {
     setCheckoutModalOpen(false);
     setIsCheckingOut(true);
@@ -216,12 +217,26 @@ export default function CashierInterface() {
           items,
           paymentMethod,
           amountTendered,
-          discountAmount
+          discountAmount,
+          customerId
         );
         if (result.success && result.orderId) {
           setNotification({ type: "success", message: result.message });
           setCart([]);
           loadProducts();
+          // TTS: speak change amount (browser SpeechSynthesis API)
+          if (paymentMethod === "cash" && result.changeAmount && result.changeAmount > 0) {
+            try {
+              const utterance = new SpeechSynthesisUtterance(
+                `Rückgeld: ${result.changeAmount.toFixed(2)} Euro`
+              );
+              utterance.lang = "de-DE";
+              utterance.rate = 0.9;
+              window.speechSynthesis?.speak(utterance);
+            } catch {
+              // TTS not available — silent fallback
+            }
+          }
           try {
             const detail = await getOrderById(result.orderId);
             setReceipt(detail);

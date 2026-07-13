@@ -6,13 +6,14 @@ export interface CheckoutItem {
   quantity: number;
 }
 
-export type PaymentMethod = "cash" | "card" | "other";
+export type PaymentMethod = "cash" | "card" | "other" | "credit";
 
 export interface CheckoutPayload {
   items: CheckoutItem[];
   paymentMethod?: PaymentMethod;
   amountTendered?: number;
   discountAmount?: number;
+  customerId?: number;
 }
 
 export interface CheckoutResult {
@@ -27,6 +28,7 @@ export const processCheckout = async (payload: CheckoutPayload): Promise<Checkou
   const paymentMethod: PaymentMethod = payload.paymentMethod ?? "cash";
   const discountAmount = Math.max(0, payload.discountAmount ?? 0);
   const amountTendered = Math.max(0, payload.amountTendered ?? 0);
+  const customerId = payload.customerId ?? null;
   const client = await pool.connect();
 
   try {
@@ -74,25 +76,29 @@ export const processCheckout = async (payload: CheckoutPayload): Promise<Checkou
 
     const totalAmount = grossAmount - discountAmount;
 
-    const finalAmountTendered = paymentMethod === "cash" ? amountTendered : totalAmount;
+    const isCredit = paymentMethod === "credit" && customerId !== null;
+    const finalAmountTendered = isCredit ? 0 : (paymentMethod === "cash" ? amountTendered : totalAmount);
 
-    if (paymentMethod === "cash" && finalAmountTendered < totalAmount) {
+    if (!isCredit && paymentMethod === "cash" && finalAmountTendered < totalAmount) {
       throw new Error(
         `Barzahlung unzureichend. Benoetigt: ${totalAmount.toFixed(2)} €, erhalten: ${finalAmountTendered.toFixed(2)} €.`
       );
     }
 
-    const changeAmount = paymentMethod === "cash" ? Math.max(0, finalAmountTendered - totalAmount) : 0;
+    const changeAmount = isCredit ? 0 : (paymentMethod === "cash" ? Math.max(0, finalAmountTendered - totalAmount) : 0);
+    const orderStatus = isCredit ? "credit" : "completed";
 
     const orderResult = await client.query(
-      `INSERT INTO orders (total_amount, discount_amount, payment_method, amount_tendered, change_amount)
-       VALUES ($1, $2, $3, $4, $5) RETURNING id`,
+      `INSERT INTO orders (total_amount, discount_amount, payment_method, amount_tendered, change_amount, status, customer_id)
+       VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING id`,
       [
         totalAmount.toFixed(2),
         discountAmount.toFixed(2),
-        paymentMethod,
+        isCredit ? "credit" : paymentMethod,
         finalAmountTendered.toFixed(2),
         changeAmount.toFixed(2),
+        orderStatus,
+        customerId,
       ]
     );
     const orderId = orderResult.rows[0].id;
@@ -105,12 +111,22 @@ export const processCheckout = async (payload: CheckoutPayload): Promise<Checkou
       );
     }
 
+    // If credit sale, create debt record
+    if (isCredit) {
+      await client.query(
+        `INSERT INTO debts (customer_id, order_id, amount) VALUES ($1, $2, $3)`,
+        [customerId, orderId, totalAmount.toFixed(2)]
+      );
+    }
+
     await client.query("COMMIT");
 
     return {
       success: true,
       orderId,
-      message: `Checkout erfolgreich. Bestellung #${orderId} wurde erstellt und der Bestand aktualisiert.`,
+      message: isCredit
+        ? `Kreditverkauf erfolgreich. Bestellung #${orderId} wurde erstellt und als Schuld fuer Kunden erfasst.`
+        : `Checkout erfolgreich. Bestellung #${orderId} wurde erstellt und der Bestand aktualisiert.`,
       changeAmount,
     };
   } catch (error) {
