@@ -115,21 +115,49 @@ export default function CheckoutModal({ cart, isOpen, onClose, onCheckout, isChe
             <label className="mb-2 block text-sm font-semibold text-slate-700">
               {t("received")}
             </label>
-            <div className="relative">
-              <input
-                type="number"
-                inputMode="decimal"
-                min={0}
-                step="0.01"
-                placeholder={total.toFixed(2)}
-                value={amountTendered}
-                onChange={(e) => setAmountTendered(e.target.value)}
-                className="input pr-10 text-right"
-              />
-              <span className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400">{currency}</span>
+
+            {/* Amount display */}
+            <div className="mb-3 rounded-xl bg-slate-100 py-3 text-center">
+              <span className="text-3xl font-bold text-slate-900">
+                {(Number(amountTendered) || 0).toFixed(2)} {currency}
+              </span>
             </div>
+
+            {/* Banknote buttons */}
+            <div className="grid grid-cols-3 gap-2">
+              {[5, 10, 20, 50, 100, 200].map((denom) => (
+                <button
+                  key={denom}
+                  onClick={() => setAmountTendered(String(denom))}
+                  className={`rounded-xl border-2 py-3 text-lg font-bold transition ${
+                    Number(amountTendered) === denom
+                      ? "border-emerald-500 bg-emerald-50 text-emerald-700"
+                      : "border-slate-200 bg-white text-slate-700 hover:bg-slate-50"
+                  }`}
+                >
+                  {denom} {currency}
+                </button>
+              ))}
+            </div>
+
+            {/* Exact + Clear buttons */}
+            <div className="mt-2 grid grid-cols-2 gap-2">
+              <button
+                onClick={() => setAmountTendered(total.toFixed(2))}
+                className="rounded-xl bg-indigo-600 py-2.5 text-sm font-bold text-white hover:bg-indigo-700"
+              >
+                {"Exakt"}
+              </button>
+              <button
+                onClick={() => setAmountTendered("")}
+                className="rounded-xl border-2 border-amber-300 bg-amber-50 py-2.5 text-sm font-bold text-amber-700 hover:bg-amber-100"
+              >
+                C
+              </button>
+            </div>
+
             {change > 0 && (
-              <p className="mt-2 text-sm font-semibold text-emerald-600">
+              <p className="mt-3 rounded-lg bg-emerald-50 px-3 py-2 text-center text-lg font-bold text-emerald-700">
                 {t("change")}: {change.toFixed(2)} {currency}
               </p>
             )}
