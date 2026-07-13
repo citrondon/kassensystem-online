@@ -9,8 +9,8 @@ import {
 const router = Router();
 
 // Manager-only guard could be added here; keeping open for cashier use
-router.get("/customers", getCustomers);
-router.post("/customers", createCustomer);
+router.get("/", getCustomers);
+router.post("/", createCustomer);
 router.get("/debts", getDebts);
 router.patch("/debts/:id/paid", markDebtPaid);
 
