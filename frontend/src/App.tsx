@@ -35,7 +35,7 @@ function AppContent() {
     <div className="min-h-screen bg-gray-50">
       <Header />
       <Sidebar active={view} onChange={setView} />
-      <div className="ml-16 p-4 pb-24 pt-16 lg:ml-64 lg:p-6 lg:pb-6 lg:pt-16">
+      <div className="p-3 pb-20 pt-16 lg:ml-64 lg:p-6 lg:pb-6 lg:pt-16">
         <main className="mx-auto w-full max-w-[1440px]">
           {view === "dashboard" && <Dashboard onNavigate={setView} />}
           {view === "cashier" && <CashierInterface />}

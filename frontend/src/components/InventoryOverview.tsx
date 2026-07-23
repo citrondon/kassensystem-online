@@ -216,7 +216,7 @@ export default function InventoryOverview() {
           </button>
         </div>
 
-        <div className="overflow-x-auto">
+        <div className="overflow-x-auto hidden lg:block">
           <table className="w-full text-left text-sm">
             <thead className="bg-slate-50 text-xs uppercase tracking-wider text-slate-500">
               <tr>
@@ -326,6 +326,65 @@ export default function InventoryOverview() {
               )}
             </tbody>
           </table>
+        </div>
+
+        {/* Mobile: card layout */}
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:hidden">
+          {filtered.length === 0 ? (
+            <div className="col-span-full py-10 text-center text-slate-400">
+              {t("noProductsFound")}
+            </div>
+          ) : (
+            filtered.map((product) => (
+              <div key={product.id} className="panel p-3 flex gap-3">
+                <ProductImage product={product} size="sm" />
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-start justify-between gap-2">
+                    <p className="font-semibold text-slate-800 truncate">{product.name}</p>
+                    {isLowStock(product) && (
+                      <span className="flex-shrink-0 rounded-full bg-amber-100 px-2 py-0.5 text-xs font-bold text-amber-700">!</span>
+                    )}
+                  </div>
+                  {product.barcode && (
+                    <p className="text-xs font-mono text-slate-400">{product.barcode}</p>
+                  )}
+                  <div className="mt-1 flex items-center gap-2 text-sm">
+                    <span className="font-bold text-slate-800">{fmt(Number(product.price))} {currency}</span>
+                    <span className="text-xs text-slate-400">· {t("costPrice")}: {fmt(Number(product.cost_price))}</span>
+                  </div>
+                  <div className="mt-1 flex items-center justify-between">
+                    <span className={`text-sm font-bold ${
+                      product.stock === 0
+                        ? "text-red-600"
+                        : isLowStock(product)
+                          ? "text-amber-600"
+                          : "text-emerald-600"
+                    }`}>
+                      {t("stock")}: {product.stock}
+                    </span>
+                    {isManager ? (
+                      <div className="flex gap-1.5">
+                        <button
+                          onClick={() => { setEditingProduct(product); setShowForm(true); }}
+                          className="rounded-lg bg-indigo-50 px-2 py-1 text-xs font-semibold text-indigo-700"
+                        >
+                          <Pencil className="h-3.5 w-3.5" />
+                        </button>
+                        <button
+                          onClick={() => setDeleteTarget(product)}
+                          className="rounded-lg bg-red-50 px-2 py-1 text-xs font-semibold text-red-700"
+                        >
+                          <Trash2 className="h-3.5 w-3.5" />
+                        </button>
+                      </div>
+                    ) : (
+                      <span className="text-xs text-slate-400">{t("readOnly")}</span>
+                    )}
+                  </div>
+                </div>
+              </div>
+            ))
+          )}
         </div>
       </div>
 

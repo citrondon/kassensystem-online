@@ -24,7 +24,7 @@ export default function ProductList({ products, onAdd }: Props) {
   }
 
   return (
-    <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
+    <div className="grid grid-cols-2 gap-2 sm:gap-3 md:grid-cols-3 xl:grid-cols-3">
       {products.map((product) => {
         const isLowStock = product.stock > 0 && product.stock <= product.low_stock_threshold;
         const isOutOfStock = product.stock === 0;
@@ -34,10 +34,10 @@ export default function ProductList({ products, onAdd }: Props) {
             key={product.id}
             disabled={isOutOfStock}
             onClick={() => onAdd(product)}
-            className={`group relative flex flex-col rounded-xl border bg-white p-4 text-left shadow-sm transition ${
+            className={`group relative flex flex-col rounded-xl border bg-white p-2.5 text-left shadow-sm transition sm:p-4 ${
               isOutOfStock
                 ? "cursor-not-allowed border-slate-200 opacity-50"
-                : "border-slate-200 hover:border-indigo-300 hover:shadow-md hover:-translate-y-0.5"
+                : "border-slate-200 hover:border-indigo-300 hover:shadow-md active:scale-95"
             }`}
           >
             <div className="mb-3 flex items-start justify-between">

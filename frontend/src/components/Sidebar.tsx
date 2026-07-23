@@ -35,12 +35,12 @@ export default function Sidebar({ active, onChange }: Props) {
   ];
 
   return (
-    <aside className="fixed left-0 top-0 z-40 flex h-screen w-16 flex-col items-center border-r border-slate-200 bg-white py-4 shadow-sm lg:w-64 lg:items-stretch lg:px-4">
-      <div className="mb-8 flex items-center justify-center lg:justify-start lg:gap-3 lg:px-2">
+    <aside className="fixed left-0 top-0 z-40 hidden h-screen w-64 flex-col items-stretch border-r border-slate-200 bg-white px-4 py-4 shadow-sm lg:flex">
+      <div className="mb-8 flex items-center justify-start gap-3 px-2">
         <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-indigo-600 text-white">
           <Store className="h-6 w-6" />
         </div>
-        <span className="hidden text-lg font-bold text-slate-800 lg:block">{t("posSystem")}</span>
+        <span className="text-lg font-bold text-slate-800">{t("posSystem")}</span>
       </div>
 
       <nav className="flex flex-1 flex-col gap-2">
@@ -60,7 +60,7 @@ export default function Sidebar({ active, onChange }: Props) {
               <span className={isActive ? "text-indigo-600" : "text-slate-400"}>
                 {item.icon}
               </span>
-              <span className="hidden lg:block">{item.label}</span>
+              <span>{item.label}</span>
             </button>
           );
         })}

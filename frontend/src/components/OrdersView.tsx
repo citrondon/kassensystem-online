@@ -85,44 +85,67 @@ export default function OrdersView() {
             <p className="text-sm font-medium text-slate-400">{t("noOrdersYet")}</p>
           </div>
         ) : (
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-sm">
-              <thead className="bg-slate-50 text-xs uppercase tracking-wider text-slate-500">
-                <tr>
-                  <th className="px-5 py-3">{t("order")}</th>
-                  <th className="px-5 py-3">{t("date")}</th>
-                  <th className="px-5 py-3 text-right">{t("quantity")}</th>
-                  <th className="px-5 py-3 text-right">{t("total")}</th>
-                  <th className="px-5 py-3"></th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-slate-50">
-                {orders.map((order) => (
-                  <tr key={order.id} className="transition hover:bg-slate-50/50">
-                    <td className="px-5 py-3 font-semibold text-slate-800">#{order.id}</td>
-                    <td className="px-5 py-3 text-slate-600">
-                      {formatDate(order.order_date)}
-                    </td>
-                    <td className="px-5 py-3 text-right text-slate-600">
-                      {order.item_count}
-                    </td>
-                    <td className="px-5 py-3 text-right font-bold text-slate-800">
-                      {fmt(Number(order.total_amount))} {currency}
-                    </td>
-                    <td className="px-5 py-3 text-right">
-                      <button
-                        onClick={() => setSelectedId(order.id)}
-                        className="flex items-center gap-1 rounded-lg bg-indigo-50 px-3 py-1.5 text-xs font-semibold text-indigo-700 transition hover:bg-indigo-100"
-                      >
-                        <Eye className="h-3.5 w-3.5" />
-                        {t("details")}
-                      </button>
-                    </td>
+          <>
+            {/* Desktop: table */}
+            <div className="overflow-x-auto hidden lg:block">
+              <table className="w-full text-left text-sm">
+                <thead className="bg-slate-50 text-xs uppercase tracking-wider text-slate-500">
+                  <tr>
+                    <th className="px-5 py-3">{t("order")}</th>
+                    <th className="px-5 py-3">{t("date")}</th>
+                    <th className="px-5 py-3 text-right">{t("quantity")}</th>
+                    <th className="px-5 py-3 text-right">{t("total")}</th>
+                    <th className="px-5 py-3"></th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                </thead>
+                <tbody className="divide-y divide-slate-50">
+                  {orders.map((order) => (
+                    <tr key={order.id} className="transition hover:bg-slate-50/50">
+                      <td className="px-5 py-3 font-semibold text-slate-800">#{order.id}</td>
+                      <td className="px-5 py-3 text-slate-600">
+                        {formatDate(order.order_date)}
+                      </td>
+                      <td className="px-5 py-3 text-right text-slate-600">
+                        {order.item_count}
+                      </td>
+                      <td className="px-5 py-3 text-right font-bold text-slate-800">
+                        {fmt(Number(order.total_amount))} {currency}
+                      </td>
+                      <td className="px-5 py-3 text-right">
+                        <button
+                          onClick={() => setSelectedId(order.id)}
+                          className="flex items-center gap-1 rounded-lg bg-indigo-50 px-3 py-1.5 text-xs font-semibold text-indigo-700 transition hover:bg-indigo-100"
+                        >
+                          <Eye className="h-3.5 w-3.5" />
+                          {t("details")}
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            {/* Mobile: cards */}
+            <div className="divide-y divide-slate-50 lg:hidden">
+              {orders.map((order) => (
+                <button
+                  key={order.id}
+                  onClick={() => setSelectedId(order.id)}
+                  className="flex w-full items-center justify-between px-4 py-3 text-left transition hover:bg-slate-50/50"
+                >
+                  <div className="min-w-0 flex-1">
+                    <p className="font-semibold text-slate-800">#{order.id} · {order.item_count} {t("piece")}</p>
+                    <p className="text-xs text-slate-500">{formatDate(order.order_date)}</p>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="font-bold text-slate-800">{fmt(Number(order.total_amount))} {currency}</span>
+                    <Eye className="h-4 w-4 text-slate-400" />
+                  </div>
+                </button>
+              ))}
+            </div>
+          </>
         )}
       </div>
 

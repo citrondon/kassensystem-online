@@ -199,9 +199,9 @@ export default function CashierInterface() {
       </div>
 
       <div className="grid grid-cols-1 gap-4 xl:grid-cols-[260px_1fr_340px]">
-        {/* Linke Spalte: Suche, Kategorien, Scanner */}
-        <div className="space-y-4">
-          <div className="panel p-4 space-y-4">
+        {/* Linke Spalte: Suche, Kategorien, Scanner — mobile: horizontal scroll für Kategorien */}
+        <div className="xl:space-y-4">
+          <div className="panel p-3 xl:p-4 xl:space-y-4">
             <div className="relative">
               <Search className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-400" />
               <input
@@ -213,7 +213,7 @@ export default function CashierInterface() {
               />
             </div>
 
-            <div>
+            <div className="hidden xl:block">
               <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-slate-400">
                 {t("categories")}
               </p>
@@ -272,7 +272,39 @@ export default function CashierInterface() {
               </div>
             </div>
 
-              <div className="border-t border-slate-100 pt-3">
+            {/* Mobile: horizontale Kategorien-Scroll */}
+            <div className="flex gap-2 overflow-x-auto pb-1 xl:hidden scrollbar-thin">
+              <button
+                onClick={() => setActiveCategory(null)}
+                className={`flex-shrink-0 rounded-full px-3 py-1.5 text-sm font-medium transition ${
+                  activeCategory === null
+                    ? "bg-indigo-100 text-indigo-700"
+                    : "bg-slate-100 text-slate-600"
+                }`}
+              >
+                🏪 {t("all")}
+              </button>
+              {categories.map((cat) => {
+                const meta = getCategoryMeta(cat.name);
+                const label = getCategoryLabel(cat.name, lang);
+                const isActive = activeCategory === cat.id;
+                return (
+                  <button
+                    key={cat.id}
+                    onClick={() => setActiveCategory(cat.id)}
+                    className={`flex-shrink-0 rounded-full px-3 py-1.5 text-sm font-medium transition whitespace-nowrap ${
+                      isActive ? "" : "bg-slate-100 text-slate-600"
+                    }`}
+                    style={isActive ? { background: meta.bg, color: meta.color } : undefined}
+                  >
+                    {meta.emoji} {label}
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* Scanner — mobile: inline, desktop: collapsible */}
+              <div className="border-t border-slate-100 pt-3 hidden xl:block">
               <button
                 onClick={() => setScannerOpen((v) => !v)}
                 className="flex w-full items-center justify-between rounded-lg px-3 py-2 text-sm font-medium text-slate-600 transition hover:bg-slate-50"
@@ -293,6 +325,20 @@ export default function CashierInterface() {
                 </div>
               )}
             </div>
+
+            {/* Mobile: Scanner button inline */}
+            <button
+              onClick={() => setScannerOpen((v) => !v)}
+              className="flex w-full items-center justify-center gap-2 rounded-xl bg-indigo-50 px-3 py-2.5 text-sm font-semibold text-indigo-700 xl:hidden"
+            >
+              <ScanBarcode className="h-5 w-5" />
+              {scannerOpen ? t("stopScanner") : t("scanBarcode")}
+            </button>
+            {scannerOpen && (
+              <div className="mt-2 xl:hidden">
+                <Scanner onScan={handleScan} />
+              </div>
+            )}
           </div>
         </div>
 
@@ -301,8 +347,8 @@ export default function CashierInterface() {
           <ProductList products={products} onAdd={addToCart} />
         </div>
 
-        {/* Rechte Spalte: Warenkorb */}
-        <div className="xl:sticky xl:top-4 xl:self-start">
+        {/* Rechte Spalte: Warenkorb — mobile: sticky bottom panel */}
+        <div className="xl:sticky xl:top-16 xl:self-start">
           <Cart
             cart={cart}
             onIncrement={increment}

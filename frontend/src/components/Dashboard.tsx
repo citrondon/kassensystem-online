@@ -113,19 +113,19 @@ export default function Dashboard({ onNavigate }: Props) {
           <Loader2 className="h-8 w-8 animate-spin text-slate-400" />
         </div>
       ) : (
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-5">
+        <div className="grid grid-cols-2 gap-2 sm:gap-4 xl:grid-cols-5">
           {cards.map((card) => (
             <button
               key={card.label}
               onClick={card.onClick}
-              className="flex items-center gap-4 rounded-xl border border-slate-200 bg-white p-5 text-left shadow-sm transition hover:shadow-md hover:-translate-y-0.5"
+              className="flex items-center gap-3 rounded-xl border border-slate-200 bg-white p-3 text-left shadow-sm transition hover:shadow-md active:scale-95 sm:gap-4 sm:p-5"
             >
-              <div className={`flex h-12 w-12 items-center justify-center rounded-xl ${card.bg}`}>
+              <div className={`flex h-10 w-10 items-center justify-center rounded-xl ${card.bg} sm:h-12 sm:w-12`}>
                 {card.icon}
               </div>
-              <div className="flex-1">
-                <p className="text-sm font-medium text-slate-500">{card.label}</p>
-                <p className="text-xl font-bold text-slate-800">{card.value}</p>
+              <div className="flex-1 min-w-0">
+                <p className="text-xs font-medium text-slate-500 sm:text-sm">{card.label}</p>
+                <p className="text-base font-bold text-slate-800 sm:text-xl">{card.value}</p>
               </div>
               <ArrowRight className="h-5 w-5 text-slate-300" />
             </button>
