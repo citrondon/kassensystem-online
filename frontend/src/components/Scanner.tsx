@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import BarcodeScanner from "react-qr-barcode-scanner";
 import { useI18n } from "../i18n/I18nContext";
 import { ScanBarcode, ScanLine } from "lucide-react";
@@ -10,14 +10,30 @@ interface Props {
 export default function Scanner({ onScan }: Props) {
   const [active, setActive] = useState(false);
   const [lastScan, setLastScan] = useState<string | null>(null);
+  const lastScanRef = useRef<string | null>(null);
+  const cooldownRef = useRef<number | null>(null);
   const { t } = useI18n();
 
+  // Cleanup cooldown on unmount
+  useEffect(() => {
+    return () => {
+      if (cooldownRef.current) window.clearTimeout(cooldownRef.current);
+    };
+  }, []);
+
   const handleUpdate = (_err: unknown, result?: { getText: () => string }) => {
-    if (result) {
-      const text = result.getText();
-      setLastScan(text);
-      onScan(text);
-    }
+    if (!result) return;
+    const text = result.getText();
+    // Skip duplicate scans within 2 seconds
+    if (text === lastScanRef.current && cooldownRef.current) return;
+    lastScanRef.current = text;
+    setLastScan(text);
+    onScan(text);
+    if (cooldownRef.current) window.clearTimeout(cooldownRef.current);
+    cooldownRef.current = window.setTimeout(() => {
+      lastScanRef.current = null;
+      cooldownRef.current = null;
+    }, 2000);
   };
 
   return (
