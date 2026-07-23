@@ -170,37 +170,37 @@ export default function ProductFormModal({ product, categories, onClose, onSaved
                 onChange={(e) => setBarcode(e.target.value)}
                 className="input"
               />
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <label className="mb-1 block text-sm font-semibold text-slate-700">
-                  {t("price")} ({currency}) *
-                </label>
-                <input
-                  type="number"
-                  step="0.01"
-                  min="0"
-                  required
-                  value={price}
-                  onChange={(e) => setPrice(Number(e.target.value))}
-                  className="input"
-                />
-              </div>
-              <div>
-                <label className="mb-1 block text-sm font-semibold text-slate-700">
-                  {t("costPrice")} ({currency})
-                </label>
-                <input
-                  type="number"
-                  step="0.01"
-                  min="0"
-                  value={costPrice}
-                  onChange={(e) => setCostPrice(Number(e.target.value))}
-                  className="input"
-                />
-              </div>
             </div>
+            <div>
+              <label className="mb-1 block text-sm font-semibold text-slate-700">
+                {t("price")} ({currency}) *
+              </label>
+              <input
+                type="number"
+                step="0.01"
+                min="0"
+                required
+                value={price}
+                onChange={(e) => setPrice(Number(e.target.value))}
+                className="input"
+              />
+            </div>
+          </div>
 
           <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="mb-1 block text-sm font-semibold text-slate-700">
+                {t("costPrice")} ({currency})
+              </label>
+              <input
+                type="number"
+                step="0.01"
+                min="0"
+                value={costPrice}
+                onChange={(e) => setCostPrice(Number(e.target.value))}
+                className="input"
+              />
+            </div>
             <div>
               <label className="mb-1 block text-sm font-semibold text-slate-700">
                 {t("stock")}
@@ -213,6 +213,9 @@ export default function ProductFormModal({ product, categories, onClose, onSaved
                 className="input"
               />
             </div>
+          </div>
+
+          <div className="grid grid-cols-2 gap-4">
             <div>
               <label className="mb-1 block text-sm font-semibold text-slate-700">
                 {t("lowStockThreshold")}
