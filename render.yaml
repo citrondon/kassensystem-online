@@ -1,0 +1,20 @@
+services:
+  - type: web
+    name: kassensystem
+    runtime: node
+    plan: free
+    buildCommand: |
+      cd backend && npm install && npm run build
+      cd ../frontend && npm install && npm run build
+    startCommand: cd backend && node scripts/migrate.cjs up && node scripts/seedUsers.cjs && node dist/server.js
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: "5000"
+      - key: JWT_SECRET
+        generateValue: true
+      - key: CORS_ORIGIN
+        value: "true"
+      - key: DATABASE_URL
+        value: postgresql://kassensystem_db_user:CvVBpmBoz9fk7DZzxNAL6Sp1RVmWdM0I@dpg-d9h4fukm0tmc73bqdl5g-a.frankfurt-postgres.render.com:5432/kassensystem_db
