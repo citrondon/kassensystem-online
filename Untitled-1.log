@@ -1,0 +1,59 @@
+fw_7JrJbJh...  AUTH_FAIL_412  bal=n/a
+fw_gpxrane...  NET_ERR  bal=n/a
+fw_YAadz1z...  AUTH_FAIL_412  bal=n/a
+fw_N1dHgT7...  NET_ERR  bal=n/a
+fw_RZUFAZC...  AUTH_FAIL_412  bal=n/a
+fw_TxziDX2...  AUTH_FAIL_412  bal=n/a
+fw_C3F3z9X...  AUTH_FAIL_412  bal=n/a
+fw_BRf3R5L...  AUTH_FAIL_412  bal=n/a
+fw_NNh3icy...  AUTH_FAIL_412  bal=n/a
+fw_HQFwUAp...  AUTH_FAIL_412  bal=n/a
+fw_U1x8wiU...  AUTH_FAIL_412  bal=n/a
+fw_PtTm2Ca...  AUTH_FAIL_412  bal=n/a
+fw_326hnjW...  NET_ERR  bal=n/a
+fw_KFJPbm7...  NET_ERR  bal=n/a
+fw_C9qxJCZ...  AUTH_FAIL_412  bal=n/a
+fw_DDYvuLK...  AUTH_FAIL_412  bal=n/a
+fw_6WCfssa...  NET_ERR  bal=n/a
+fw_JHes3v9...  NET_ERR  bal=n/a
+fw_Hfquofz...  NET_ERR  bal=n/a
+fw_EzSnefV...  NET_ERR  bal=n/a
+fw_zfjWYnb...  AUTH_FAIL_412  bal=n/a
+fw_TeSYGrX...  NET_ERR  bal=n/a
+fw_9QeVj5H...  NET_ERR  bal=n/a
+fw_YQ6Qi7c...  NET_ERR  bal=n/a
+fw_Py3UDi1...  AUTH_FAIL_412  bal=n/a
+fw_CwVVTR9...  NET_ERR  bal=n/a
+fw_44X3dPC...  AUTH_FAIL_412  bal=n/a
+fw_SfNUTpe...  NET_ERR  bal=n/a
+fw_H8bfXwP...  NET_ERR  bal=n/a
+fw_LzqxJhr...  NET_ERR  bal=n/a
+
+===== SUMMARY =====
+
+Key           FullKey                   Auth          Code Balance Note                                                
+---           -------                   ----          ---- ------- ----                                                
+fw_7JrJbJh... fw_7JrJbJhNq8AQA7hvMTGjcK AUTH_FAIL_412  412 n/a                                                         
+fw_gpxrane... fw_gpxraneGFvLXu4krbKJvb  NET_ERR          0 n/a     Der Objektverweis wurde nicht auf eine Objektinst...
+fw_YAadz1z... fw_YAadz1zB3NKF7pwQvV1UNM AUTH_FAIL_412  412 n/a                                                         
+fw_N1dHgT7... fw_N1dHgT7dTbiFvMPWYtYaVc NET_ERR          0 n/a     Der Objektverweis wurde nicht auf eine Objektinst...
+fw_RZUFAZC... fw_RZUFAZCWTwxKWgWqKmGcLN AUTH_FAIL_412  412 n/a                                                         
+fw_TxziDX2... fw_TxziDX2qbWACGiP62aokFg AUTH_FAIL_412  412 n/a                                                         
+fw_C3F3z9X... fw_C3F3z9XnFxf7eD8G1Ei97v AUTH_FAIL_412  412 n/a                                                         
+fw_BRf3R5L... fw_BRf3R5L2efnaC7aT6YW9Nw AUTH_FAIL_412  412 n/a                                                         
+fw_NNh3icy... fw_NNh3icyEz2rhX7GnJpaXgH AUTH_FAIL_412  412 n/a                                                         
+fw_HQFwUAp... fw_HQFwUApQbtdzWrinxWnmJx AUTH_FAIL_412  412 n/a                                                         
+fw_U1x8wiU... fw_U1x8wiU9dbDCLzGPvcM1Rh AUTH_FAIL_412  412 n/a                                                         
+fw_PtTm2Ca... fw_PtTm2CaHXjrsetRi4rerx  AUTH_FAIL_412  412 n/a                                                         
+fw_326hnjW... fw_326hnjWNyJqKH8uAEacvCX NET_ERR          0 n/a     Der Objektverweis wurde nicht auf eine Objektinst...
+fw_KFJPbm7... fw_KFJPbm7kMd1DgbdmEz5Q6E NET_ERR          0 n/a     Der Objektverweis wurde nicht auf eine Objektinst...
+fw_C9qxJCZ... fw_C9qxJCZaX2Utdgn3xraFEY AUTH_FAIL_412  412 n/a                                                         
+fw_DDYvuLK... fw_DDYvuLKoSXE5tmuewa92xK AUTH_FAIL_412  412 n/a                                                         
+fw_6WCfssa... fw_6WCfssak1D6Cvif6kTFkwA NET_ERR          0 n/a     Der Objektverweis wurde nicht auf eine Objektinst...
+fw_JHes3v9... fw_JHes3v9hhw1J3rcDn4udcT NET_ERR          0 n/a     Der Objektverweis wurde nicht auf eine Objektinst...
+fw_Hfquofz... fw_Hfquofz8xQZpF1L3faZFsC NET_ERR          0 n/a     Der Objektverweis wurde nicht auf eine Objektinst...
+fw_EzSnefV... fw_EzSnefVcFymPMZKTJzkXpK NET_ERR          0 n/a     Der Objektverweis wurde nicht auf eine Objektinst...
+fw_zfjWYnb... fw_zfjWYnbFHfFVVpT8xas74  AUTH_FAIL_412  412 n/a                                                         
+fw_TeSYGrX... fw_TeSYGrXnkWZTgDy7ZQedS7 NET_ERR          0 n/a     Der Objektverweis wurde nicht auf eine Objektinst...
+fw_9QeVj5H... fw_9QeVj5
+… (truncated, 1032 chars omitted)

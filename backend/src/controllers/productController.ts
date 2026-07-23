@@ -6,6 +6,7 @@ export interface ProductRow {
   name: string;
   barcode: string | null;
   price: string;
+  cost_price: string;
   stock: number;
   category_id: number | null;
   category_name: string | null;
@@ -14,7 +15,7 @@ export interface ProductRow {
 }
 
 const SELECT_WITH_CATEGORY = `
-  SELECT p.id, p.name, p.barcode, p.price, p.stock,
+  SELECT p.id, p.name, p.barcode, p.price, p.cost_price, p.stock,
          p.category_id, c.name AS category_name,
          p.image_url, p.low_stock_threshold
   FROM products p
@@ -69,17 +70,18 @@ export const getProducts = async (req: Request, res: Response): Promise<void> =>
 };
 
 export const createProduct = async (req: Request, res: Response): Promise<void> => {
-  const { name, barcode, price, stock, categoryId, lowStockThreshold } = req.body;
+  const { name, barcode, price, costPrice, stock, categoryId, lowStockThreshold } = req.body;
 
   try {
     const result = await pool.query<ProductRow>(
-      `INSERT INTO products (name, barcode, price, stock, category_id, low_stock_threshold)
-       VALUES ($1, $2, $3, $4, $5, $6)
+      `INSERT INTO products (name, barcode, price, cost_price, stock, category_id, low_stock_threshold)
+       VALUES ($1, $2, $3, $4, $5, $6, $7)
        RETURNING id`,
       [
         name,
         barcode || null,
         price,
+        costPrice ?? 0,
         stock ?? 0,
         categoryId ?? null,
         lowStockThreshold ?? 10,
@@ -100,18 +102,19 @@ export const createProduct = async (req: Request, res: Response): Promise<void> 
 
 export const updateProduct = async (req: Request, res: Response): Promise<void> => {
   const id = Number(req.params.id);
-  const { name, barcode, price, stock, categoryId, lowStockThreshold, imageUrl } = req.body;
+  const { name, barcode, price, costPrice, stock, categoryId, lowStockThreshold, imageUrl } = req.body;
 
   try {
     const result = await pool.query(
       `UPDATE products
-       SET name = $1, barcode = $2, price = $3, stock = $4,
-           category_id = $5, low_stock_threshold = $6, image_url = $7
-       WHERE id = $8`,
+       SET name = $1, barcode = $2, price = $3, cost_price = $4, stock = $5,
+           category_id = $6, low_stock_threshold = $7, image_url = $8
+       WHERE id = $9`,
       [
         name,
         barcode || null,
         price,
+        costPrice ?? 0,
         stock ?? 0,
         categoryId ?? null,
         lowStockThreshold ?? 10,

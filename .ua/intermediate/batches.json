@@ -1,0 +1,722 @@
+{
+  "schemaVersion": 1,
+  "algorithm": "louvain",
+  "totalFiles": 67,
+  "totalBatches": 3,
+  "exportsByPath": {
+    "backend\\migrations\\1783847619918_initial-schema.js": [
+      "shorthands",
+      "up",
+      "down"
+    ],
+    "backend\\migrations\\1783847779795_add-users.js": [
+      "shorthands",
+      "up",
+      "down"
+    ],
+    "frontend\\postcss.config.js": [],
+    "frontend\\tailwind.config.js": [],
+    "mobile\\metro.config.js": [],
+    "backend\\vitest.config.ts": [],
+    "backend\\src\\server.ts": [
+      "app",
+      "start"
+    ],
+    "backend\\src\\controllers\\authController.ts": [
+      "login",
+      "verifyToken",
+      "getCurrentUser"
+    ],
+    "backend\\src\\controllers\\categoryController.ts": [
+      "getCategories"
+    ],
+    "backend\\src\\controllers\\customerController.ts": [
+      "getCustomers",
+      "createCustomer",
+      "getDebts",
+      "markDebtPaid"
+    ],
+    "backend\\src\\controllers\\orderController.ts": [
+      "processCheckout",
+      "getOrders",
+      "getOrderById"
+    ],
+    "backend\\src\\controllers\\productController.ts": [
+      "getProducts",
+      "createProduct",
+      "updateProduct",
+      "deleteProduct",
+      "uploadProductImage"
+    ],
+    "backend\\src\\controllers\\reportController.ts": [
+      "getDailyReport",
+      "getTopProducts",
+      "getSalesOverTime",
+      "getPeakHours"
+    ],
+    "backend\\src\\middleware\\authMiddleware.ts": [
+      "authenticate",
+      "requireManager"
+    ],
+    "backend\\src\\routes\\authRoutes.ts": [],
+    "backend\\src\\routes\\categoryRoutes.ts": [],
+    "backend\\src\\routes\\customerRoutes.ts": [],
+    "backend\\src\\routes\\orderRoutes.ts": [],
+    "backend\\src\\routes\\productRoutes.ts": [],
+    "backend\\src\\routes\\reportRoutes.ts": [],
+    "backend\\src\\tests\\checkout.test.ts": [],
+    "backend\\src\\tests\\globalSetup.ts": [],
+    "backend\\src\\tests\\health.test.ts": [],
+    "backend\\src\\tests\\helpers.ts": [
+      "createTestUser",
+      "loginAs"
+    ],
+    "backend\\src\\tests\\products.test.ts": [],
+    "backend\\src\\tests\\reports.test.ts": [],
+    "backend\\src\\utils\\pool.ts": [],
+    "backend\\src\\validation\\checkoutSchema.ts": [
+      "checkoutItemSchema",
+      "checkoutPayloadSchema"
+    ],
+    "backend\\src\\validation\\productSchema.ts": [
+      "productCreateSchema",
+      "productUpdateSchema",
+      "productIdParamSchema"
+    ],
+    "backend\\src\\validation\\validate.ts": [
+      "validateBody",
+      "formatZodError"
+    ],
+    "frontend\\vite.config.ts": [],
+    "frontend\\src\\types.ts": [],
+    "frontend\\src\\i18n\\translations.ts": [
+      "translations"
+    ],
+    "frontend\\src\\services\\api.ts": [
+      "getProducts",
+      "getCategories",
+      "createProduct",
+      "updateProduct",
+      "deleteProduct",
+      "uploadProductImage",
+      "checkout",
+      "getOrders",
+      "getOrderById",
+      "getDailyReport",
+      "getTopProducts",
+      "getSalesOverTime",
+      "getPeakHours",
+      "getCustomers",
+      "createCustomer",
+      "getDebts",
+      "markDebtPaid"
+    ],
+    "frontend\\src\\services\\db.ts": [
+      "db"
+    ],
+    "frontend\\src\\services\\offline.ts": [
+      "syncProductsToCache",
+      "getProductsFromCache",
+      "savePendingOrder",
+      "syncPendingOrders",
+      "getPendingOrderCount",
+      "isOnline"
+    ],
+    "frontend\\src\\utils\\categoryStyles.ts": [
+      "CATEGORY_META",
+      "getCategoryMeta",
+      "CATEGORY_LABELS",
+      "getCategoryLabel",
+      "enrichCategories"
+    ],
+    "mobile\\index.ts": [],
+    "mobile\\src\\utils\\format.ts": [
+      "formatCFA",
+      "formatShortDate"
+    ],
+    "mobile\\src\\utils\\secureStore.ts": [
+      "setItemAsync",
+      "getItemAsync",
+      "deleteItemAsync"
+    ],
+    "mobile\\src\\utils\\secureStore.web.ts": [
+      "setItemAsync",
+      "getItemAsync",
+      "deleteItemAsync"
+    ],
+    "frontend\\src\\App.tsx": [
+      "App"
+    ],
+    "frontend\\src\\main.tsx": [],
+    "frontend\\src\\components\\Cart.tsx": [
+      "Cart"
+    ],
+    "frontend\\src\\components\\CashierInterface.tsx": [
+      "CashierInterface"
+    ],
+    "frontend\\src\\components\\CheckoutModal.tsx": [
+      "CheckoutModal"
+    ],
+    "frontend\\src\\components\\Dashboard.tsx": [
+      "Dashboard"
+    ],
+    "frontend\\src\\components\\Header.tsx": [
+      "Header"
+    ],
+    "frontend\\src\\components\\InventoryOverview.tsx": [
+      "InventoryOverview"
+    ],
+    "frontend\\src\\components\\LanguageSwitcher.tsx": [
+      "LanguageSwitcher"
+    ],
+    "frontend\\src\\components\\LoginView.tsx": [
+      "LoginView"
+    ],
+    "frontend\\src\\components\\MobileNav.tsx": [
+      "MobileNav"
+    ],
+    "frontend\\src\\components\\OrderDetailModal.tsx": [
+      "OrderDetailModal"
+    ],
+    "frontend\\src\\components\\OrdersView.tsx": [
+      "OrdersView"
+    ],
+    "frontend\\src\\components\\ProductFormModal.tsx": [
+      "ProductFormModal"
+    ],
+    "frontend\\src\\components\\ProductImage.tsx": [
+      "ProductImage"
+    ],
+    "frontend\\src\\components\\ProductList.tsx": [
+      "ProductList"
+    ],
+    "frontend\\src\\components\\ReceiptModal.tsx": [
+      "ReceiptModal"
+    ],
+    "frontend\\src\\components\\ReportsView.tsx": [
+      "ReportsView"
+    ],
+    "frontend\\src\\components\\Scanner.tsx": [
+      "Scanner"
+    ],
+    "frontend\\src\\components\\Sidebar.tsx": [
+      "Sidebar"
+    ],
+    "frontend\\src\\components\\Toast.tsx": [
+      "Toast"
+    ],
+    "frontend\\src\\contexts\\AuthContext.tsx": [
+      "AuthProvider",
+      "useAuth",
+      "getStoredToken"
+    ],
+    "frontend\\src\\i18n\\I18nContext.tsx": [
+      "I18nProvider",
+      "useI18n"
+    ],
+    "mobile\\src\\screens\\CustomerBookScreen.tsx": [
+      "CustomerBookScreen"
+    ],
+    "mobile\\src\\screens\\DailySummaryScreen.tsx": [
+      "DailySummaryScreen"
+    ],
+    "mobile\\src\\screens\\PinLoginScreen.tsx": [
+      "PinLoginScreen"
+    ]
+  },
+  "batches": [
+    {
+      "batchIndex": 1,
+      "files": [
+        {
+          "path": "backend\\migrations\\1783847619918_initial-schema.js",
+          "lines": 101,
+          "fileCategory": "code",
+          "language": "js"
+        },
+        {
+          "path": "backend\\migrations\\1783847779795_add-users.js",
+          "lines": 31,
+          "fileCategory": "code",
+          "language": "js"
+        },
+        {
+          "path": "backend\\src\\controllers\\authController.ts",
+          "lines": 94,
+          "fileCategory": "code",
+          "language": "ts"
+        },
+        {
+          "path": "backend\\src\\controllers\\categoryController.ts",
+          "lines": 20,
+          "fileCategory": "code",
+          "language": "ts"
+        },
+        {
+          "path": "backend\\src\\controllers\\customerController.ts",
+          "lines": 85,
+          "fileCategory": "code",
+          "language": "ts"
+        },
+        {
+          "path": "backend\\src\\controllers\\orderController.ts",
+          "lines": 230,
+          "fileCategory": "code",
+          "language": "ts"
+        },
+        {
+          "path": "backend\\src\\controllers\\productController.ts",
+          "lines": 191,
+          "fileCategory": "code",
+          "language": "ts"
+        },
+        {
+          "path": "backend\\src\\controllers\\reportController.ts",
+          "lines": 196,
+          "fileCategory": "code",
+          "language": "ts"
+        },
+        {
+          "path": "backend\\src\\middleware\\authMiddleware.ts",
+          "lines": 43,
+          "fileCategory": "code",
+          "language": "ts"
+        },
+        {
+          "path": "backend\\src\\routes\\authRoutes.ts",
+          "lines": 11,
+          "fileCategory": "code",
+          "language": "ts"
+        },
+        {
+          "path": "backend\\src\\routes\\categoryRoutes.ts",
+          "lines": 9,
+          "fileCategory": "code",
+          "language": "ts"
+        },
+        {
+          "path": "backend\\src\\routes\\customerRoutes.ts",
+          "lines": 18,
+          "fileCategory": "code",
+          "language": "ts"
+        },
+        {
+          "path": "backend\\src\\routes\\orderRoutes.ts",
+          "lines": 32,
+          "fileCategory": "code",
+          "language": "ts"
+        },
+        {
+          "path": "backend\\src\\routes\\productRoutes.ts",
+          "lines": 61,
+          "fileCategory": "code",
+          "language": "ts"
+        },
+        {
+          "path": "backend\\src\\routes\\reportRoutes.ts",
+          "lines": 13,
+          "fileCategory": "code",
+          "language": "ts"
+        },
+        {
+          "path": "backend\\src\\server.ts",
+          "lines": 87,
+          "fileCategory": "code",
+          "language": "ts"
+        },
+        {
+          "path": "backend\\src\\tests\\checkout.test.ts",
+          "lines": 98,
+          "fileCategory": "code",
+          "language": "ts"
+        },
+        {
+          "path": "backend\\src\\tests\\globalSetup.ts",
+          "lines": 66,
+          "fileCategory": "code",
+          "language": "ts"
+        },
+        {
+          "path": "backend\\src\\tests\\health.test.ts",
+          "lines": 20,
+          "fileCategory": "code",
+          "language": "ts"
+        },
+        {
+          "path": "backend\\src\\tests\\helpers.ts",
+          "lines": 37,
+          "fileCategory": "code",
+          "language": "ts"
+        },
+        {
+          "path": "backend\\src\\tests\\products.test.ts",
+          "lines": 70,
+          "fileCategory": "code",
+          "language": "ts"
+        },
+        {
+          "path": "backend\\src\\tests\\reports.test.ts",
+          "lines": 188,
+          "fileCategory": "code",
+          "language": "ts"
+        },
+        {
+          "path": "backend\\src\\utils\\pool.ts",
+          "lines": 20,
+          "fileCategory": "code",
+          "language": "ts"
+        },
+        {
+          "path": "backend\\src\\validation\\checkoutSchema.ts",
+          "lines": 18,
+          "fileCategory": "code",
+          "language": "ts"
+        },
+        {
+          "path": "backend\\src\\validation\\productSchema.ts",
+          "lines": 26,
+          "fileCategory": "code",
+          "language": "ts"
+        }
+      ],
+      "batchImportData": {
+        "backend\\migrations\\1783847619918_initial-schema.js": [],
+        "backend\\migrations\\1783847779795_add-users.js": [],
+        "backend\\src\\controllers\\authController.ts": [],
+        "backend\\src\\controllers\\categoryController.ts": [],
+        "backend\\src\\controllers\\customerController.ts": [],
+        "backend\\src\\controllers\\orderController.ts": [],
+        "backend\\src\\controllers\\productController.ts": [],
+        "backend\\src\\controllers\\reportController.ts": [],
+        "backend\\src\\middleware\\authMiddleware.ts": [],
+        "backend\\src\\routes\\authRoutes.ts": [],
+        "backend\\src\\routes\\categoryRoutes.ts": [],
+        "backend\\src\\routes\\customerRoutes.ts": [],
+        "backend\\src\\routes\\orderRoutes.ts": [],
+        "backend\\src\\routes\\productRoutes.ts": [],
+        "backend\\src\\routes\\reportRoutes.ts": [],
+        "backend\\src\\server.ts": [],
+        "backend\\src\\tests\\checkout.test.ts": [],
+        "backend\\src\\tests\\globalSetup.ts": [],
+        "backend\\src\\tests\\health.test.ts": [],
+        "backend\\src\\tests\\helpers.ts": [],
+        "backend\\src\\tests\\products.test.ts": [],
+        "backend\\src\\tests\\reports.test.ts": [],
+        "backend\\src\\utils\\pool.ts": [],
+        "backend\\src\\validation\\checkoutSchema.ts": [],
+        "backend\\src\\validation\\productSchema.ts": []
+      },
+      "neighborMap": {}
+    },
+    {
+      "batchIndex": 2,
+      "files": [
+        {
+          "path": "backend\\src\\validation\\validate.ts",
+          "lines": 24,
+          "fileCategory": "code",
+          "language": "ts"
+        },
+        {
+          "path": "backend\\vitest.config.ts",
+          "lines": 12,
+          "fileCategory": "code",
+          "language": "ts"
+        },
+        {
+          "path": "frontend\\postcss.config.js",
+          "lines": 7,
+          "fileCategory": "code",
+          "language": "js"
+        },
+        {
+          "path": "frontend\\src\\App.tsx",
+          "lines": 60,
+          "fileCategory": "code",
+          "language": "tsx"
+        },
+        {
+          "path": "frontend\\src\\components\\Cart.tsx",
+          "lines": 116,
+          "fileCategory": "code",
+          "language": "tsx"
+        },
+        {
+          "path": "frontend\\src\\components\\CashierInterface.tsx",
+          "lines": 471,
+          "fileCategory": "code",
+          "language": "tsx"
+        },
+        {
+          "path": "frontend\\src\\components\\CheckoutModal.tsx",
+          "lines": 303,
+          "fileCategory": "code",
+          "language": "tsx"
+        },
+        {
+          "path": "frontend\\src\\components\\Dashboard.tsx",
+          "lines": 357,
+          "fileCategory": "code",
+          "language": "tsx"
+        },
+        {
+          "path": "frontend\\src\\components\\Header.tsx",
+          "lines": 36,
+          "fileCategory": "code",
+          "language": "tsx"
+        },
+        {
+          "path": "frontend\\src\\components\\InventoryOverview.tsx",
+          "lines": 337,
+          "fileCategory": "code",
+          "language": "tsx"
+        },
+        {
+          "path": "frontend\\src\\components\\LanguageSwitcher.tsx",
+          "lines": 19,
+          "fileCategory": "code",
+          "language": "tsx"
+        },
+        {
+          "path": "frontend\\src\\components\\LoginView.tsx",
+          "lines": 100,
+          "fileCategory": "code",
+          "language": "tsx"
+        },
+        {
+          "path": "frontend\\src\\components\\MobileNav.tsx",
+          "lines": 76,
+          "fileCategory": "code",
+          "language": "tsx"
+        },
+        {
+          "path": "frontend\\src\\components\\OrderDetailModal.tsx",
+          "lines": 128,
+          "fileCategory": "code",
+          "language": "tsx"
+        },
+        {
+          "path": "frontend\\src\\components\\OrdersView.tsx",
+          "lines": 134,
+          "fileCategory": "code",
+          "language": "tsx"
+        },
+        {
+          "path": "frontend\\src\\components\\ProductFormModal.tsx",
+          "lines": 288,
+          "fileCategory": "code",
+          "language": "tsx"
+        },
+        {
+          "path": "frontend\\src\\components\\ProductImage.tsx",
+          "lines": 40,
+          "fileCategory": "code",
+          "language": "tsx"
+        },
+        {
+          "path": "frontend\\src\\components\\ProductList.tsx",
+          "lines": 90,
+          "fileCategory": "code",
+          "language": "tsx"
+        },
+        {
+          "path": "frontend\\src\\components\\ReceiptModal.tsx",
+          "lines": 100,
+          "fileCategory": "code",
+          "language": "tsx"
+        },
+        {
+          "path": "frontend\\src\\components\\ReportsView.tsx",
+          "lines": 253,
+          "fileCategory": "code",
+          "language": "tsx"
+        },
+        {
+          "path": "frontend\\src\\components\\Scanner.tsx",
+          "lines": 55,
+          "fileCategory": "code",
+          "language": "tsx"
+        },
+        {
+          "path": "frontend\\src\\components\\Sidebar.tsx",
+          "lines": 82,
+          "fileCategory": "code",
+          "language": "tsx"
+        },
+        {
+          "path": "frontend\\src\\components\\Toast.tsx",
+          "lines": 49,
+          "fileCategory": "code",
+          "language": "tsx"
+        },
+        {
+          "path": "frontend\\src\\contexts\\AuthContext.tsx",
+          "lines": 83,
+          "fileCategory": "code",
+          "language": "tsx"
+        },
+        {
+          "path": "frontend\\src\\i18n\\I18nContext.tsx",
+          "lines": 68,
+          "fileCategory": "code",
+          "language": "tsx"
+        }
+      ],
+      "batchImportData": {
+        "backend\\src\\validation\\validate.ts": [],
+        "backend\\vitest.config.ts": [],
+        "frontend\\postcss.config.js": [],
+        "frontend\\src\\App.tsx": [],
+        "frontend\\src\\components\\Cart.tsx": [],
+        "frontend\\src\\components\\CashierInterface.tsx": [],
+        "frontend\\src\\components\\CheckoutModal.tsx": [],
+        "frontend\\src\\components\\Dashboard.tsx": [],
+        "frontend\\src\\components\\Header.tsx": [],
+        "frontend\\src\\components\\InventoryOverview.tsx": [],
+        "frontend\\src\\components\\LanguageSwitcher.tsx": [],
+        "frontend\\src\\components\\LoginView.tsx": [],
+        "frontend\\src\\components\\MobileNav.tsx": [],
+        "frontend\\src\\components\\OrderDetailModal.tsx": [],
+        "frontend\\src\\components\\OrdersView.tsx": [],
+        "frontend\\src\\components\\ProductFormModal.tsx": [],
+        "frontend\\src\\components\\ProductImage.tsx": [],
+        "frontend\\src\\components\\ProductList.tsx": [],
+        "frontend\\src\\components\\ReceiptModal.tsx": [],
+        "frontend\\src\\components\\ReportsView.tsx": [],
+        "frontend\\src\\components\\Scanner.tsx": [],
+        "frontend\\src\\components\\Sidebar.tsx": [],
+        "frontend\\src\\components\\Toast.tsx": [],
+        "frontend\\src\\contexts\\AuthContext.tsx": [],
+        "frontend\\src\\i18n\\I18nContext.tsx": []
+      },
+      "neighborMap": {}
+    },
+    {
+      "batchIndex": 3,
+      "files": [
+        {
+          "path": "frontend\\src\\i18n\\translations.ts",
+          "lines": 287,
+          "fileCategory": "code",
+          "language": "ts"
+        },
+        {
+          "path": "frontend\\src\\main.tsx",
+          "lines": 14,
+          "fileCategory": "code",
+          "language": "tsx"
+        },
+        {
+          "path": "frontend\\src\\services\\api.ts",
+          "lines": 257,
+          "fileCategory": "code",
+          "language": "ts"
+        },
+        {
+          "path": "frontend\\src\\services\\db.ts",
+          "lines": 31,
+          "fileCategory": "code",
+          "language": "ts"
+        },
+        {
+          "path": "frontend\\src\\services\\offline.ts",
+          "lines": 89,
+          "fileCategory": "code",
+          "language": "ts"
+        },
+        {
+          "path": "frontend\\src\\types.ts",
+          "lines": 103,
+          "fileCategory": "code",
+          "language": "ts"
+        },
+        {
+          "path": "frontend\\src\\utils\\categoryStyles.ts",
+          "lines": 214,
+          "fileCategory": "code",
+          "language": "ts"
+        },
+        {
+          "path": "frontend\\tailwind.config.js",
+          "lines": 9,
+          "fileCategory": "code",
+          "language": "js"
+        },
+        {
+          "path": "frontend\\vite.config.ts",
+          "lines": 60,
+          "fileCategory": "code",
+          "language": "ts"
+        },
+        {
+          "path": "mobile\\index.ts",
+          "lines": 9,
+          "fileCategory": "code",
+          "language": "ts"
+        },
+        {
+          "path": "mobile\\metro.config.js",
+          "lines": 9,
+          "fileCategory": "code",
+          "language": "js"
+        },
+        {
+          "path": "mobile\\src\\screens\\CustomerBookScreen.tsx",
+          "lines": 352,
+          "fileCategory": "code",
+          "language": "tsx"
+        },
+        {
+          "path": "mobile\\src\\screens\\DailySummaryScreen.tsx",
+          "lines": 116,
+          "fileCategory": "code",
+          "language": "tsx"
+        },
+        {
+          "path": "mobile\\src\\screens\\PinLoginScreen.tsx",
+          "lines": 97,
+          "fileCategory": "code",
+          "language": "tsx"
+        },
+        {
+          "path": "mobile\\src\\utils\\format.ts",
+          "lines": 15,
+          "fileCategory": "code",
+          "language": "ts"
+        },
+        {
+          "path": "mobile\\src\\utils\\secureStore.ts",
+          "lines": 3,
+          "fileCategory": "code",
+          "language": "ts"
+        },
+        {
+          "path": "mobile\\src\\utils\\secureStore.web.ts",
+          "lines": 13,
+          "fileCategory": "code",
+          "language": "ts"
+        }
+      ],
+      "batchImportData": {
+        "frontend\\src\\i18n\\translations.ts": [],
+        "frontend\\src\\main.tsx": [],
+        "frontend\\src\\services\\api.ts": [],
+        "frontend\\src\\services\\db.ts": [],
+        "frontend\\src\\services\\offline.ts": [],
+        "frontend\\src\\types.ts": [],
+        "frontend\\src\\utils\\categoryStyles.ts": [],
+        "frontend\\tailwind.config.js": [],
+        "frontend\\vite.config.ts": [],
+        "mobile\\index.ts": [],
+        "mobile\\metro.config.js": [],
+        "mobile\\src\\screens\\CustomerBookScreen.tsx": [],
+        "mobile\\src\\screens\\DailySummaryScreen.tsx": [],
+        "mobile\\src\\screens\\PinLoginScreen.tsx": [],
+        "mobile\\src\\utils\\format.ts": [],
+        "mobile\\src\\utils\\secureStore.ts": [],
+        "mobile\\src\\utils\\secureStore.web.ts": []
+      },
+      "neighborMap": {}
+    }
+  ]
+}

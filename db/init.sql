@@ -69,30 +69,6 @@ CREATE INDEX IF NOT EXISTS idx_products_category_id ON products(category_id);
 CREATE INDEX IF NOT EXISTS idx_order_items_order_id ON order_items(order_id);
 CREATE INDEX IF NOT EXISTS idx_orders_order_date ON orders(order_date DESC);
 
--- Kunden und Schulden (Auf Kredit verkaufen)
-CREATE TABLE IF NOT EXISTS customers (
-    id           SERIAL PRIMARY KEY,
-    name         VARCHAR(255) NOT NULL,
-    phone        VARCHAR(50),
-    created_at   TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
-);
-
-CREATE TABLE IF NOT EXISTS debts (
-    id            SERIAL PRIMARY KEY,
-    customer_id   INTEGER NOT NULL REFERENCES customers(id) ON DELETE CASCADE,
-    order_id      INTEGER REFERENCES orders(id) ON DELETE SET NULL,
-    amount        DECIMAL(10, 2) NOT NULL CHECK (amount >= 0),
-    paid          BOOLEAN NOT NULL DEFAULT FALSE,
-    paid_date     TIMESTAMP WITH TIME ZONE,
-    created_at    TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
-);
-
-CREATE INDEX IF NOT EXISTS idx_debts_customer_id ON debts(customer_id);
-CREATE INDEX IF NOT EXISTS idx_debts_unpaid ON debts(paid) WHERE paid = FALSE;
-
-ALTER TABLE orders
-    ADD COLUMN IF NOT EXISTS customer_id INTEGER REFERENCES customers(id) ON DELETE SET NULL;
-
 CREATE TABLE IF NOT EXISTS pgmigrations (
     id SERIAL PRIMARY KEY,
     name VARCHAR(255) NOT NULL UNIQUE,

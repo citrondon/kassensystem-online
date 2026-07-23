@@ -8,6 +8,7 @@ export const productCreateSchema = z.object({
   name: z.string().min(1, "Name ist erforderlich.").max(MAX_NAME_LENGTH, "Name ist zu lang."),
   barcode: z.string().max(MAX_BARCODE_LENGTH, "Barcode ist zu lang.").optional().nullable(),
   price: z.number().min(0, "Preis darf nicht negativ sein."),
+  costPrice: z.number().min(0, "Einkaufspreis darf nicht negativ sein.").optional().default(0),
   stock: z.number().int().min(0, "Bestand darf nicht negativ sein.").optional().default(0),
   categoryId: z.number().int().positive("Kategorie-ID muss positiv sein.").optional().nullable(),
   lowStockThreshold: z.number().int().min(0, "Mindestbestand darf nicht negativ sein.").optional().default(10),

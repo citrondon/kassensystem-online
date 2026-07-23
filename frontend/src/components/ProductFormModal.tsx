@@ -19,6 +19,7 @@ export default function ProductFormModal({ product, categories, onClose, onSaved
   const [name, setName] = useState(product?.name ?? "");
   const [barcode, setBarcode] = useState(product?.barcode ?? "");
   const [price, setPrice] = useState(product ? Number(product.price) : 0);
+  const [costPrice, setCostPrice] = useState(product ? Number(product.cost_price) : 0);
   const [stock, setStock] = useState(product?.stock ?? 0);
   const [categoryId, setCategoryId] = useState<number | null>(product?.category_id ?? null);
   const [lowStockThreshold, setLowStockThreshold] = useState(
@@ -36,6 +37,7 @@ export default function ProductFormModal({ product, categories, onClose, onSaved
     setName(product?.name ?? "");
     setBarcode(product?.barcode ?? "");
     setPrice(product ? Number(product.price) : 0);
+    setCostPrice(product ? Number(product.cost_price) : 0);
     setStock(product?.stock ?? 0);
     setCategoryId(product?.category_id ?? null);
     setLowStockThreshold(product?.low_stock_threshold ?? 10);
@@ -80,6 +82,7 @@ export default function ProductFormModal({ product, categories, onClose, onSaved
       name: name.trim(),
       barcode: barcode.trim(),
       price,
+      costPrice,
       stock,
       categoryId,
       lowStockThreshold,
@@ -167,22 +170,35 @@ export default function ProductFormModal({ product, categories, onClose, onSaved
                 onChange={(e) => setBarcode(e.target.value)}
                 className="input"
               />
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="mb-1 block text-sm font-semibold text-slate-700">
+                  {t("price")} ({currency}) *
+                </label>
+                <input
+                  type="number"
+                  step="0.01"
+                  min="0"
+                  required
+                  value={price}
+                  onChange={(e) => setPrice(Number(e.target.value))}
+                  className="input"
+                />
+              </div>
+              <div>
+                <label className="mb-1 block text-sm font-semibold text-slate-700">
+                  {t("costPrice")} ({currency})
+                </label>
+                <input
+                  type="number"
+                  step="0.01"
+                  min="0"
+                  value={costPrice}
+                  onChange={(e) => setCostPrice(Number(e.target.value))}
+                  className="input"
+                />
+              </div>
             </div>
-            <div>
-              <label className="mb-1 block text-sm font-semibold text-slate-700">
-                {t("price")} ({currency}) *
-              </label>
-              <input
-                type="number"
-                step="0.01"
-                min="0"
-                required
-                value={price}
-                onChange={(e) => setPrice(Number(e.target.value))}
-                className="input"
-              />
-            </div>
-          </div>
 
           <div className="grid grid-cols-2 gap-4">
             <div>

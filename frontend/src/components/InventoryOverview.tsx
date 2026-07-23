@@ -186,6 +186,7 @@ export default function InventoryOverview() {
                 <th className="px-5 py-3">{t("barcode")}</th>
                 <th className="px-5 py-3">{t("category")}</th>
                 <th className="px-5 py-3 text-right">{t("price")}</th>
+                <th className="px-5 py-3 text-right">{t("costPrice")}</th>
                 <th className="px-5 py-3 text-right">{t("stock")}</th>
                 <th className="px-5 py-3 text-right">{t("actions")}</th>
               </tr>
@@ -193,7 +194,7 @@ export default function InventoryOverview() {
             <tbody className="divide-y divide-slate-50">
               {filtered.length === 0 ? (
                 <tr>
-                  <td colSpan={7} className="px-5 py-10 text-center text-slate-400">
+                  <td colSpan={8} className="px-5 py-10 text-center text-slate-400">
                     {t("noProductsFound")}
                   </td>
                 </tr>
@@ -234,6 +235,9 @@ export default function InventoryOverview() {
                     </td>
                     <td className="px-5 py-3 text-right font-medium text-slate-800">
                       {Number(product.price).toFixed(2)} {currency}
+                    </td>
+                    <td className="px-5 py-3 text-right text-sm text-slate-500">
+                      {Number(product.cost_price).toFixed(2)} {currency}
                     </td>
                     <td className="px-5 py-3 text-right">
                       <span

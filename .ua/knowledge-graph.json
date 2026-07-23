@@ -1,0 +1,3168 @@
+{
+  "schemaVersion": 1,
+  "nodes": [
+    {
+      "id": "backend\\migrations\\1783847619918_initial-schema.js",
+      "type": "file",
+      "label": "backend\\migrations\\1783847619918_initial-schema.js",
+      "language": "js",
+      "lines": 101,
+      "summary": "Diese node-pg-migrate-Migration erstellt das initiale Schema mit Tabellen f\u00fcr Kategorien, Produkte, Bestellungen und Bestellpositionen, inklusive Indizes, Constraints und Seed-Daten.",
+      "tags": [
+        "migration",
+        "database",
+        "postgresql",
+        "schema",
+        "node-pg-migrate"
+      ],
+      "layer": "data",
+      "exports": [
+        "shorthands",
+        "up",
+        "down"
+      ]
+    },
+    {
+      "id": "backend\\migrations\\1783847779795_add-users.js",
+      "type": "file",
+      "label": "backend\\migrations\\1783847779795_add-users.js",
+      "language": "js",
+      "lines": 31,
+      "summary": "Migration erstellt die users-Tabelle mit id, username, password_hash, role und created_at.",
+      "tags": [
+        "migration",
+        "database",
+        "postgresql",
+        "users"
+      ],
+      "layer": "data",
+      "exports": [
+        "shorthands",
+        "up",
+        "down"
+      ]
+    },
+    {
+      "id": "frontend\\postcss.config.js",
+      "type": "file",
+      "label": "frontend\\postcss.config.js",
+      "language": "js",
+      "lines": 7,
+      "summary": "PostCSS-Konfiguration mit Tailwind CSS und Autoprefixer als Plugins.",
+      "tags": [
+        "postcss",
+        "tailwindcss",
+        "autoprefixer",
+        "config"
+      ],
+      "layer": "infra",
+      "exports": []
+    },
+    {
+      "id": "frontend\\tailwind.config.js",
+      "type": "file",
+      "label": "frontend\\tailwind.config.js",
+      "language": "js",
+      "lines": 9,
+      "summary": "Tailwind-CSS-Konfiguration f\u00fcr ein Vite/React-Frontend mit Content-Pfaden f\u00fcr HTML und JSX/TSX-Dateien.",
+      "tags": [
+        "tailwindcss",
+        "config",
+        "frontend"
+      ],
+      "layer": "ui",
+      "exports": [
+        "default"
+      ]
+    },
+    {
+      "id": "mobile\\metro.config.js",
+      "type": "file",
+      "label": "mobile\\metro.config.js",
+      "language": "js",
+      "lines": 9,
+      "summary": "Metro-Konfiguration f\u00fcr Expo, die WebAssembly-Dateien als Assets erkennt, um den Web-Worker von expo-sqlite zu unterst\u00fctzen.",
+      "tags": [
+        "metro",
+        "expo",
+        "config",
+        "wasm",
+        "sqlite"
+      ],
+      "layer": "infra",
+      "exports": [
+        "config"
+      ]
+    },
+    {
+      "id": "backend\\vitest.config.ts",
+      "type": "file",
+      "label": "backend\\vitest.config.ts",
+      "language": "ts",
+      "lines": 12,
+      "summary": "Vitest-Konfiguration f\u00fcr Node.js-Tests mit globalen APIs, Fork-Pool und globalem Setup.",
+      "tags": [
+        "vitest",
+        "config",
+        "testing",
+        "node"
+      ],
+      "layer": "infra",
+      "exports": [
+        "default"
+      ]
+    },
+    {
+      "id": "backend\\src\\server.ts",
+      "type": "file",
+      "label": "backend\\src\\server.ts",
+      "language": "ts",
+      "lines": 87,
+      "summary": "Express-Server mit CORS, JSON-Parsing, statischen Uploads, Health-Check und API-Routen. Verbindet sich mit PostgreSQL \u00fcber ein Pool-Utility und startet auf konfigurierbarem Port.",
+      "tags": [
+        "express",
+        "server",
+        "api",
+        "postgres",
+        "backend"
+      ],
+      "layer": "api",
+      "exports": [
+        "app",
+        "start"
+      ]
+    },
+    {
+      "id": "backend\\src\\controllers\\authController.ts",
+      "type": "file",
+      "label": "backend\\src\\controllers\\authController.ts",
+      "language": "ts",
+      "lines": 94,
+      "summary": "Controller f\u00fcr Authentifizierung mit Login, JWT-Verifizierung und Endpunkt f\u00fcr den aktuellen Benutzer.",
+      "tags": [
+        "auth",
+        "controller",
+        "jwt",
+        "express",
+        "bcrypt"
+      ],
+      "layer": "api",
+      "exports": [
+        "UserRow",
+        "JwtPayload",
+        "login",
+        "verifyToken",
+        "getCurrentUser"
+      ]
+    },
+    {
+      "id": "backend\\src\\controllers\\categoryController.ts",
+      "type": "file",
+      "label": "backend\\src\\controllers\\categoryController.ts",
+      "language": "ts",
+      "lines": 20,
+      "summary": "Express-Controller f\u00fcr Kategorien. Liest alle Kategorien aus der Datenbank und gibt sie sortiert zur\u00fcck.",
+      "tags": [
+        "express",
+        "controller",
+        "database",
+        "categories"
+      ],
+      "layer": "api",
+      "exports": [
+        "CategoryRow",
+        "getCategories"
+      ]
+    },
+    {
+      "id": "backend\\src\\controllers\\customerController.ts",
+      "type": "file",
+      "label": "backend\\src\\controllers\\customerController.ts",
+      "language": "ts",
+      "lines": 85,
+      "summary": "Controller f\u00fcr Kunden- und Schuldenverwaltung mit Express und PostgreSQL.",
+      "tags": [
+        "controller",
+        "customers",
+        "debts",
+        "express",
+        "postgres"
+      ],
+      "layer": "api",
+      "exports": [
+        "CustomerRow",
+        "getCustomers",
+        "createCustomer",
+        "DebtRow",
+        "getDebts",
+        "markDebtPaid"
+      ]
+    },
+    {
+      "id": "backend\\src\\controllers\\orderController.ts",
+      "type": "file",
+      "label": "backend\\src\\controllers\\orderController.ts",
+      "language": "ts",
+      "lines": 230,
+      "summary": "Diese Datei implementiert die Checkout- und Bestellverwaltung: `processCheckout` f\u00fchrt eine transaktionale Bestellabwicklung mit Lageraktualisierung, Rabatt, Zahlungsabwicklung und optionaler Kreditverkaufs-Schuldenerfassung durch; `getOrders` und `getOrderById` liefern Bestelllisten und Details \u00fcber Express-Handler.",
+      "tags": [
+        "express",
+        "postgresql",
+        "transaction",
+        "checkout",
+        "orders"
+      ],
+      "layer": "api",
+      "exports": [
+        "CheckoutItem",
+        "PaymentMethod",
+        "CheckoutPayload",
+        "CheckoutResult",
+        "processCheckout",
+        "OrderListRow",
+        "getOrders",
+        "OrderDetailRow",
+        "getOrderById"
+      ]
+    },
+    {
+      "id": "backend\\src\\controllers\\productController.ts",
+      "type": "file",
+      "label": "backend\\src\\controllers\\productController.ts",
+      "language": "ts",
+      "lines": 191,
+      "summary": "Express-Controller f\u00fcr Produkte mit CRUD-Operationen, Kategorie-Join, Suche/Filter und Bild-Upload.",
+      "tags": [
+        "express",
+        "controller",
+        "products",
+        "crud",
+        "postgres",
+        "upload"
+      ],
+      "layer": "api",
+      "exports": [
+        "ProductRow",
+        "SELECT_WITH_CATEGORY",
+        "safeErrorMessage",
+        "getProducts",
+        "createProduct",
+        "updateProduct",
+        "deleteProduct",
+        "uploadProductImage"
+      ]
+    },
+    {
+      "id": "backend\\src\\controllers\\reportController.ts",
+      "type": "file",
+      "label": "backend\\src\\controllers\\reportController.ts",
+      "language": "ts",
+      "lines": 196,
+      "summary": "Express-Controller f\u00fcr Verkaufsberichte. Liefert Tages-Z-Reports, Top-Produkte, Umsatzverl\u00e4ufe und Sto\u00dfzeiten aus einer PostgreSQL-Datenbank.",
+      "tags": [
+        "controller",
+        "reporting",
+        "express",
+        "postgresql"
+      ],
+      "layer": "api",
+      "exports": [
+        "getDailyReport",
+        "getTopProducts",
+        "getSalesOverTime",
+        "getPeakHours"
+      ]
+    },
+    {
+      "id": "backend\\src\\middleware\\authMiddleware.ts",
+      "type": "file",
+      "label": "backend\\src\\middleware\\authMiddleware.ts",
+      "language": "ts",
+      "lines": 43,
+      "summary": "Express-Middleware zur JWT-Authentifizierung und Rollenpr\u00fcfung f\u00fcr Manager.",
+      "tags": [
+        "middleware",
+        "auth",
+        "express",
+        "jwt"
+      ],
+      "layer": "api",
+      "exports": [
+        "authenticate",
+        "requireManager"
+      ]
+    },
+    {
+      "id": "backend\\src\\routes\\authRoutes.ts",
+      "type": "file",
+      "label": "backend\\src\\routes\\authRoutes.ts",
+      "language": "ts",
+      "lines": 11,
+      "summary": "Definiert Express-Routen f\u00fcr Authentifizierung: Login und aktuellen Benutzer abrufen.",
+      "tags": [
+        "express",
+        "auth",
+        "routes",
+        "router"
+      ],
+      "layer": "api",
+      "exports": [
+        "router"
+      ]
+    },
+    {
+      "id": "backend\\src\\routes\\categoryRoutes.ts",
+      "type": "file",
+      "label": "backend\\src\\routes\\categoryRoutes.ts",
+      "language": "ts",
+      "lines": 9,
+      "summary": "Express-Router f\u00fcr Kategorien. Bindet GET / an den getCategories-Controller.",
+      "tags": [
+        "express",
+        "routing",
+        "category"
+      ],
+      "layer": "api",
+      "exports": [
+        "router"
+      ]
+    },
+    {
+      "id": "backend\\src\\routes\\customerRoutes.ts",
+      "type": "file",
+      "label": "backend\\src\\routes\\customerRoutes.ts",
+      "language": "ts",
+      "lines": 18,
+      "summary": "Express-Router f\u00fcr Kunden. Definiert Endpunkte zum Abrufen, Erstellen, Schulden anzeigen und als bezahlt markieren.",
+      "tags": [
+        "express",
+        "router",
+        "customer",
+        "routes"
+      ],
+      "layer": "api",
+      "exports": [
+        "router"
+      ]
+    },
+    {
+      "id": "backend\\src\\routes\\orderRoutes.ts",
+      "type": "file",
+      "label": "backend\\src\\routes\\orderRoutes.ts",
+      "language": "ts",
+      "lines": 32,
+      "summary": "Definiert Express-Routen f\u00fcr Bestellungen: GET-Liste, GET-Detail und POST-Checkout mit Authentifizierung und Zod-Validierung.",
+      "tags": [
+        "express",
+        "routes",
+        "orders",
+        "checkout",
+        "validation"
+      ],
+      "layer": "api",
+      "exports": [
+        "default"
+      ]
+    },
+    {
+      "id": "backend\\src\\routes\\productRoutes.ts",
+      "type": "file",
+      "label": "backend\\src\\routes\\productRoutes.ts",
+      "language": "ts",
+      "lines": 61,
+      "summary": "Definiert Express-Router f\u00fcr Produkte mit CRUD-Endpunkten, Bild-Upload via Multer und Authentifizierung/Manager-Berechtigung.",
+      "tags": [
+        "express",
+        "multer",
+        "routes",
+        "products",
+        "upload",
+        "auth"
+      ],
+      "layer": "api",
+      "exports": [
+        "default"
+      ]
+    },
+    {
+      "id": "backend\\src\\routes\\reportRoutes.ts",
+      "type": "file",
+      "label": "backend\\src\\routes\\reportRoutes.ts",
+      "language": "ts",
+      "lines": 13,
+      "summary": "Express-Router f\u00fcr Berichtsendpunkte. Alle Routen erfordern Authentifizierung und Managerberechtigung.",
+      "tags": [
+        "express",
+        "router",
+        "reports",
+        "auth",
+        "manager"
+      ],
+      "layer": "api",
+      "exports": [
+        "default"
+      ]
+    },
+    {
+      "id": "backend\\src\\tests\\checkout.test.ts",
+      "type": "file",
+      "label": "backend\\src\\tests\\checkout.test.ts",
+      "language": "ts",
+      "lines": 98,
+      "summary": "Testdatei f\u00fcr den Checkout-Endpunkt. \u00dcberpr\u00fcft Authentifizierung, Warenkorbvalidierung, Barzahlung und Rabatte.",
+      "tags": [
+        "test",
+        "checkout",
+        "api",
+        "vitest",
+        "supertest"
+      ],
+      "layer": "utility",
+      "exports": []
+    },
+    {
+      "id": "backend\\src\\tests\\globalSetup.ts",
+      "type": "file",
+      "label": "backend\\src\\tests\\globalSetup.ts",
+      "language": "ts",
+      "lines": 66,
+      "summary": "Test-Global-Setup, das eine Testdatenbank erstellt, node-pg-migrate-Migrationen ausf\u00fchrt und die Datenbank nach Tests bereinigt.",
+      "tags": [
+        "testing",
+        "database",
+        "migrations",
+        "postgres",
+        "setup"
+      ],
+      "layer": "infra",
+      "exports": [
+        "default"
+      ]
+    },
+    {
+      "id": "backend\\src\\tests\\health.test.ts",
+      "type": "file",
+      "label": "backend\\src\\tests\\health.test.ts",
+      "language": "ts",
+      "lines": 20,
+      "summary": "Testet die Health-Check- und Willkommens-Endpunkte der API mit Vitest und Supertest.",
+      "tags": [
+        "testing",
+        "api",
+        "health",
+        "vitest",
+        "supertest"
+      ],
+      "layer": "api",
+      "exports": []
+    },
+    {
+      "id": "backend\\src\\tests\\helpers.ts",
+      "type": "file",
+      "label": "backend\\src\\tests\\helpers.ts",
+      "language": "ts",
+      "lines": 37,
+      "summary": "Test-Hilfsfunktionen zum Erstellen von Testbenutzern in der Datenbank und zum Einloggen f\u00fcr API-Tests.",
+      "tags": [
+        "testing",
+        "helpers",
+        "auth",
+        "database"
+      ],
+      "layer": "utility",
+      "exports": [
+        "createTestUser",
+        "loginAs"
+      ]
+    },
+    {
+      "id": "backend\\src\\tests\\products.test.ts",
+      "type": "file",
+      "label": "backend\\src\\tests\\products.test.ts",
+      "language": "ts",
+      "lines": 70,
+      "summary": "Testet GET- und POST-Endpunkte f\u00fcr Produkte, inklusive Suche, Erstellung, Validierung und rollenbasierter Autorisierung.",
+      "tags": [
+        "testing",
+        "products",
+        "api",
+        "vitest",
+        "supertest"
+      ],
+      "layer": "api",
+      "exports": []
+    },
+    {
+      "id": "backend\\src\\tests\\reports.test.ts",
+      "type": "file",
+      "label": "backend\\src\\tests\\reports.test.ts",
+      "language": "ts",
+      "lines": 188,
+      "summary": "Testdatei f\u00fcr die Reports-API-Endpunkte. Pr\u00fcft Authentifizierung, Autorisierung und Antwortstrukturen f\u00fcr Tages-, Top-Produkt-, Verlaufs- und Sto\u00dfzeitenberichte.",
+      "tags": [
+        "testing",
+        "reports",
+        "api",
+        "vitest",
+        "supertest"
+      ],
+      "layer": "api",
+      "exports": []
+    },
+    {
+      "id": "backend\\src\\utils\\pool.ts",
+      "type": "file",
+      "label": "backend\\src\\utils\\pool.ts",
+      "language": "ts",
+      "lines": 20,
+      "summary": "Erstellt und exportiert einen PostgreSQL-Verbindungspool aus Umgebungsvariablen und beendet den Prozess bei unerwarteten Fehlern im Leerlauf.",
+      "tags": [
+        "database",
+        "postgresql",
+        "pool",
+        "config"
+      ],
+      "layer": "infra",
+      "exports": [
+        "pool"
+      ]
+    },
+    {
+      "id": "backend\\src\\validation\\checkoutSchema.ts",
+      "type": "file",
+      "label": "backend\\src\\validation\\checkoutSchema.ts",
+      "language": "ts",
+      "lines": 18,
+      "summary": "Zod-Validierungsschemata f\u00fcr Checkout-Elemente und -Payloads. Definiert Typen und Regeln f\u00fcr Produkt-ID, Menge, Zahlungsmethode, gezahlten Betrag, Rabatt und optionale Kunden-ID.",
+      "tags": [
+        "zod",
+        "validation",
+        "checkout",
+        "typescript",
+        "schema"
+      ],
+      "layer": "utility",
+      "exports": [
+        "checkoutItemSchema",
+        "checkoutPayloadSchema",
+        "CheckoutItemInput",
+        "CheckoutPayloadInput"
+      ]
+    },
+    {
+      "id": "backend\\src\\validation\\productSchema.ts",
+      "type": "file",
+      "label": "backend\\src\\validation\\productSchema.ts",
+      "language": "ts",
+      "lines": 26,
+      "summary": "Zod-Validierungsschemata f\u00fcr Produkt-Create/Update-Operationen und ID-Parameter.",
+      "tags": [
+        "validation",
+        "zod",
+        "product",
+        "schema"
+      ],
+      "layer": "utility",
+      "exports": [
+        "productCreateSchema",
+        "productUpdateSchema",
+        "productIdParamSchema",
+        "ProductCreateInput",
+        "ProductUpdateInput"
+      ]
+    },
+    {
+      "id": "backend\\src\\validation\\validate.ts",
+      "type": "file",
+      "label": "backend\\src\\validation\\validate.ts",
+      "language": "ts",
+      "lines": 24,
+      "summary": "Middleware zur Validierung von Express-Request-Bodies mit Zod-Schemas und Hilfsfunktion zur Formatierung von Zod-Fehlern.",
+      "tags": [
+        "zod",
+        "express",
+        "validation",
+        "middleware"
+      ],
+      "layer": "utility",
+      "exports": [
+        "validateBody",
+        "formatZodError"
+      ]
+    },
+    {
+      "id": "frontend\\vite.config.ts",
+      "type": "file",
+      "label": "frontend\\vite.config.ts",
+      "language": "ts",
+      "lines": 60,
+      "summary": "Vite-Konfiguration f\u00fcr ein React-Frontend mit PWA-Unterst\u00fctzung und Entwicklungsproxy f\u00fcr API und Uploads.",
+      "tags": [
+        "vite",
+        "react",
+        "pwa",
+        "config"
+      ],
+      "layer": "infra",
+      "exports": [
+        "default"
+      ]
+    },
+    {
+      "id": "frontend\\src\\types.ts",
+      "type": "file",
+      "label": "frontend\\src\\types.ts",
+      "language": "ts",
+      "lines": 103,
+      "summary": "TypeScript-Typdefinitionen f\u00fcr ein POS-Frontend mit Produkten, Kategorien, Warenkorb, Kunden, Schulden und Bestellungen.",
+      "tags": [
+        "typescript",
+        "types",
+        "frontend",
+        "pos",
+        "interfaces"
+      ],
+      "layer": "utility",
+      "exports": [
+        "Category",
+        "Product",
+        "CartItem",
+        "CheckoutItem",
+        "PaymentMethod",
+        "Customer",
+        "Debt",
+        "CheckoutResponse",
+        "OrderListItem",
+        "OrderDetailItem",
+        "OrderDetail",
+        "ProductFormData",
+        "User"
+      ]
+    },
+    {
+      "id": "frontend\\src\\i18n\\translations.ts",
+      "type": "file",
+      "label": "frontend\\src\\i18n\\translations.ts",
+      "language": "ts",
+      "lines": 287,
+      "summary": "TypeScript-Datei mit \u00dcbersetzungsstrings f\u00fcr ein Kassensystem in Franz\u00f6sisch und Deutsch.",
+      "tags": [
+        "i18n",
+        "translations",
+        "typescript"
+      ],
+      "layer": "ui",
+      "exports": [
+        "Lang",
+        "translations"
+      ]
+    },
+    {
+      "id": "frontend\\src\\services\\api.ts",
+      "type": "file",
+      "label": "frontend\\src\\services\\api.ts",
+      "language": "ts",
+      "lines": 257,
+      "summary": "API-Service-Schicht f\u00fcr das Frontend. Kapselt fetch-Aufrufe f\u00fcr Produkte, Kategorien, Checkout, Berichte, Kunden und Schulden mit JWT-Authentifizierung.",
+      "tags": [
+        "api",
+        "service",
+        "fetch",
+        "typescript",
+        "frontend"
+      ],
+      "layer": "service",
+      "exports": [
+        "getProducts",
+        "getCategories",
+        "createProduct",
+        "updateProduct",
+        "deleteProduct",
+        "uploadProductImage",
+        "checkout",
+        "getOrders",
+        "getOrderById",
+        "DailyReport",
+        "TopProduct",
+        "getDailyReport",
+        "getTopProducts",
+        "SalesOverTimeRow",
+        "PeakHoursRow",
+        "getSalesOverTime",
+        "getPeakHours",
+        "getCustomers",
+        "createCustomer",
+        "getDebts",
+        "markDebtPaid"
+      ]
+    },
+    {
+      "id": "frontend\\src\\services\\db.ts",
+      "type": "file",
+      "label": "frontend\\src\\services\\db.ts",
+      "language": "ts",
+      "lines": 31,
+      "summary": "Definiert eine Dexie-basierte IndexedDB-Datenbank f\u00fcr das Kassensystem mit Tabellen f\u00fcr zwischengespeicherte Produkte und ausstehende Bestellungen.",
+      "tags": [
+        "dexie",
+        "indexeddb",
+        "offline",
+        "cache",
+        "database"
+      ],
+      "layer": "data",
+      "exports": [
+        "db",
+        "PosDB",
+        "CachedProduct",
+        "PendingOrder"
+      ]
+    },
+    {
+      "id": "frontend\\src\\services\\offline.ts",
+      "type": "file",
+      "label": "frontend\\src\\services\\offline.ts",
+      "language": "ts",
+      "lines": 89,
+      "summary": "Service f\u00fcr Offline-Funktionalit\u00e4t. Synchronisiert Produkte und ausstehende Bestellungen zwischen API und IndexedDB-Cache.",
+      "tags": [
+        "offline",
+        "indexeddb",
+        "sync",
+        "service"
+      ],
+      "layer": "service",
+      "exports": [
+        "syncProductsToCache",
+        "getProductsFromCache",
+        "savePendingOrder",
+        "syncPendingOrders",
+        "getPendingOrderCount",
+        "isOnline"
+      ]
+    },
+    {
+      "id": "frontend\\src\\utils\\categoryStyles.ts",
+      "type": "file",
+      "label": "frontend\\src\\utils\\categoryStyles.ts",
+      "language": "ts",
+      "lines": 214,
+      "summary": "Diese Datei definiert clientseitige Kategorie-Metadaten (Farben, Emojis, Rahmen) und \u00fcbersetzte Anzeigenamen f\u00fcr Produkte. Sie stellt Hilfsfunktionen bereit, um Kategorien anzureichern und lokalisierte Labels mit Fallbacks zu ermitteln.",
+      "tags": [
+        "category",
+        "styles",
+        "i18n",
+        "utils"
+      ],
+      "layer": "utility",
+      "exports": [
+        "CATEGORY_META",
+        "getCategoryMeta",
+        "CATEGORY_LABELS",
+        "getCategoryLabel",
+        "enrichCategories"
+      ]
+    },
+    {
+      "id": "mobile\\index.ts",
+      "type": "file",
+      "label": "mobile\\index.ts",
+      "language": "ts",
+      "lines": 9,
+      "summary": "Registriert die App-Komponente als Root-Komponente f\u00fcr Expo und dient als Einstiegspunkt der mobilen Anwendung.",
+      "tags": [
+        "expo",
+        "mobile",
+        "entry-point"
+      ],
+      "layer": "ui",
+      "exports": []
+    },
+    {
+      "id": "mobile\\src\\utils\\format.ts",
+      "type": "file",
+      "label": "mobile\\src\\utils\\format.ts",
+      "language": "ts",
+      "lines": 15,
+      "summary": "Hilfsfunktionen zur Formatierung von CFA-Betr\u00e4gen und kurzen Datumsangaben.",
+      "tags": [
+        "formatting",
+        "utils",
+        "i18n"
+      ],
+      "layer": "utility",
+      "exports": [
+        "formatCFA",
+        "formatShortDate"
+      ]
+    },
+    {
+      "id": "mobile\\src\\utils\\secureStore.ts",
+      "type": "file",
+      "label": "mobile\\src\\utils\\secureStore.ts",
+      "language": "ts",
+      "lines": 3,
+      "summary": "Dienstprogramm-Modul, das setItemAsync, getItemAsync und deleteItemAsync aus expo-secure-store re-exportiert. Dient als zentraler Zugriffspunkt f\u00fcr sicheren lokalen Speicher in der mobilen App.",
+      "tags": [
+        "secure-storage",
+        "expo",
+        "utils",
+        "re-export"
+      ],
+      "layer": "utility",
+      "exports": [
+        "setItemAsync",
+        "getItemAsync",
+        "deleteItemAsync"
+      ]
+    },
+    {
+      "id": "mobile\\src\\utils\\secureStore.web.ts",
+      "type": "file",
+      "label": "mobile\\src\\utils\\secureStore.web.ts",
+      "language": "ts",
+      "lines": 13,
+      "summary": "Web-Fallback f\u00fcr expo-secure-store, der localStorage verwendet. Nicht sicher, nur f\u00fcr Vorschauzwecke gedacht.",
+      "tags": [
+        "expo-secure-store",
+        "web-fallback",
+        "localStorage",
+        "utility"
+      ],
+      "layer": "utility",
+      "exports": [
+        "setItemAsync",
+        "getItemAsync",
+        "deleteItemAsync"
+      ]
+    },
+    {
+      "id": "frontend\\src\\App.tsx",
+      "type": "file",
+      "label": "frontend\\src\\App.tsx",
+      "language": "tsx",
+      "lines": 60,
+      "summary": "Haupt-App-Komponente mit Authentifizierung, Seitenleisten-Navigation und Ansichtswechsel zwischen Dashboard, Kasse, Inventar, Bestellungen und Berichten.",
+      "tags": [
+        "react",
+        "typescript",
+        "auth",
+        "routing",
+        "ui"
+      ],
+      "layer": "ui",
+      "exports": [
+        "App"
+      ]
+    },
+    {
+      "id": "frontend\\src\\main.tsx",
+      "type": "file",
+      "label": "frontend\\src\\main.tsx",
+      "language": "tsx",
+      "lines": 14,
+      "summary": "React-Anwendungseinstiegspunkt, der die App in StrictMode und I18nProvider einbettet und in den DOM rendert.",
+      "tags": [
+        "react",
+        "i18n",
+        "entry-point"
+      ],
+      "layer": "ui",
+      "exports": []
+    },
+    {
+      "id": "frontend\\src\\components\\Cart.tsx",
+      "type": "file",
+      "label": "frontend\\src\\components\\Cart.tsx",
+      "language": "tsx",
+      "lines": 116,
+      "summary": "Warenkorb-Komponente mit Artikelliste, Mengensteuerung, Entfernen und Checkout-Button.",
+      "tags": [
+        "react",
+        "component",
+        "cart",
+        "ui",
+        "i18n"
+      ],
+      "layer": "ui",
+      "exports": [
+        "Cart"
+      ]
+    },
+    {
+      "id": "frontend\\src\\components\\CheckoutModal.tsx",
+      "type": "file",
+      "label": "frontend\\src\\components\\CheckoutModal.tsx",
+      "language": "tsx",
+      "lines": 303,
+      "summary": "React-Komponente f\u00fcr ein Checkout-Modal mit Auswahl der Zahlungsmethode, Bargeld-Eingabe, Rabattberechnung und Kundenkredit.",
+      "tags": [
+        "react",
+        "ui",
+        "checkout",
+        "modal",
+        "payment",
+        "i18n"
+      ],
+      "layer": "ui",
+      "exports": [
+        "CheckoutModal"
+      ]
+    },
+    {
+      "id": "frontend\\src\\components\\Dashboard.tsx",
+      "type": "file",
+      "label": "frontend\\src\\components\\Dashboard.tsx",
+      "language": "tsx",
+      "lines": 357,
+      "summary": "React-Dashboard-Komponente mit KPI-Karten, Schnellzugriff, letzten Bestellungen und manager-exklusiven recharts-Diagrammen.",
+      "tags": [
+        "react",
+        "dashboard",
+        "typescript",
+        "i18n",
+        "recharts"
+      ],
+      "layer": "ui",
+      "exports": [
+        "Dashboard"
+      ]
+    },
+    {
+      "id": "frontend\\src\\components\\Header.tsx",
+      "type": "file",
+      "label": "frontend\\src\\components\\Header.tsx",
+      "language": "tsx",
+      "lines": 36,
+      "summary": "Header-Komponente zeigt angemeldeten Benutzer, Rolle, Sprachumschalter und Logout-Button an.",
+      "tags": [
+        "react",
+        "ui",
+        "auth",
+        "i18n"
+      ],
+      "layer": "ui",
+      "exports": [
+        "Header"
+      ]
+    },
+    {
+      "id": "frontend\\src\\components\\InventoryOverview.tsx",
+      "type": "file",
+      "label": "frontend\\src\\components\\InventoryOverview.tsx",
+      "language": "tsx",
+      "lines": 337,
+      "summary": "InventoryOverview ist eine React-Komponente zur Anzeige und Verwaltung des Produktinventars mit Filter-, Lade-, Fehler- und Manager-Bearbeitungsfunktionen.",
+      "tags": [
+        "react",
+        "component",
+        "inventory",
+        "i18n",
+        "auth"
+      ],
+      "layer": "ui",
+      "exports": [
+        "InventoryOverview"
+      ]
+    },
+    {
+      "id": "frontend\\src\\components\\LanguageSwitcher.tsx",
+      "type": "file",
+      "label": "frontend\\src\\components\\LanguageSwitcher.tsx",
+      "language": "tsx",
+      "lines": 19,
+      "summary": "React-Komponente zur Sprachumschaltung zwischen Franz\u00f6sisch und Deutsch mit Icon und ARIA-Label.",
+      "tags": [
+        "react",
+        "i18n",
+        "component",
+        "language-switcher",
+        "lucide"
+      ],
+      "layer": "ui",
+      "exports": [
+        "LanguageSwitcher"
+      ]
+    },
+    {
+      "id": "frontend\\src\\components\\LoginView.tsx",
+      "type": "file",
+      "label": "frontend\\src\\components\\LoginView.tsx",
+      "language": "tsx",
+      "lines": 100,
+      "summary": "React-Komponente f\u00fcr die Login-Ansicht mit Benutzername/Passwort-Formular, Fehleranzeige, Ladezustand und Sprachumschaltung.",
+      "tags": [
+        "react",
+        "login",
+        "ui",
+        "auth",
+        "i18n"
+      ],
+      "layer": "ui",
+      "exports": [
+        "LoginView"
+      ]
+    },
+    {
+      "id": "frontend\\src\\components\\MobileNav.tsx",
+      "type": "file",
+      "label": "frontend\\src\\components\\MobileNav.tsx",
+      "language": "tsx",
+      "lines": 76,
+      "summary": "Mobile Navigationsleiste mit rollenbasierten Ansichts-Links und i18n-Labels.",
+      "tags": [
+        "react",
+        "navigation",
+        "mobile",
+        "i18n",
+        "auth"
+      ],
+      "layer": "ui",
+      "exports": [
+        "MobileNav"
+      ]
+    },
+    {
+      "id": "frontend\\src\\components\\OrderDetailModal.tsx",
+      "type": "file",
+      "label": "frontend\\src\\components\\OrderDetailModal.tsx",
+      "language": "tsx",
+      "lines": 128,
+      "summary": "React-Komponente f\u00fcr modale Bestelldetailansicht, l\u00e4dt Daten per API und zeigt Positionen, Mengen, Preise und Gesamtsumme an.",
+      "tags": [
+        "react",
+        "modal",
+        "order",
+        "i18n",
+        "api"
+      ],
+      "layer": "ui",
+      "exports": [
+        "OrderDetailModal"
+      ]
+    },
+    {
+      "id": "frontend\\src\\components\\OrdersView.tsx",
+      "type": "file",
+      "label": "frontend\\src\\components\\OrdersView.tsx",
+      "language": "tsx",
+      "lines": 134,
+      "summary": "React-Komponente zur Anzeige und Aktualisierung einer Bestellliste mit Lade-/Fehlerzustand, Datumsformatierung und Detailmodal.",
+      "tags": [
+        "react",
+        "orders",
+        "i18n",
+        "modal"
+      ],
+      "layer": "ui",
+      "exports": [
+        "OrdersView"
+      ]
+    },
+    {
+      "id": "frontend\\src\\components\\ProductFormModal.tsx",
+      "type": "file",
+      "label": "frontend\\src\\components\\ProductFormModal.tsx",
+      "language": "tsx",
+      "lines": 288,
+      "summary": "React-Modal-Komponente zum Erstellen und Bearbeiten von Produkten mit Bild-Upload, Formularvalidierung und mehrsprachiger Unterst\u00fctzung.",
+      "tags": [
+        "react",
+        "modal",
+        "product-form",
+        "image-upload",
+        "i18n"
+      ],
+      "layer": "ui",
+      "exports": [
+        "ProductFormModal"
+      ]
+    },
+    {
+      "id": "frontend\\src\\components\\ProductImage.tsx",
+      "type": "file",
+      "label": "frontend\\src\\components\\ProductImage.tsx",
+      "language": "tsx",
+      "lines": 40,
+      "summary": "React-Komponente zeigt Produktbild oder Platzhalter mit Initialen. Unterst\u00fctzt vier Gr\u00f6\u00dfen per Tailwind-Klassen.",
+      "tags": [
+        "react",
+        "typescript",
+        "component",
+        "image",
+        "tailwind"
+      ],
+      "layer": "ui",
+      "exports": [
+        "ProductImage"
+      ]
+    },
+    {
+      "id": "frontend\\src\\components\\ProductList.tsx",
+      "type": "file",
+      "label": "frontend\\src\\components\\ProductList.tsx",
+      "language": "tsx",
+      "lines": 90,
+      "summary": "React-Komponente zur Darstellung einer Produktliste mit Lagerstatus, Kategorie und Hinzuf\u00fcgen-Funktion.",
+      "tags": [
+        "react",
+        "component",
+        "product",
+        "i18n",
+        "inventory"
+      ],
+      "layer": "ui",
+      "exports": [
+        "ProductList"
+      ]
+    },
+    {
+      "id": "frontend\\src\\components\\ReceiptModal.tsx",
+      "type": "file",
+      "label": "frontend\\src\\components\\ReceiptModal.tsx",
+      "language": "tsx",
+      "lines": 100,
+      "summary": "React-Modal-Komponente zur Anzeige und zum Drucken eines Bestellbelegs mit lokalisierter W\u00e4hrung und Datumsformatierung.",
+      "tags": [
+        "react",
+        "modal",
+        "receipt",
+        "i18n",
+        "print"
+      ],
+      "layer": "ui",
+      "exports": [
+        "ReceiptModal",
+        "default"
+      ]
+    },
+    {
+      "id": "frontend\\src\\components\\ReportsView.tsx",
+      "type": "file",
+      "label": "frontend\\src\\components\\ReportsView.tsx",
+      "language": "tsx",
+      "lines": 253,
+      "summary": "ReportsView zeigt den t\u00e4glichen Z-Report mit Umsatz\u00fcbersicht, Zahlungsaufschl\u00fcsselung und Top-Produkten an. Die Komponente l\u00e4dt Daten \u00fcber die API, unterst\u00fctzt Datumsauswahl und Druck und ist auf Manager-Rollen beschr\u00e4nkt.",
+      "tags": [
+        "react",
+        "reports",
+        "dashboard",
+        "i18n"
+      ],
+      "layer": "ui",
+      "exports": [
+        "ReportsView"
+      ]
+    },
+    {
+      "id": "frontend\\src\\components\\Scanner.tsx",
+      "type": "file",
+      "label": "frontend\\src\\components\\Scanner.tsx",
+      "language": "tsx",
+      "lines": 55,
+      "summary": "React-Komponente f\u00fcr Barcode/QR-Code-Scanning mit react-qr-barcode-scanner, die Kamera-Stream toggelt und gescannte Codes an onScan \u00fcbergibt.",
+      "tags": [
+        "react",
+        "scanner",
+        "barcode",
+        "component",
+        "i18n"
+      ],
+      "layer": "ui",
+      "exports": [
+        "Scanner"
+      ]
+    },
+    {
+      "id": "frontend\\src\\components\\Sidebar.tsx",
+      "type": "file",
+      "label": "frontend\\src\\components\\Sidebar.tsx",
+      "language": "tsx",
+      "lines": 82,
+      "summary": "Seitenleisten-Komponente f\u00fcr ein POS-System. Zeigt rollenbasierte Navigationspunkte an und unterst\u00fctzt Dashboard-, Kassen-, Inventar-, Bestell- und Berichtsansichten.",
+      "tags": [
+        "react",
+        "ui",
+        "sidebar",
+        "navigation",
+        "i18n",
+        "rbac"
+      ],
+      "layer": "ui",
+      "exports": [
+        "Sidebar"
+      ]
+    },
+    {
+      "id": "frontend\\src\\components\\Toast.tsx",
+      "type": "file",
+      "label": "frontend\\src\\components\\Toast.tsx",
+      "language": "tsx",
+      "lines": 49,
+      "summary": "React-Komponente f\u00fcr Toast-Benachrichtigungen mit automatischem Ausblenden und manuellem Schlie\u00dfen.",
+      "tags": [
+        "react",
+        "toast",
+        "notification",
+        "ui"
+      ],
+      "layer": "ui",
+      "exports": [
+        "Toast",
+        "default"
+      ]
+    },
+    {
+      "id": "frontend\\src\\contexts\\AuthContext.tsx",
+      "type": "file",
+      "label": "frontend\\src\\contexts\\AuthContext.tsx",
+      "language": "tsx",
+      "lines": 83,
+      "summary": "React-Authentifizierungskontext mit Token-Persistenz in localStorage, Login/Logout und Benutzerabruf.",
+      "tags": [
+        "react",
+        "auth",
+        "context",
+        "localStorage",
+        "typescript"
+      ],
+      "layer": "ui",
+      "exports": [
+        "AuthProvider",
+        "useAuth",
+        "getStoredToken"
+      ]
+    },
+    {
+      "id": "frontend\\src\\i18n\\I18nContext.tsx",
+      "type": "file",
+      "label": "frontend\\src\\i18n\\I18nContext.tsx",
+      "language": "tsx",
+      "lines": 68,
+      "summary": "React-Kontext f\u00fcr Internationalisierung mit Sprachumschaltung, localStorage-Persistenz und Platzhalterersetzung.",
+      "tags": [
+        "i18n",
+        "react",
+        "context",
+        "localization"
+      ],
+      "layer": "ui",
+      "exports": [
+        "I18nProvider",
+        "useI18n"
+      ]
+    },
+    {
+      "id": "mobile\\src\\screens\\CustomerBookScreen.tsx",
+      "type": "file",
+      "label": "mobile\\src\\screens\\CustomerBookScreen.tsx",
+      "language": "tsx",
+      "lines": 352,
+      "summary": "React Native Screen zur Verwaltung von Kunden und offenen Schulden. Bietet Listenansichten, Modals zum Hinzuf\u00fcgen von Kunden und Schulden sowie eine Begleichungsfunktion.",
+      "tags": [
+        "react-native",
+        "screen",
+        "customer",
+        "debt",
+        "modal"
+      ],
+      "layer": "ui",
+      "exports": [
+        "CustomerBookScreen"
+      ]
+    },
+    {
+      "id": "mobile\\src\\screens\\DailySummaryScreen.tsx",
+      "type": "file",
+      "label": "mobile\\src\\screens\\DailySummaryScreen.tsx",
+      "language": "tsx",
+      "lines": 116,
+      "summary": "React Native Screen zeigt Tagesstatistiken wie Umsatz, Verkaufszahl, Durchschnitt und Wechselgeld mit Pull-to-Refresh an.",
+      "tags": [
+        "react-native",
+        "screen",
+        "daily-summary",
+        "stats"
+      ],
+      "layer": "ui",
+      "exports": [
+        "DailySummaryScreen"
+      ]
+    },
+    {
+      "id": "mobile\\src\\screens\\PinLoginScreen.tsx",
+      "type": "file",
+      "label": "mobile\\src\\screens\\PinLoginScreen.tsx",
+      "language": "tsx",
+      "lines": 97,
+      "summary": "PIN-Login-Bildschirm f\u00fcr React Native. Nimmt eine 4-stellige PIN entgegen und ruft die Login-Funktion aus dem AuthContext auf.",
+      "tags": [
+        "react-native",
+        "screen",
+        "pin-login",
+        "auth"
+      ],
+      "layer": "ui",
+      "exports": [
+        "PinLoginScreen"
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "source": "backend\\migrations\\1783847619918_initial-schema.js",
+      "target": "node-pg-migrate",
+      "type": "import",
+      "specifiers": [
+        "ColumnDefinitions",
+        "MigrationBuilder"
+      ]
+    },
+    {
+      "source": "mobile\\metro.config.js",
+      "target": "expo/metro-config",
+      "type": "require",
+      "specifiers": [
+        "getDefaultConfig"
+      ]
+    },
+    {
+      "source": "backend\\vitest.config.ts",
+      "target": "vitest/config",
+      "type": "import",
+      "specifiers": [
+        "defineConfig"
+      ]
+    },
+    {
+      "source": "backend\\src\\server.ts",
+      "target": "express",
+      "type": "import",
+      "specifiers": [
+        "default"
+      ]
+    },
+    {
+      "source": "backend\\src\\server.ts",
+      "target": "cors",
+      "type": "import",
+      "specifiers": [
+        "default"
+      ]
+    },
+    {
+      "source": "backend\\src\\server.ts",
+      "target": "dotenv",
+      "type": "import",
+      "specifiers": [
+        "default"
+      ]
+    },
+    {
+      "source": "backend\\src\\server.ts",
+      "target": "path",
+      "type": "import",
+      "specifiers": [
+        "default"
+      ]
+    },
+    {
+      "source": "backend\\src\\server.ts",
+      "target": "fs",
+      "type": "import",
+      "specifiers": [
+        "default"
+      ]
+    },
+    {
+      "source": "backend\\src\\server.ts",
+      "target": "./routes/productRoutes.js",
+      "type": "import",
+      "specifiers": [
+        "productRoutes"
+      ]
+    },
+    {
+      "source": "backend\\src\\server.ts",
+      "target": "./routes/orderRoutes.js",
+      "type": "import",
+      "specifiers": [
+        "orderRoutes"
+      ]
+    },
+    {
+      "source": "backend\\src\\server.ts",
+      "target": "./routes/categoryRoutes.js",
+      "type": "import",
+      "specifiers": [
+        "categoryRoutes"
+      ]
+    },
+    {
+      "source": "backend\\src\\server.ts",
+      "target": "./routes/authRoutes.js",
+      "type": "import",
+      "specifiers": [
+        "authRoutes"
+      ]
+    },
+    {
+      "source": "backend\\src\\server.ts",
+      "target": "./routes/reportRoutes.js",
+      "type": "import",
+      "specifiers": [
+        "reportRoutes"
+      ]
+    },
+    {
+      "source": "backend\\src\\server.ts",
+      "target": "./routes/customerRoutes.js",
+      "type": "import",
+      "specifiers": [
+        "customerRoutes"
+      ]
+    },
+    {
+      "source": "backend\\src\\server.ts",
+      "target": "./utils/pool.js",
+      "type": "import",
+      "specifiers": [
+        "pool"
+      ]
+    },
+    {
+      "source": "backend\\src\\controllers\\authController.ts",
+      "target": "express",
+      "type": "import",
+      "specifiers": [
+        "Request",
+        "Response"
+      ]
+    },
+    {
+      "source": "backend\\src\\controllers\\authController.ts",
+      "target": "jsonwebtoken",
+      "type": "import",
+      "specifiers": [
+        "jwt"
+      ]
+    },
+    {
+      "source": "backend\\src\\controllers\\authController.ts",
+      "target": "bcrypt",
+      "type": "import",
+      "specifiers": [
+        "bcrypt"
+      ]
+    },
+    {
+      "source": "backend\\src\\controllers\\authController.ts",
+      "target": "../utils/pool.js",
+      "type": "import",
+      "specifiers": [
+        "pool"
+      ]
+    },
+    {
+      "source": "backend\\src\\controllers\\categoryController.ts",
+      "target": "express",
+      "type": "import",
+      "specifiers": [
+        "Request",
+        "Response"
+      ]
+    },
+    {
+      "source": "backend\\src\\controllers\\categoryController.ts",
+      "target": "../utils/pool.js",
+      "type": "import",
+      "specifiers": [
+        "pool"
+      ]
+    },
+    {
+      "source": "backend\\src\\controllers\\customerController.ts",
+      "target": "express",
+      "type": "import",
+      "specifiers": [
+        "Request",
+        "Response"
+      ]
+    },
+    {
+      "source": "backend\\src\\controllers\\customerController.ts",
+      "target": "../utils/pool.js",
+      "type": "import",
+      "specifiers": [
+        "pool"
+      ]
+    },
+    {
+      "source": "backend\\src\\controllers\\orderController.ts",
+      "target": "express",
+      "type": "import",
+      "specifiers": [
+        "Request",
+        "Response"
+      ]
+    },
+    {
+      "source": "backend\\src\\controllers\\orderController.ts",
+      "target": "../utils/pool.js",
+      "type": "import",
+      "specifiers": [
+        "pool"
+      ]
+    },
+    {
+      "source": "backend\\src\\controllers\\productController.ts",
+      "target": "express",
+      "type": "import",
+      "specifiers": [
+        "Request",
+        "Response"
+      ]
+    },
+    {
+      "source": "backend\\src\\controllers\\productController.ts",
+      "target": "../utils/pool.js",
+      "type": "import",
+      "specifiers": [
+        "pool"
+      ]
+    },
+    {
+      "source": "backend\\src\\controllers\\reportController.ts",
+      "target": "express",
+      "type": "import",
+      "specifiers": [
+        "Request",
+        "Response"
+      ]
+    },
+    {
+      "source": "backend\\src\\controllers\\reportController.ts",
+      "target": "../utils/pool.js",
+      "type": "import",
+      "specifiers": [
+        "pool"
+      ]
+    },
+    {
+      "source": "backend\\src\\middleware\\authMiddleware.ts",
+      "target": "express",
+      "type": "import",
+      "specifiers": [
+        "Request",
+        "Response",
+        "NextFunction"
+      ]
+    },
+    {
+      "source": "backend\\src\\middleware\\authMiddleware.ts",
+      "target": "../controllers/authController.js",
+      "type": "import",
+      "specifiers": [
+        "verifyToken",
+        "JwtPayload"
+      ]
+    },
+    {
+      "source": "backend\\src\\routes\\authRoutes.ts",
+      "target": "express",
+      "type": "import",
+      "specifiers": [
+        "Router"
+      ]
+    },
+    {
+      "source": "backend\\src\\routes\\authRoutes.ts",
+      "target": "../controllers/authController.js",
+      "type": "import",
+      "specifiers": [
+        "login",
+        "getCurrentUser"
+      ]
+    },
+    {
+      "source": "backend\\src\\routes\\authRoutes.ts",
+      "target": "../middleware/authMiddleware.js",
+      "type": "import",
+      "specifiers": [
+        "authenticate"
+      ]
+    },
+    {
+      "source": "backend\\src\\routes\\categoryRoutes.ts",
+      "target": "express",
+      "type": "import",
+      "specifiers": [
+        "Router"
+      ]
+    },
+    {
+      "source": "backend\\src\\routes\\categoryRoutes.ts",
+      "target": "../controllers/categoryController.js",
+      "type": "import",
+      "specifiers": [
+        "getCategories"
+      ]
+    },
+    {
+      "source": "backend\\src\\routes\\customerRoutes.ts",
+      "target": "express",
+      "type": "import",
+      "specifiers": [
+        "Router"
+      ]
+    },
+    {
+      "source": "backend\\src\\routes\\customerRoutes.ts",
+      "target": "../controllers/customerController.js",
+      "type": "import",
+      "specifiers": [
+        "getCustomers",
+        "createCustomer",
+        "getDebts",
+        "markDebtPaid"
+      ]
+    },
+    {
+      "source": "backend\\src\\routes\\orderRoutes.ts",
+      "target": "express",
+      "type": "import",
+      "specifiers": [
+        "Router",
+        "Request",
+        "Response"
+      ]
+    },
+    {
+      "source": "backend\\src\\routes\\orderRoutes.ts",
+      "target": "../controllers/orderController.js",
+      "type": "import",
+      "specifiers": [
+        "processCheckout",
+        "getOrders",
+        "getOrderById"
+      ]
+    },
+    {
+      "source": "backend\\src\\routes\\orderRoutes.ts",
+      "target": "../validation/checkoutSchema.js",
+      "type": "import",
+      "specifiers": [
+        "checkoutPayloadSchema"
+      ]
+    },
+    {
+      "source": "backend\\src\\routes\\orderRoutes.ts",
+      "target": "../middleware/authMiddleware.js",
+      "type": "import",
+      "specifiers": [
+        "authenticate"
+      ]
+    },
+    {
+      "source": "backend\\src\\routes\\productRoutes.ts",
+      "target": "express",
+      "type": "import",
+      "specifiers": [
+        "Router"
+      ]
+    },
+    {
+      "source": "backend\\src\\routes\\productRoutes.ts",
+      "target": "multer",
+      "type": "import",
+      "specifiers": [
+        "multer"
+      ]
+    },
+    {
+      "source": "backend\\src\\routes\\productRoutes.ts",
+      "target": "path",
+      "type": "import",
+      "specifiers": [
+        "path"
+      ]
+    },
+    {
+      "source": "backend\\src\\routes\\productRoutes.ts",
+      "target": "fs",
+      "type": "import",
+      "specifiers": [
+        "fs"
+      ]
+    },
+    {
+      "source": "backend\\src\\routes\\productRoutes.ts",
+      "target": "../controllers/productController.js",
+      "type": "import",
+      "specifiers": [
+        "getProducts",
+        "createProduct",
+        "updateProduct",
+        "deleteProduct",
+        "uploadProductImage"
+      ]
+    },
+    {
+      "source": "backend\\src\\routes\\productRoutes.ts",
+      "target": "../validation/productSchema.js",
+      "type": "import",
+      "specifiers": [
+        "productCreateSchema",
+        "productUpdateSchema"
+      ]
+    },
+    {
+      "source": "backend\\src\\routes\\productRoutes.ts",
+      "target": "../validation/validate.js",
+      "type": "import",
+      "specifiers": [
+        "validateBody"
+      ]
+    },
+    {
+      "source": "backend\\src\\routes\\productRoutes.ts",
+      "target": "../middleware/authMiddleware.js",
+      "type": "import",
+      "specifiers": [
+        "authenticate",
+        "requireManager"
+      ]
+    },
+    {
+      "source": "backend\\src\\routes\\reportRoutes.ts",
+      "target": "express",
+      "type": "import",
+      "specifiers": [
+        "Router"
+      ]
+    },
+    {
+      "source": "backend\\src\\routes\\reportRoutes.ts",
+      "target": "../controllers/reportController.js",
+      "type": "import",
+      "specifiers": [
+        "getDailyReport",
+        "getTopProducts",
+        "getSalesOverTime",
+        "getPeakHours"
+      ]
+    },
+    {
+      "source": "backend\\src\\routes\\reportRoutes.ts",
+      "target": "../middleware/authMiddleware.js",
+      "type": "import",
+      "specifiers": [
+        "authenticate",
+        "requireManager"
+      ]
+    },
+    {
+      "source": "backend\\src\\tests\\checkout.test.ts",
+      "target": "vitest",
+      "type": "import",
+      "specifiers": [
+        "describe",
+        "it",
+        "expect"
+      ]
+    },
+    {
+      "source": "backend\\src\\tests\\checkout.test.ts",
+      "target": "supertest",
+      "type": "import",
+      "specifiers": [
+        "request"
+      ]
+    },
+    {
+      "source": "backend\\src\\tests\\checkout.test.ts",
+      "target": "../server.js",
+      "type": "import",
+      "specifiers": [
+        "app"
+      ]
+    },
+    {
+      "source": "backend\\src\\tests\\checkout.test.ts",
+      "target": "./helpers.js",
+      "type": "import",
+      "specifiers": [
+        "loginAs"
+      ]
+    },
+    {
+      "source": "backend\\src\\tests\\globalSetup.ts",
+      "target": "dotenv",
+      "type": "import",
+      "specifiers": [
+        "default"
+      ]
+    },
+    {
+      "source": "backend\\src\\tests\\globalSetup.ts",
+      "target": "path",
+      "type": "import",
+      "specifiers": [
+        "default"
+      ]
+    },
+    {
+      "source": "backend\\src\\tests\\globalSetup.ts",
+      "target": "child_process",
+      "type": "import",
+      "specifiers": [
+        "execSync"
+      ]
+    },
+    {
+      "source": "backend\\src\\tests\\globalSetup.ts",
+      "target": "pg",
+      "type": "import",
+      "specifiers": [
+        "Client"
+      ]
+    },
+    {
+      "source": "backend\\src\\tests\\health.test.ts",
+      "target": "vitest",
+      "type": "named",
+      "specifiers": [
+        "describe",
+        "it",
+        "expect"
+      ]
+    },
+    {
+      "source": "backend\\src\\tests\\health.test.ts",
+      "target": "supertest",
+      "type": "default",
+      "specifiers": [
+        "request"
+      ]
+    },
+    {
+      "source": "backend\\src\\tests\\health.test.ts",
+      "target": "../server.js",
+      "type": "named",
+      "specifiers": [
+        "app"
+      ]
+    },
+    {
+      "source": "backend\\src\\tests\\helpers.ts",
+      "target": "bcrypt",
+      "type": "import",
+      "specifiers": [
+        "default"
+      ]
+    },
+    {
+      "source": "backend\\src\\tests\\helpers.ts",
+      "target": "supertest",
+      "type": "import",
+      "specifiers": [
+        "default"
+      ]
+    },
+    {
+      "source": "backend\\src\\tests\\helpers.ts",
+      "target": "../server.js",
+      "type": "import",
+      "specifiers": [
+        "app"
+      ]
+    },
+    {
+      "source": "backend\\src\\tests\\helpers.ts",
+      "target": "../utils/pool.js",
+      "type": "import",
+      "specifiers": [
+        "default"
+      ]
+    },
+    {
+      "source": "backend\\src\\tests\\products.test.ts",
+      "target": "vitest",
+      "type": "import",
+      "specifiers": [
+        "describe",
+        "it",
+        "expect"
+      ]
+    },
+    {
+      "source": "backend\\src\\tests\\products.test.ts",
+      "target": "supertest",
+      "type": "import",
+      "specifiers": [
+        "request"
+      ]
+    },
+    {
+      "source": "backend\\src\\tests\\products.test.ts",
+      "target": "../server.js",
+      "type": "import",
+      "specifiers": [
+        "app"
+      ]
+    },
+    {
+      "source": "backend\\src\\tests\\products.test.ts",
+      "target": "./helpers.js",
+      "type": "import",
+      "specifiers": [
+        "loginAs"
+      ]
+    },
+    {
+      "source": "backend\\src\\tests\\reports.test.ts",
+      "target": "vitest",
+      "type": "import",
+      "specifiers": [
+        "describe",
+        "it",
+        "expect"
+      ]
+    },
+    {
+      "source": "backend\\src\\tests\\reports.test.ts",
+      "target": "supertest",
+      "type": "import",
+      "specifiers": [
+        "request"
+      ]
+    },
+    {
+      "source": "backend\\src\\tests\\reports.test.ts",
+      "target": "../server.js",
+      "type": "import",
+      "specifiers": [
+        "app"
+      ]
+    },
+    {
+      "source": "backend\\src\\tests\\reports.test.ts",
+      "target": "./helpers.js",
+      "type": "import",
+      "specifiers": [
+        "loginAs"
+      ]
+    },
+    {
+      "source": "backend\\src\\utils\\pool.ts",
+      "target": "pg",
+      "type": "import",
+      "specifiers": [
+        "Pool"
+      ]
+    },
+    {
+      "source": "backend\\src\\utils\\pool.ts",
+      "target": "dotenv",
+      "type": "import",
+      "specifiers": [
+        "dotenv"
+      ]
+    },
+    {
+      "source": "backend\\src\\validation\\checkoutSchema.ts",
+      "target": "zod",
+      "type": "import",
+      "specifiers": [
+        "z"
+      ]
+    },
+    {
+      "source": "backend\\src\\validation\\productSchema.ts",
+      "target": "zod",
+      "type": "import",
+      "specifiers": [
+        "z"
+      ]
+    },
+    {
+      "source": "backend\\src\\validation\\validate.ts",
+      "target": "express",
+      "type": "import",
+      "specifiers": [
+        "Request",
+        "Response",
+        "NextFunction"
+      ]
+    },
+    {
+      "source": "backend\\src\\validation\\validate.ts",
+      "target": "zod",
+      "type": "import",
+      "specifiers": [
+        "z",
+        "ZodError"
+      ]
+    },
+    {
+      "source": "frontend\\vite.config.ts",
+      "target": "vite",
+      "type": "import",
+      "specifiers": [
+        "defineConfig"
+      ]
+    },
+    {
+      "source": "frontend\\vite.config.ts",
+      "target": "@vitejs/plugin-react",
+      "type": "import",
+      "specifiers": [
+        "react"
+      ]
+    },
+    {
+      "source": "frontend\\vite.config.ts",
+      "target": "vite-plugin-pwa",
+      "type": "import",
+      "specifiers": [
+        "VitePWA"
+      ]
+    },
+    {
+      "source": "frontend\\src\\services\\api.ts",
+      "target": "../types",
+      "type": "import",
+      "specifiers": [
+        "Product",
+        "Category",
+        "CheckoutItem",
+        "CheckoutResponse",
+        "OrderListItem",
+        "OrderDetail",
+        "ProductFormData",
+        "PaymentMethod",
+        "Customer",
+        "Debt"
+      ]
+    },
+    {
+      "source": "frontend\\src\\services\\api.ts",
+      "target": "../contexts/AuthContext",
+      "type": "import",
+      "specifiers": [
+        "getStoredToken"
+      ]
+    },
+    {
+      "source": "frontend\\src\\services\\db.ts",
+      "target": "dexie",
+      "type": "import",
+      "specifiers": [
+        "Dexie",
+        "Table"
+      ]
+    },
+    {
+      "source": "frontend\\src\\services\\db.ts",
+      "target": "../types",
+      "type": "import",
+      "specifiers": [
+        "Product"
+      ]
+    },
+    {
+      "source": "frontend\\src\\services\\offline.ts",
+      "target": "./db",
+      "type": "import",
+      "specifiers": [
+        "db"
+      ]
+    },
+    {
+      "source": "frontend\\src\\services\\offline.ts",
+      "target": "./api",
+      "type": "import",
+      "specifiers": [
+        "getProducts",
+        "checkout"
+      ]
+    },
+    {
+      "source": "frontend\\src\\services\\offline.ts",
+      "target": "../types",
+      "type": "import",
+      "specifiers": [
+        "Product"
+      ]
+    },
+    {
+      "source": "frontend\\src\\utils\\categoryStyles.ts",
+      "target": "../types",
+      "type": "import",
+      "specifiers": [
+        "Category"
+      ]
+    },
+    {
+      "source": "frontend\\src\\utils\\categoryStyles.ts",
+      "target": "../i18n/translations",
+      "type": "import",
+      "specifiers": [
+        "Lang"
+      ]
+    },
+    {
+      "source": "mobile\\index.ts",
+      "target": "expo",
+      "type": "import",
+      "specifiers": [
+        "registerRootComponent"
+      ]
+    },
+    {
+      "source": "mobile\\index.ts",
+      "target": "./App",
+      "type": "import",
+      "specifiers": [
+        "App"
+      ]
+    },
+    {
+      "source": "mobile\\src\\utils\\secureStore.ts",
+      "target": "expo-secure-store",
+      "type": "re-export",
+      "specifiers": [
+        "setItemAsync",
+        "getItemAsync",
+        "deleteItemAsync"
+      ]
+    },
+    {
+      "source": "frontend\\src\\App.tsx",
+      "target": "react",
+      "type": "import",
+      "specifiers": [
+        "useState",
+        "useEffect"
+      ]
+    },
+    {
+      "source": "frontend\\src\\App.tsx",
+      "target": "./contexts/AuthContext",
+      "type": "import",
+      "specifiers": [
+        "AuthProvider",
+        "useAuth"
+      ]
+    },
+    {
+      "source": "frontend\\src\\App.tsx",
+      "target": "./components/Sidebar",
+      "type": "import",
+      "specifiers": [
+        "Sidebar"
+      ]
+    },
+    {
+      "source": "frontend\\src\\App.tsx",
+      "target": "./components/MobileNav",
+      "type": "import",
+      "specifiers": [
+        "MobileNav"
+      ]
+    },
+    {
+      "source": "frontend\\src\\App.tsx",
+      "target": "./components/Dashboard",
+      "type": "import",
+      "specifiers": [
+        "Dashboard"
+      ]
+    },
+    {
+      "source": "frontend\\src\\App.tsx",
+      "target": "./components/CashierInterface",
+      "type": "import",
+      "specifiers": [
+        "CashierInterface"
+      ]
+    },
+    {
+      "source": "frontend\\src\\App.tsx",
+      "target": "./components/InventoryOverview",
+      "type": "import",
+      "specifiers": [
+        "InventoryOverview"
+      ]
+    },
+    {
+      "source": "frontend\\src\\App.tsx",
+      "target": "./components/OrdersView",
+      "type": "import",
+      "specifiers": [
+        "OrdersView"
+      ]
+    },
+    {
+      "source": "frontend\\src\\App.tsx",
+      "target": "./components/ReportsView",
+      "type": "import",
+      "specifiers": [
+        "ReportsView"
+      ]
+    },
+    {
+      "source": "frontend\\src\\App.tsx",
+      "target": "./components/LoginView",
+      "type": "import",
+      "specifiers": [
+        "LoginView"
+      ]
+    },
+    {
+      "source": "frontend\\src\\App.tsx",
+      "target": "./components/Header",
+      "type": "import",
+      "specifiers": [
+        "Header"
+      ]
+    },
+    {
+      "source": "frontend\\src\\main.tsx",
+      "target": "react",
+      "type": "import",
+      "specifiers": [
+        "React"
+      ]
+    },
+    {
+      "source": "frontend\\src\\main.tsx",
+      "target": "react-dom/client",
+      "type": "import",
+      "specifiers": [
+        "ReactDOM"
+      ]
+    },
+    {
+      "source": "frontend\\src\\main.tsx",
+      "target": "./App.tsx",
+      "type": "import",
+      "specifiers": [
+        "App"
+      ]
+    },
+    {
+      "source": "frontend\\src\\main.tsx",
+      "target": "./index.css",
+      "type": "import",
+      "specifiers": []
+    },
+    {
+      "source": "frontend\\src\\main.tsx",
+      "target": "./i18n/I18nContext.tsx",
+      "type": "import",
+      "specifiers": [
+        "I18nProvider"
+      ]
+    },
+    {
+      "source": "frontend\\src\\components\\Cart.tsx",
+      "target": "../types",
+      "type": "import",
+      "specifiers": [
+        "CartItem"
+      ]
+    },
+    {
+      "source": "frontend\\src\\components\\Cart.tsx",
+      "target": "../i18n/I18nContext",
+      "type": "import",
+      "specifiers": [
+        "useI18n"
+      ]
+    },
+    {
+      "source": "frontend\\src\\components\\Cart.tsx",
+      "target": "./ProductImage",
+      "type": "import",
+      "specifiers": [
+        "default"
+      ]
+    },
+    {
+      "source": "frontend\\src\\components\\Cart.tsx",
+      "target": "lucide-react",
+      "type": "import",
+      "specifiers": [
+        "Minus",
+        "Plus",
+        "Trash2",
+        "ShoppingCart",
+        "Loader2"
+      ]
+    },
+    {
+      "source": "frontend\\src\\components\\CheckoutModal.tsx",
+      "target": "react",
+      "type": "import",
+      "specifiers": [
+        "useState",
+        "useMemo",
+        "useEffect"
+      ]
+    },
+    {
+      "source": "frontend\\src\\components\\CheckoutModal.tsx",
+      "target": "../types",
+      "type": "import",
+      "specifiers": [
+        "CartItem",
+        "PaymentMethod",
+        "Customer"
+      ]
+    },
+    {
+      "source": "frontend\\src\\components\\CheckoutModal.tsx",
+      "target": "../i18n/I18nContext",
+      "type": "import",
+      "specifiers": [
+        "useI18n"
+      ]
+    },
+    {
+      "source": "frontend\\src\\components\\CheckoutModal.tsx",
+      "target": "../services/api",
+      "type": "import",
+      "specifiers": [
+        "getCustomers",
+        "createCustomer"
+      ]
+    },
+    {
+      "source": "frontend\\src\\components\\CheckoutModal.tsx",
+      "target": "lucide-react",
+      "type": "import",
+      "specifiers": [
+        "X",
+        "Receipt",
+        "Banknote",
+        "CreditCard",
+        "Wallet",
+        "Percent",
+        "Tag",
+        "BookOpen"
+      ]
+    },
+    {
+      "source": "frontend\\src\\components\\Dashboard.tsx",
+      "target": "react",
+      "type": "import",
+      "specifiers": [
+        "useState",
+        "useEffect",
+        "useCallback"
+      ]
+    },
+    {
+      "source": "frontend\\src\\components\\Dashboard.tsx",
+      "target": "../types",
+      "type": "import",
+      "specifiers": [
+        "Product",
+        "OrderListItem"
+      ]
+    },
+    {
+      "source": "frontend\\src\\components\\Dashboard.tsx",
+      "target": "../services/api",
+      "type": "import",
+      "specifiers": [
+        "getProducts",
+        "getOrders",
+        "getSalesOverTime",
+        "getPeakHours",
+        "getTopProducts",
+        "SalesOverTimeRow",
+        "PeakHoursRow",
+        "TopProduct"
+      ]
+    },
+    {
+      "source": "frontend\\src\\components\\Dashboard.tsx",
+      "target": "../contexts/AuthContext",
+      "type": "import",
+      "specifiers": [
+        "useAuth"
+      ]
+    },
+    {
+      "source": "frontend\\src\\components\\Dashboard.tsx",
+      "target": "../i18n/I18nContext",
+      "type": "import",
+      "specifiers": [
+        "useI18n"
+      ]
+    },
+    {
+      "source": "frontend\\src\\components\\Dashboard.tsx",
+      "target": "lucide-react",
+      "type": "import",
+      "specifiers": [
+        "TrendingUp",
+        "ShoppingBag",
+        "AlertTriangle",
+        "PackageX",
+        "ArrowRight",
+        "Loader2",
+        "Store",
+        "BarChart3",
+        "Clock",
+        "Trophy"
+      ]
+    },
+    {
+      "source": "frontend\\src\\components\\Dashboard.tsx",
+      "target": "recharts",
+      "type": "import",
+      "specifiers": [
+        "ResponsiveContainer",
+        "LineChart",
+        "Line",
+        "BarChart",
+        "Bar",
+        "XAxis",
+        "YAxis",
+        "CartesianGrid",
+        "Tooltip",
+        "Cell"
+      ]
+    },
+    {
+      "source": "frontend\\src\\components\\Header.tsx",
+      "target": "../contexts/AuthContext",
+      "type": "named",
+      "specifiers": [
+        "useAuth"
+      ]
+    },
+    {
+      "source": "frontend\\src\\components\\Header.tsx",
+      "target": "../i18n/I18nContext",
+      "type": "named",
+      "specifiers": [
+        "useI18n"
+      ]
+    },
+    {
+      "source": "frontend\\src\\components\\Header.tsx",
+      "target": "./LanguageSwitcher",
+      "type": "default",
+      "specifiers": [
+        "LanguageSwitcher"
+      ]
+    },
+    {
+      "source": "frontend\\src\\components\\Header.tsx",
+      "target": "lucide-react",
+      "type": "named",
+      "specifiers": [
+        "LogOut",
+        "User"
+      ]
+    },
+    {
+      "source": "frontend\\src\\components\\InventoryOverview.tsx",
+      "target": "react",
+      "type": "import",
+      "specifiers": [
+        "useState",
+        "useEffect",
+        "useCallback"
+      ]
+    },
+    {
+      "source": "frontend\\src\\components\\InventoryOverview.tsx",
+      "target": "../types",
+      "type": "type",
+      "specifiers": [
+        "Product",
+        "Category"
+      ]
+    },
+    {
+      "source": "frontend\\src\\components\\InventoryOverview.tsx",
+      "target": "../services/api",
+      "type": "import",
+      "specifiers": [
+        "getProducts",
+        "getCategories",
+        "deleteProduct"
+      ]
+    },
+    {
+      "source": "frontend\\src\\components\\InventoryOverview.tsx",
+      "target": "../contexts/AuthContext",
+      "type": "import",
+      "specifiers": [
+        "useAuth"
+      ]
+    },
+    {
+      "source": "frontend\\src\\components\\InventoryOverview.tsx",
+      "target": "../i18n/I18nContext",
+      "type": "import",
+      "specifiers": [
+        "useI18n"
+      ]
+    },
+    {
+      "source": "frontend\\src\\components\\InventoryOverview.tsx",
+      "target": "./ProductImage",
+      "type": "import",
+      "specifiers": [
+        "ProductImage"
+      ]
+    },
+    {
+      "source": "frontend\\src\\components\\InventoryOverview.tsx",
+      "target": "./ProductFormModal",
+      "type": "import",
+      "specifiers": [
+        "ProductFormModal"
+      ]
+    },
+    {
+      "source": "frontend\\src\\components\\InventoryOverview.tsx",
+      "target": "lucide-react",
+      "type": "import",
+      "specifiers": [
+        "AlertTriangle",
+        "RefreshCw",
+        "Plus",
+        "Pencil",
+        "Trash2",
+        "Package"
+      ]
+    },
+    {
+      "source": "frontend\\src\\components\\InventoryOverview.tsx",
+      "target": "../utils/categoryStyles",
+      "type": "import",
+      "specifiers": [
+        "getCategoryMeta",
+        "getCategoryLabel"
+      ]
+    },
+    {
+      "source": "frontend\\src\\components\\LanguageSwitcher.tsx",
+      "target": "../i18n/I18nContext",
+      "type": "import",
+      "specifiers": [
+        "useI18n"
+      ]
+    },
+    {
+      "source": "frontend\\src\\components\\LanguageSwitcher.tsx",
+      "target": "lucide-react",
+      "type": "import",
+      "specifiers": [
+        "Languages"
+      ]
+    },
+    {
+      "source": "frontend\\src\\components\\LoginView.tsx",
+      "target": "react",
+      "type": "named",
+      "specifiers": [
+        "useState"
+      ]
+    },
+    {
+      "source": "frontend\\src\\components\\LoginView.tsx",
+      "target": "../contexts/AuthContext",
+      "type": "named",
+      "specifiers": [
+        "useAuth"
+      ]
+    },
+    {
+      "source": "frontend\\src\\components\\LoginView.tsx",
+      "target": "../i18n/I18nContext",
+      "type": "named",
+      "specifiers": [
+        "useI18n"
+      ]
+    },
+    {
+      "source": "frontend\\src\\components\\LoginView.tsx",
+      "target": "./LanguageSwitcher",
+      "type": "default",
+      "specifiers": [
+        "LanguageSwitcher"
+      ]
+    },
+    {
+      "source": "frontend\\src\\components\\LoginView.tsx",
+      "target": "lucide-react",
+      "type": "named",
+      "specifiers": [
+        "Lock",
+        "User",
+        "Loader2"
+      ]
+    },
+    {
+      "source": "frontend\\src\\components\\MobileNav.tsx",
+      "target": "lucide-react",
+      "type": "import",
+      "specifiers": [
+        "LayoutDashboard",
+        "ShoppingCart",
+        "Package",
+        "ClipboardList",
+        "BarChart3"
+      ]
+    },
+    {
+      "source": "frontend\\src\\components\\MobileNav.tsx",
+      "target": "../i18n/I18nContext",
+      "type": "import",
+      "specifiers": [
+        "useI18n"
+      ]
+    },
+    {
+      "source": "frontend\\src\\components\\MobileNav.tsx",
+      "target": "../contexts/AuthContext",
+      "type": "import",
+      "specifiers": [
+        "useAuth"
+      ]
+    },
+    {
+      "source": "frontend\\src\\components\\OrderDetailModal.tsx",
+      "target": "react",
+      "type": "import",
+      "specifiers": [
+        "useEffect",
+        "useState"
+      ]
+    },
+    {
+      "source": "frontend\\src\\components\\OrderDetailModal.tsx",
+      "target": "../types",
+      "type": "import",
+      "specifiers": [
+        "OrderDetail"
+      ]
+    },
+    {
+      "source": "frontend\\src\\components\\OrderDetailModal.tsx",
+      "target": "../services/api",
+      "type": "import",
+      "specifiers": [
+        "getOrderById"
+      ]
+    },
+    {
+      "source": "frontend\\src\\components\\OrderDetailModal.tsx",
+      "target": "../i18n/I18nContext",
+      "type": "import",
+      "specifiers": [
+        "useI18n"
+      ]
+    },
+    {
+      "source": "frontend\\src\\components\\OrderDetailModal.tsx",
+      "target": "lucide-react",
+      "type": "import",
+      "specifiers": [
+        "X",
+        "Receipt",
+        "Loader2"
+      ]
+    },
+    {
+      "source": "frontend\\src\\components\\OrdersView.tsx",
+      "target": "react",
+      "type": "import",
+      "specifiers": [
+        "useState",
+        "useEffect",
+        "useCallback"
+      ]
+    },
+    {
+      "source": "frontend\\src\\components\\OrdersView.tsx",
+      "target": "../types",
+      "type": "import",
+      "specifiers": [
+        "OrderListItem"
+      ]
+    },
+    {
+      "source": "frontend\\src\\components\\OrdersView.tsx",
+      "target": "../services/api",
+      "type": "import",
+      "specifiers": [
+        "getOrders"
+      ]
+    },
+    {
+      "source": "frontend\\src\\components\\OrdersView.tsx",
+      "target": "../i18n/I18nContext",
+      "type": "import",
+      "specifiers": [
+        "useI18n"
+      ]
+    },
+    {
+      "source": "frontend\\src\\components\\OrdersView.tsx",
+      "target": "./OrderDetailModal",
+      "type": "import",
+      "specifiers": [
+        "OrderDetailModal"
+      ]
+    },
+    {
+      "source": "frontend\\src\\components\\OrdersView.tsx",
+      "target": "lucide-react",
+      "type": "import",
+      "specifiers": [
+        "RefreshCw",
+        "Eye",
+        "ClipboardList",
+        "Loader2"
+      ]
+    },
+    {
+      "source": "frontend\\src\\components\\ProductFormModal.tsx",
+      "target": "react",
+      "type": "import",
+      "specifiers": [
+        "useState",
+        "useEffect",
+        "useRef"
+      ]
+    },
+    {
+      "source": "frontend\\src\\components\\ProductFormModal.tsx",
+      "target": "../types",
+      "type": "import",
+      "specifiers": [
+        "Product",
+        "Category",
+        "ProductFormData"
+      ]
+    },
+    {
+      "source": "frontend\\src\\components\\ProductFormModal.tsx",
+      "target": "../services/api",
+      "type": "import",
+      "specifiers": [
+        "createProduct",
+        "updateProduct",
+        "uploadProductImage"
+      ]
+    },
+    {
+      "source": "frontend\\src\\components\\ProductFormModal.tsx",
+      "target": "../i18n/I18nContext",
+      "type": "import",
+      "specifiers": [
+        "useI18n"
+      ]
+    },
+    {
+      "source": "frontend\\src\\components\\ProductFormModal.tsx",
+      "target": "../utils/categoryStyles",
+      "type": "import",
+      "specifiers": [
+        "getCategoryLabel"
+      ]
+    },
+    {
+      "source": "frontend\\src\\components\\ProductFormModal.tsx",
+      "target": "lucide-react",
+      "type": "import",
+      "specifiers": [
+        "X",
+        "ImagePlus",
+        "Save",
+        "Loader2"
+      ]
+    },
+    {
+      "source": "frontend\\src\\components\\ProductImage.tsx",
+      "target": "../types",
+      "type": "import",
+      "specifiers": [
+        "Product"
+      ]
+    },
+    {
+      "source": "frontend\\src\\components\\ProductList.tsx",
+      "target": "../types",
+      "type": "import",
+      "specifiers": [
+        "Product"
+      ]
+    },
+    {
+      "source": "frontend\\src\\components\\ProductList.tsx",
+      "target": "../i18n/I18nContext",
+      "type": "import",
+      "specifiers": [
+        "useI18n"
+      ]
+    },
+    {
+      "source": "frontend\\src\\components\\ProductList.tsx",
+      "target": "../utils/categoryStyles",
+      "type": "import",
+      "specifiers": [
+        "getCategoryLabel"
+      ]
+    },
+    {
+      "source": "frontend\\src\\components\\ProductList.tsx",
+      "target": "./ProductImage",
+      "type": "import",
+      "specifiers": [
+        "ProductImage"
+      ]
+    },
+    {
+      "source": "frontend\\src\\components\\ProductList.tsx",
+      "target": "lucide-react",
+      "type": "import",
+      "specifiers": [
+        "Plus",
+        "AlertCircle"
+      ]
+    },
+    {
+      "source": "frontend\\src\\components\\ReceiptModal.tsx",
+      "target": "../types",
+      "type": "import",
+      "specifiers": [
+        "OrderDetail"
+      ]
+    },
+    {
+      "source": "frontend\\src\\components\\ReceiptModal.tsx",
+      "target": "../i18n/I18nContext",
+      "type": "import",
+      "specifiers": [
+        "useI18n"
+      ]
+    },
+    {
+      "source": "frontend\\src\\components\\ReceiptModal.tsx",
+      "target": "lucide-react",
+      "type": "import",
+      "specifiers": [
+        "X",
+        "Receipt",
+        "Printer"
+      ]
+    },
+    {
+      "source": "frontend\\src\\components\\ReportsView.tsx",
+      "target": "react",
+      "type": "import",
+      "specifiers": [
+        "useState",
+        "useEffect",
+        "useCallback"
+      ]
+    },
+    {
+      "source": "frontend\\src\\components\\ReportsView.tsx",
+      "target": "../services/api",
+      "type": "import",
+      "specifiers": [
+        "getDailyReport",
+        "getTopProducts",
+        "DailyReport",
+        "TopProduct"
+      ]
+    },
+    {
+      "source": "frontend\\src\\components\\ReportsView.tsx",
+      "target": "../i18n/I18nContext",
+      "type": "import",
+      "specifiers": [
+        "useI18n"
+      ]
+    },
+    {
+      "source": "frontend\\src\\components\\ReportsView.tsx",
+      "target": "../contexts/AuthContext",
+      "type": "import",
+      "specifiers": [
+        "useAuth"
+      ]
+    },
+    {
+      "source": "frontend\\src\\components\\ReportsView.tsx",
+      "target": "lucide-react",
+      "type": "import",
+      "specifiers": [
+        "TrendingUp",
+        "ShoppingBag",
+        "Banknote",
+        "CreditCard",
+        "Wallet",
+        "Percent",
+        "Package",
+        "Loader2",
+        "Calendar",
+        "Printer",
+        "BarChart3"
+      ]
+    },
+    {
+      "source": "frontend\\src\\components\\Scanner.tsx",
+      "target": "react",
+      "type": "import",
+      "specifiers": [
+        "useState"
+      ]
+    },
+    {
+      "source": "frontend\\src\\components\\Scanner.tsx",
+      "target": "react-qr-barcode-scanner",
+      "type": "import",
+      "specifiers": [
+        "BarcodeScanner"
+      ]
+    },
+    {
+      "source": "frontend\\src\\components\\Scanner.tsx",
+      "target": "../i18n/I18nContext",
+      "type": "import",
+      "specifiers": [
+        "useI18n"
+      ]
+    },
+    {
+      "source": "frontend\\src\\components\\Scanner.tsx",
+      "target": "lucide-react",
+      "type": "import",
+      "specifiers": [
+        "ScanBarcode",
+        "ScanLine"
+      ]
+    },
+    {
+      "source": "frontend\\src\\components\\Sidebar.tsx",
+      "target": "lucide-react",
+      "type": "import",
+      "specifiers": [
+        "LayoutDashboard",
+        "ShoppingCart",
+        "Package",
+        "ClipboardList",
+        "Store",
+        "BarChart3"
+      ]
+    },
+    {
+      "source": "frontend\\src\\components\\Sidebar.tsx",
+      "target": "../i18n/I18nContext",
+      "type": "import",
+      "specifiers": [
+        "useI18n"
+      ]
+    },
+    {
+      "source": "frontend\\src\\components\\Sidebar.tsx",
+      "target": "../contexts/AuthContext",
+      "type": "import",
+      "specifiers": [
+        "useAuth"
+      ]
+    },
+    {
+      "source": "frontend\\src\\components\\Toast.tsx",
+      "target": "react",
+      "type": "import",
+      "specifiers": [
+        "useEffect"
+      ]
+    },
+    {
+      "source": "frontend\\src\\components\\Toast.tsx",
+      "target": "lucide-react",
+      "type": "import",
+      "specifiers": [
+        "X",
+        "CheckCircle2",
+        "AlertCircle"
+      ]
+    },
+    {
+      "source": "frontend\\src\\contexts\\AuthContext.tsx",
+      "target": "react",
+      "type": "import",
+      "specifiers": [
+        "createContext",
+        "useContext",
+        "useState",
+        "useEffect",
+        "ReactNode"
+      ]
+    },
+    {
+      "source": "frontend\\src\\contexts\\AuthContext.tsx",
+      "target": "../types",
+      "type": "import",
+      "specifiers": [
+        "User"
+      ]
+    },
+    {
+      "source": "frontend\\src\\i18n\\I18nContext.tsx",
+      "target": "react",
+      "type": "import",
+      "specifiers": [
+        "createContext",
+        "useContext",
+        "useState",
+        "ReactNode",
+        "useCallback"
+      ]
+    },
+    {
+      "source": "frontend\\src\\i18n\\I18nContext.tsx",
+      "target": "./translations",
+      "type": "import",
+      "specifiers": [
+        "translations",
+        "Lang",
+        "TranslationKey"
+      ]
+    },
+    {
+      "source": "mobile\\src\\screens\\CustomerBookScreen.tsx",
+      "target": "react",
+      "type": "import",
+      "specifiers": [
+        "useState",
+        "useEffect"
+      ]
+    },
+    {
+      "source": "mobile\\src\\screens\\CustomerBookScreen.tsx",
+      "target": "react-native",
+      "type": "import",
+      "specifiers": [
+        "View",
+        "Text",
+        "TextInput",
+        "TouchableOpacity",
+        "FlatList",
+        "StyleSheet",
+        "Alert",
+        "Modal"
+      ]
+    },
+    {
+      "source": "mobile\\src\\screens\\CustomerBookScreen.tsx",
+      "target": "../db/queries",
+      "type": "import",
+      "specifiers": [
+        "getCustomers",
+        "addCustomer",
+        "getDebts",
+        "addDebt",
+        "settleDebt",
+        "Customer",
+        "Debt"
+      ]
+    },
+    {
+      "source": "mobile\\src\\screens\\CustomerBookScreen.tsx",
+      "target": "../utils/format",
+      "type": "import",
+      "specifiers": [
+        "formatCFA",
+        "formatShortDate"
+      ]
+    },
+    {
+      "source": "mobile\\src\\screens\\DailySummaryScreen.tsx",
+      "target": "react",
+      "type": "import",
+      "specifiers": [
+        "useState",
+        "useEffect"
+      ]
+    },
+    {
+      "source": "mobile\\src\\screens\\DailySummaryScreen.tsx",
+      "target": "react-native",
+      "type": "import",
+      "specifiers": [
+        "View",
+        "Text",
+        "ScrollView",
+        "StyleSheet",
+        "RefreshControl"
+      ]
+    },
+    {
+      "source": "mobile\\src\\screens\\DailySummaryScreen.tsx",
+      "target": "../db/queries",
+      "type": "import",
+      "specifiers": [
+        "getDailyStats",
+        "DailyStats"
+      ]
+    },
+    {
+      "source": "mobile\\src\\screens\\DailySummaryScreen.tsx",
+      "target": "../utils/format",
+      "type": "import",
+      "specifiers": [
+        "formatCFA"
+      ]
+    },
+    {
+      "source": "mobile\\src\\screens\\PinLoginScreen.tsx",
+      "target": "react",
+      "type": "import",
+      "specifiers": [
+        "useState"
+      ]
+    },
+    {
+      "source": "mobile\\src\\screens\\PinLoginScreen.tsx",
+      "target": "react-native",
+      "type": "import",
+      "specifiers": [
+        "View",
+        "Text",
+        "TextInput",
+        "TouchableOpacity",
+        "StyleSheet",
+        "Alert"
+      ]
+    },
+    {
+      "source": "mobile\\src\\screens\\PinLoginScreen.tsx",
+      "target": "../context/AuthContext",
+      "type": "import",
+      "specifiers": [
+        "useAuth"
+      ]
+    }
+  ],
+  "metadata": {
+    "projectName": "kassensystem",
+    "totalFiles": 67,
+    "totalLines": 6731,
+    "generatedAt": "2026-07-17T02:30:16Z"
+  }
+}
