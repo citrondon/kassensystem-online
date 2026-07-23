@@ -33,16 +33,6 @@ app.use(
 app.use(express.json());
 app.use("/uploads", express.static(UPLOAD_DIR));
 
-// In production: serve built frontend from ../frontend/dist
-if (isProduction) {
-  const frontendDist = path.join(__dirname, "..", "..", "frontend", "dist");
-  app.use(express.static(frontendDist));
-  // SPA fallback: all non-API routes → index.html
-  app.get(/^\/(?!api|health|uploads).*/, (_req, res) => {
-    res.sendFile(path.join(frontendDist, "index.html"));
-  });
-}
-
 app.get("/health", async (_req, res) => {
   try {
     await pool.query("SELECT 1");
