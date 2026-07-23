@@ -12,6 +12,7 @@ interface Props {
 export default function ProductList({ products, onAdd }: Props) {
   const { t, lang } = useI18n();
   const currency = t("currency");
+  const fmt = (n: number) => Math.round(n).toLocaleString("de-DE");
 
   if (products.length === 0) {
     return (
@@ -53,7 +54,7 @@ export default function ProductList({ products, onAdd }: Props) {
                 {product.name}
               </p>
               <p className="mt-1 text-lg font-bold text-slate-900">
-                {Number(product.price).toFixed(2)} {currency}
+                {fmt(Number(product.price))} {currency}
               </p>
 
               <div className="mt-2 flex flex-wrap items-center gap-2">

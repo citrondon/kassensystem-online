@@ -15,6 +15,7 @@ export default function OrderDetailModal({ orderId, onClose }: Props) {
   const [error, setError] = useState<string | null>(null);
   const { t, lang } = useI18n();
   const currency = t("currency");
+  const fmt = (n: number) => Math.round(n).toLocaleString("de-DE");
 
   useEffect(() => {
     const load = async () => {
@@ -98,10 +99,10 @@ export default function OrderDetailModal({ orderId, onClose }: Props) {
                     </td>
                     <td className="py-2 text-right">{item.quantity}</td>
                     <td className="py-2 text-right">
-                      {Number(item.unit_price).toFixed(2)} {currency}
+                      {fmt(Number(item.unit_price))} {currency}
                     </td>
                     <td className="py-2 text-right font-bold text-slate-800">
-                      {Number(item.line_total).toFixed(2)} {currency}
+                      {fmt(Number(item.line_total))} {currency}
                     </td>
                   </tr>
                 ))}
@@ -110,7 +111,7 @@ export default function OrderDetailModal({ orderId, onClose }: Props) {
 
             <div className="mt-4 flex justify-between border-t border-slate-100 pt-3 text-lg font-extrabold text-slate-900">
               <span>{t("total")}</span>
-              <span>{Number(order.total_amount).toFixed(2)} {currency}</span>
+              <span>{fmt(Number(order.total_amount))} {currency}</span>
             </div>
 
             <button

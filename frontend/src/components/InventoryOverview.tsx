@@ -100,6 +100,7 @@ export default function InventoryOverview() {
     (sum, p) => sum + Number(p.price) * p.stock,
     0
   );
+  const fmt = (n: number) => Math.round(n).toLocaleString("de-DE");
 
   if (loading) {
     return (
@@ -131,7 +132,7 @@ export default function InventoryOverview() {
           <h1 className="text-2xl font-bold text-slate-800">{t("inventory")}</h1>
           {isManager && (
             <p className="text-sm text-slate-500">
-              {t("inventoryValue")}: {totalValue.toFixed(2)} {currency} · {products.length} {t("totalItems")}
+              {t("inventoryValue")}: {fmt(totalValue)} {currency} · {products.length} {t("totalItems")}
             </p>
           )}
         </div>
@@ -272,10 +273,10 @@ export default function InventoryOverview() {
                       )}
                     </td>
                     <td className="px-5 py-3 text-right font-medium text-slate-800">
-                      {Number(product.price).toFixed(2)} {currency}
+                      {fmt(Number(product.price))} {currency}
                     </td>
                     <td className="px-5 py-3 text-right text-sm text-slate-500">
-                      {Number(product.cost_price).toFixed(2)} {currency}
+                      {fmt(Number(product.cost_price))} {currency}
                     </td>
                     <td className="px-5 py-3 text-right">
                       <span

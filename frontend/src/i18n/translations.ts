@@ -109,7 +109,7 @@ export const translations = {
     saveError: "L'enregistrement a échoué.",
     all: "Tous",
     confirmSale: "Vente réussie !",
-    currency: "€",
+    currency: "FCFA",
   },
   de: {
     appTitle: "Kassensystem",
@@ -219,7 +219,7 @@ export const translations = {
     saveError: "Speichern fehlgeschlagen.",
     all: "Alle",
     confirmSale: "Verkauf erfolgreich!",
-    currency: "€",
+    currency: "FCFA",
   },
 } as const;
 

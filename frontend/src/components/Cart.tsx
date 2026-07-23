@@ -22,6 +22,7 @@ export default function Cart({
 }: Props) {
   const { t } = useI18n();
   const currency = t("currency");
+  const fmt = (n: number) => Math.round(n).toLocaleString("de-DE");
   const total = cart.reduce((sum, item) => sum + Number(item.price) * item.quantity, 0);
   const itemCount = cart.reduce((sum, item) => sum + item.quantity, 0);
 
@@ -51,10 +52,10 @@ export default function Cart({
               <div className="flex-1 min-w-0">
                 <p className="text-sm font-semibold text-slate-800 truncate">{item.name}</p>
                 <p className="text-xs text-slate-500">
-                  {Number(item.price).toFixed(2)} {currency} / {t("piece")}
+                  {fmt(Number(item.price))} {currency} / {t("piece")}
                 </p>
                 <p className="text-sm font-bold text-slate-800">
-                  {(Number(item.price) * item.quantity).toFixed(2)} {currency}
+                  {fmt(Number(item.price) * item.quantity)} {currency}
                 </p>
               </div>
               <div className="flex flex-col items-center gap-1">
@@ -90,7 +91,7 @@ export default function Cart({
       <div className="border-t border-slate-100 px-4 py-4">
         <div className="mb-3 flex items-end justify-between">
           <span className="text-sm font-medium text-slate-500">{t("totalAmount")}</span>
-          <span className="text-2xl font-extrabold text-slate-900">{total.toFixed(2)} {currency}</span>
+          <span className="text-2xl font-extrabold text-slate-900">{fmt(total)} {currency}</span>
         </div>
         <button
           onClick={onCheckout}

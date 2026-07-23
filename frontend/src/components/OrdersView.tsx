@@ -12,6 +12,7 @@ export default function OrdersView() {
   const [selectedId, setSelectedId] = useState<number | null>(null);
   const { t, lang } = useI18n();
   const currency = t("currency");
+  const fmt = (n: number) => Math.round(n).toLocaleString("de-DE");
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -106,7 +107,7 @@ export default function OrdersView() {
                       {order.item_count}
                     </td>
                     <td className="px-5 py-3 text-right font-bold text-slate-800">
-                      {Number(order.total_amount).toFixed(2)} {currency}
+                      {fmt(Number(order.total_amount))} {currency}
                     </td>
                     <td className="px-5 py-3 text-right">
                       <button

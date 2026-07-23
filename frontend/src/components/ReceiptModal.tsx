@@ -10,6 +10,7 @@ interface Props {
 export default function ReceiptModal({ order, onClose }: Props) {
   const { t, lang } = useI18n();
   const currency = t("currency");
+  const fmt = (n: number) => Math.round(n).toLocaleString("de-DE");
   const formatDate = (iso: string) => {
     const d = new Date(iso);
     return d.toLocaleString(lang === "fr" ? "fr-FR" : "de-DE", {
@@ -60,7 +61,7 @@ export default function ReceiptModal({ order, onClose }: Props) {
                     {item.quantity}x {item.product_name}
                   </td>
                   <td className="py-1 text-right font-semibold text-slate-800">
-                    {Number(item.line_total).toFixed(2)} {currency}
+                    {fmt(Number(item.line_total))} {currency}
                   </td>
                 </tr>
               ))}
@@ -71,7 +72,7 @@ export default function ReceiptModal({ order, onClose }: Props) {
         <div className="border-t border-dashed border-slate-300 pt-3">
           <div className="flex justify-between text-lg font-extrabold text-slate-900">
             <span>{t("total")}</span>
-            <span>{Number(order.total_amount).toFixed(2)} {currency}</span>
+            <span>{fmt(Number(order.total_amount))} {currency}</span>
           </div>
         </div>
 

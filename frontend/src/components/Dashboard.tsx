@@ -60,11 +60,12 @@ export default function Dashboard({ onNavigate }: Props) {
   );
 
   const currency = t("currency");
+  const fmt = (n: number) => Math.round(n).toLocaleString("de-DE");
 
   const cards = [
     {
       label: t("todayRevenue"),
-      value: `${todayRevenue.toFixed(2)} ${currency}`,
+      value: `${fmt(todayRevenue)} ${currency}`,
       icon: <TrendingUp className="h-6 w-6 text-emerald-600" />,
       bg: "bg-emerald-50",
       onClick: () => onNavigate("orders"),
@@ -78,7 +79,7 @@ export default function Dashboard({ onNavigate }: Props) {
     },
     {
       label: t("inventoryValue"),
-      value: `${totalValue.toFixed(2)} ${currency}`,
+      value: `${fmt(totalValue)} ${currency}`,
       icon: <Store className="h-6 w-6 text-blue-600" />,
       bg: "bg-blue-50",
       onClick: () => onNavigate("inventory"),
@@ -180,7 +181,7 @@ export default function Dashboard({ onNavigate }: Props) {
                       </p>
                     </div>
                     <span className="text-sm font-bold text-slate-800">
-                      {Number(order.total_amount).toFixed(2)} {currency}
+                      {fmt(Number(order.total_amount))} {currency}
                     </span>
                   </li>
                 ))}
