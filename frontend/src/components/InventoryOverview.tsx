@@ -5,6 +5,7 @@ import { useAuth } from "../contexts/AuthContext";
 import { useI18n } from "../i18n/I18nContext";
 import ProductImage from "./ProductImage";
 import ProductFormModal from "./ProductFormModal";
+import Scanner from "./Scanner";
 import {
   AlertTriangle,
   RefreshCw,
@@ -12,6 +13,7 @@ import {
   Pencil,
   Trash2,
   Package,
+  ScanBarcode,
 } from "lucide-react";
 import { getCategoryMeta, getCategoryLabel } from "../utils/categoryStyles";
 
@@ -25,6 +27,8 @@ export default function InventoryOverview() {
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
   const [showForm, setShowForm] = useState(false);
   const [deleteTarget, setDeleteTarget] = useState<Product | null>(null);
+  const [scannerOpen, setScannerOpen] = useState(false);
+  const [scannedBarcode, setScannedBarcode] = useState<string | undefined>(undefined);
   const { user } = useAuth();
   const isManager = user?.role === "manager";
   const { t, lang } = useI18n();
@@ -54,7 +58,21 @@ export default function InventoryOverview() {
   const handleSaved = () => {
     setShowForm(false);
     setEditingProduct(null);
+    setScannedBarcode(undefined);
     load();
+  };
+
+  const handleScan = (barcode: string) => {
+    const found = products.find((p) => p.barcode === barcode);
+    if (found) {
+      setEditingProduct(found);
+      setScannedBarcode(undefined);
+    } else {
+      setEditingProduct(null);
+      setScannedBarcode(barcode);
+    }
+    setShowForm(true);
+    setScannerOpen(false);
   };
 
   const handleDelete = async () => {
@@ -118,22 +136,42 @@ export default function InventoryOverview() {
           )}
         </div>
         {isManager && (
-          <button
-            onClick={() => {
-              setEditingProduct(null);
-              setShowForm(true);
-            }}
-            className="btn-primary flex items-center gap-2"
-          >
-            <Plus className="h-5 w-5" />
-            {t("newProduct")}
-          </button>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => setScannerOpen((v) => !v)}
+              className={`flex items-center gap-2 rounded-xl border px-4 py-2.5 text-sm font-semibold transition ${
+                scannerOpen
+                  ? "border-indigo-300 bg-indigo-50 text-indigo-700"
+                  : "border-slate-300 bg-white text-slate-700 hover:bg-slate-50"
+              }`}
+            >
+              <ScanBarcode className="h-5 w-5" />
+              {t("scanBarcode")}
+            </button>
+            <button
+              onClick={() => {
+                setEditingProduct(null);
+                setScannedBarcode(undefined);
+                setShowForm(true);
+              }}
+              className="btn-primary flex items-center gap-2"
+            >
+              <Plus className="h-5 w-5" />
+              {t("newProduct")}
+            </button>
+          </div>
         )}
       </div>
 
       {error && (
         <div className="rounded-xl bg-red-50 px-4 py-3 text-sm font-semibold text-red-700 border border-red-200">
           {error}
+        </div>
+      )}
+
+      {scannerOpen && isManager && (
+        <div className="panel p-4">
+          <Scanner onScan={handleScan} />
         </div>
       )}
 
@@ -294,9 +332,11 @@ export default function InventoryOverview() {
         <ProductFormModal
           product={editingProduct}
           categories={categories}
+          initialBarcode={scannedBarcode}
           onClose={() => {
             setShowForm(false);
             setEditingProduct(null);
+            setScannedBarcode(undefined);
           }}
           onSaved={handleSaved}
         />

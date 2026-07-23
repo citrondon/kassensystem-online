@@ -10,14 +10,15 @@ interface Props {
   categories: Category[];
   onClose: () => void;
   onSaved: () => void;
+  initialBarcode?: string;
 }
 
-export default function ProductFormModal({ product, categories, onClose, onSaved }: Props) {
+export default function ProductFormModal({ product, categories, onClose, onSaved, initialBarcode }: Props) {
   const { t, lang } = useI18n();
   const currency = t("currency");
   const isEdit = !!product;
   const [name, setName] = useState(product?.name ?? "");
-  const [barcode, setBarcode] = useState(product?.barcode ?? "");
+  const [barcode, setBarcode] = useState(product?.barcode ?? initialBarcode ?? "");
   const [price, setPrice] = useState(product ? Number(product.price) : 0);
   const [costPrice, setCostPrice] = useState(product ? Number(product.cost_price) : 0);
   const [stock, setStock] = useState(product?.stock ?? 0);
@@ -35,7 +36,7 @@ export default function ProductFormModal({ product, categories, onClose, onSaved
 
   useEffect(() => {
     setName(product?.name ?? "");
-    setBarcode(product?.barcode ?? "");
+    setBarcode(product?.barcode ?? initialBarcode ?? "");
     setPrice(product ? Number(product.price) : 0);
     setCostPrice(product ? Number(product.cost_price) : 0);
     setStock(product?.stock ?? 0);
